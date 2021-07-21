@@ -1,0 +1,113 @@
+---
+site_name: AyushNix Wiki
+repo_name: AyushNix Wiki
+repo_url: https://github.com/ayushnix/wiki
+site_url: https://ayushnix.com/wiki
+edit_uri: ""
+site_description: Personal Wiki of Ayush Agarwal
+site_author: Ayush Agarwal
+copyright: >-
+  &copy; Licensed Under
+  <a href=https://creativecommons.org/licenses/by-sa/4.0/>
+  CC BY-SA 4.0</a>
+
+nav:
+  - Home: "index.md"
+  - Blog: "https://ayushnix.com/blog"
+  - "Linux System Administration":
+      - Shell:
+          - "Shell Scripting": "sysadmin/shell/scripting.md"
+      - Tools:
+          - "tmux": "sysadmin/tools/tmux.md"
+      - Rants:
+          - "Linux on Desktop is a Shit Show": "sysadmin/rants/linux.md"
+  - "Networking":
+      - DNS:
+          - "How Does DNS Work?": "networking/dns/how-does-dns-work.md"
+  - "DevOps":
+      - Git:
+          - "Getting Started With Git": "devops/git/getting-started-with-git.md"
+
+theme:
+  name: material
+  font:
+    text: Red Hat Text
+    code: DM Mono
+  icon:
+    logo: material/book-open-outline
+    repo: fontawesome/brands/github
+  favicon: images/book-open-outline.svg
+  palette:
+    - media: "(prefers-color-scheme: light)"
+      scheme: default
+      primary: white
+      accent: blue
+      toggle:
+        icon: material/toggle-switch-off-outline
+        name: Switch to Dark Mode
+    - media: "(prefers-color-scheme: dark)"
+      scheme: slate
+      primary: black
+      accent: blue
+      toggle:
+        icon: material/toggle-switch
+        name: Switch to Light Mode
+  features:
+    - navigation.instant
+    - navigation.sections
+    - header.autohide
+    # - toc.integrate
+
+markdown_extensions:
+  - abbr
+  - admonition
+  - attr_list
+  - def_list
+  - footnotes
+  - meta
+  - sane_lists
+  - pymdownx.snippets
+  - pymdownx.tabbed
+  - pymdownx.details
+  - pymdownx.highlight
+  - pymdownx.inlinehilite
+  - pymdownx.superfences
+  - pymdownx.caret
+  - pymdownx.tilde
+  - pymdownx.smartsymbols
+  - pymdownx.tasklist:
+      custom_checkbox: true
+  - pymdownx.emoji:
+      emoji_index: !!python/name:materialx.emoji.twemoji
+      emoji_generator: !!python/name:materialx.emoji.to_svg
+  - pymdownx.betterem:
+      smart_enable: all
+  # - pymdownx.arithmatex:
+  #     generic: true
+  - toc:
+      permalink: "#"
+      toc_depth: 4
+      baselevel: 2
+
+plugins:
+  - search
+  - git-revision-date-localized
+  # enable_creation_date: true
+
+extra_css:
+  - css/dark-light-image.css
+# extra_javascript:
+#   - js/custom.js
+
+extra:
+  # manifest: manifest.webmanifest
+  social:
+    - icon: fontawesome/brands/github
+      link: https://github.com/ayushnix
+      name: Ayush Agarwal on GitHub
+    - icon: material/coffee-outline
+      link: https://www.buymeacoffee.com/ayushnix
+      name: Buy Me a Coffee on buymeacoffee.com
+    - icon: material/coffee-outline
+      link: https://ko-fi.com/O5O64SQ4C
+      name: Buy Me a Coffee on ko-fi.com
