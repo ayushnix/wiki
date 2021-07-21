@@ -373,6 +373,36 @@ A list of common tests you can do inside `[[ ... ]]` are
 | `int1 -lt int2`        | TRUE, if int1 is less than int2; `-gt` for the antonym             |
 | `int1 -le int2`        | TRUE, if int1 is less than or equal to int2; `-ge` for the antonym |
 
+# Useful Patterns
+
+## Check Dependencies
+
+If you're using shell scripts, you're most likely using commands that aren't built-in commands of
+the shell. Therefore, it makes sense to check whether the commands that you'll use are actually
+present on the system before executing a script.
+
+=== "Single Dependency"
+    ```sh
+    if ! command -v fzf > /dev/null 2>&1; then
+      printf '%s\n' "the dependency package fzf was not found!" >&2
+      exit 1
+    fi
+    ```
+
+=== "Multiple Dependencies"
+    ```sh
+    dependencies=("fzf" "rg" "bat" "lsls")
+    for d in "${dependencies[@]}"; do
+      if ! command -v "$d" > /dev/null 2>&1; then
+        printf '%s\n' "the dependency package $d was not found!" >&2
+        exit 1
+      fi
+    done
+    ```
+
+DO NOT use the `which` command for this. The reason is pretty simple. `command` is a built-in
+command and it's also POSIX compatible. However, `which` is an external command.
+
 [^1]: C'mon, who uses white spaces in file and directory names in Linux? Okay,
 I know I don't but not everyone is averse to using white spaces in file and
 directory names, especially people who come from a Windows background.
