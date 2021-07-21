@@ -1,0 +1,1050 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Personal Wiki of Ayush Agarwal">
+      
+      
+      
+        <meta name="author" content="Ayush Agarwal">
+      
+      
+        <link rel="canonical" href="https://ayushnix.com/wiki/networking/dns/how-does-dns-work/">
+      
+      <link rel="icon" href="../../../images/book-open-outline.svg">
+      <meta name="generator" content="mkdocs-1.2.2, mkdocs-material-7.1.11">
+    
+    
+      
+        <title>How Does DNS Work? - AyushNix Wiki</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../../assets/stylesheets/main.3754935a.min.css">
+      
+        
+        <link rel="stylesheet" href="../../../assets/stylesheets/palette.f1a3b89f.min.css">
+        
+      
+    
+    
+    
+      
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Red+Hat+Text:300,400,400i,700%7CDM+Mono&display=fallback">
+        <style>:root{--md-text-font-family:"Red Hat Text";--md-code-font-family:"DM Mono"}</style>
+      
+    
+    
+    
+      <link rel="stylesheet" href="../../../css/dark-light-image.css">
+    
+    
+      
+
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="white" data-md-color-accent="blue">
+  
+    
+    <script>function __prefix(e){return new URL("../../..",location).pathname+"."+e}function __get(e,t=localStorage){return JSON.parse(t.getItem(__prefix(e)))}</script>
+    
+      <script>var palette=__get("__palette");if(null!==palette&&"object"==typeof palette.color)for(var key in palette.color)document.body.setAttribute("data-md-color-"+key,palette.color[key])</script>
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#introduction" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+      <header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../../.." title="AyushNix Wiki" class="md-header__button md-logo" aria-label="AyushNix Wiki" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M21 4H3a2 2 0 0 0-2 2v13a2 2 0 0 0 2 2h18a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2M3 19V6h8v13H3m18 0h-8V6h8v13m-7-9.5h6V11h-6V9.5m0 2.5h6v1.5h-6V12m0 2.5h6V16h-6v-1.5z"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3V6m0 5h18v2H3v-2m0 5h18v2H3v-2z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            AyushNix Wiki
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              How Does DNS Work?
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      <form class="md-header__option" data-md-component="palette">
+        
+          
+          
+          <input class="md-option" data-md-color-media="(prefers-color-scheme: light)" data-md-color-scheme="default" data-md-color-primary="white" data-md-color-accent="blue"  aria-label="Switch to Dark Mode"  type="radio" name="__palette" id="__palette_1">
+          
+            <label class="md-header__button md-icon" title="Switch to Dark Mode" for="__palette_2" hidden>
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M7 10a2 2 0 0 1 2 2 2 2 0 0 1-2 2 2 2 0 0 1-2-2 2 2 0 0 1 2-2m10-3a5 5 0 0 1 5 5 5 5 0 0 1-5 5H7a5 5 0 0 1-5-5 5 5 0 0 1 5-5h10M7 9a3 3 0 0 0-3 3 3 3 0 0 0 3 3h10a3 3 0 0 0 3-3 3 3 0 0 0-3-3H7z"/></svg>
+            </label>
+          
+        
+          
+          
+          <input class="md-option" data-md-color-media="(prefers-color-scheme: dark)" data-md-color-scheme="slate" data-md-color-primary="black" data-md-color-accent="blue"  aria-label="Switch to Light Mode"  type="radio" name="__palette" id="__palette_2">
+          
+            <label class="md-header__button md-icon" title="Switch to Light Mode" for="__palette_1" hidden>
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M17 7H7a5 5 0 0 0-5 5 5 5 0 0 0 5 5h10a5 5 0 0 0 5-5 5 5 0 0 0-5-5m0 8a3 3 0 0 1-3-3 3 3 0 0 1 3-3 3 3 0 0 1 3 3 3 3 0 0 1-3 3z"/></svg>
+            </label>
+          
+        
+      </form>
+    
+    
+    
+      <label class="md-header__button md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5z"/></svg>
+      </label>
+      
+<div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" data-md-state="active" required>
+      <label class="md-search__icon md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5z"/></svg>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12z"/></svg>
+      </label>
+      <button type="reset" class="md-search__icon md-icon" aria-label="Clear" tabindex="-1">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41z"/></svg>
+      </button>
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+      <div class="md-header__source">
+        
+<a href="https://github.com/ayushnix/wiki" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 496 512"><path d="M165.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6zm-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3zm44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9zM244.8 8C106.1 8 0 113.3 0 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C428.2 457.8 496 362.9 496 252 496 113.3 383.5 8 244.8 8zM97.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1zm-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7zm32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1zm-11.4-14.7c-1.6 1-1.6 3.6 0 5.9 1.6 2.3 4.3 3.3 5.6 2.3 1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    AyushNix Wiki
+  </div>
+</a>
+      </div>
+    
+  </nav>
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../../.." title="AyushNix Wiki" class="md-nav__button md-logo" aria-label="AyushNix Wiki" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M21 4H3a2 2 0 0 0-2 2v13a2 2 0 0 0 2 2h18a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2M3 19V6h8v13H3m18 0h-8V6h8v13m-7-9.5h6V11h-6V9.5m0 2.5h6v1.5h-6V12m0 2.5h6V16h-6v-1.5z"/></svg>
+
+    </a>
+    AyushNix Wiki
+  </label>
+  
+    <div class="md-nav__source">
+      
+<a href="https://github.com/ayushnix/wiki" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 496 512"><path d="M165.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6zm-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3zm44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9zM244.8 8C106.1 8 0 113.3 0 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C428.2 457.8 496 362.9 496 252 496 113.3 383.5 8 244.8 8zM97.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1zm-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7zm32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1zm-11.4-14.7c-1.6 1-1.6 3.6 0 5.9 1.6 2.3 4.3 3.3 5.6 2.3 1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    AyushNix Wiki
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../.." class="md-nav__link">
+        Home
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="https://ayushnix.com/blog" class="md-nav__link">
+        Blog
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+      
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_3" type="checkbox" id="__nav_3" >
+      
+      <label class="md-nav__link" for="__nav_3">
+        Linux System Administration
+        <span class="md-nav__icon md-icon"></span>
+      </label>
+      <nav class="md-nav" aria-label="Linux System Administration" data-md-level="1">
+        <label class="md-nav__title" for="__nav_3">
+          <span class="md-nav__icon md-icon"></span>
+          Linux System Administration
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_3_1" type="checkbox" id="__nav_3_1" >
+      
+      <label class="md-nav__link" for="__nav_3_1">
+        Shell
+        <span class="md-nav__icon md-icon"></span>
+      </label>
+      <nav class="md-nav" aria-label="Shell" data-md-level="2">
+        <label class="md-nav__title" for="__nav_3_1">
+          <span class="md-nav__icon md-icon"></span>
+          Shell
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../sysadmin/shell/scripting/" class="md-nav__link">
+        Shell Scripting
+      </a>
+    </li>
+  
+
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_3_2" type="checkbox" id="__nav_3_2" >
+      
+      <label class="md-nav__link" for="__nav_3_2">
+        Tools
+        <span class="md-nav__icon md-icon"></span>
+      </label>
+      <nav class="md-nav" aria-label="Tools" data-md-level="2">
+        <label class="md-nav__title" for="__nav_3_2">
+          <span class="md-nav__icon md-icon"></span>
+          Tools
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../sysadmin/tools/tmux/" class="md-nav__link">
+        tmux
+      </a>
+    </li>
+  
+
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_3_3" type="checkbox" id="__nav_3_3" >
+      
+      <label class="md-nav__link" for="__nav_3_3">
+        Rants
+        <span class="md-nav__icon md-icon"></span>
+      </label>
+      <nav class="md-nav" aria-label="Rants" data-md-level="2">
+        <label class="md-nav__title" for="__nav_3_3">
+          <span class="md-nav__icon md-icon"></span>
+          Rants
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../sysadmin/rants/linux/" class="md-nav__link">
+        Linux on Desktop is a Shit Show
+      </a>
+    </li>
+  
+
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+    
+  
+  
+    
+      
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_4" type="checkbox" id="__nav_4" checked>
+      
+      <label class="md-nav__link" for="__nav_4">
+        Networking
+        <span class="md-nav__icon md-icon"></span>
+      </label>
+      <nav class="md-nav" aria-label="Networking" data-md-level="1">
+        <label class="md-nav__title" for="__nav_4">
+          <span class="md-nav__icon md-icon"></span>
+          Networking
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+  
+  
+    
+  
+  
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_4_1" type="checkbox" id="__nav_4_1" checked>
+      
+      <label class="md-nav__link" for="__nav_4_1">
+        DNS
+        <span class="md-nav__icon md-icon"></span>
+      </label>
+      <nav class="md-nav" aria-label="DNS" data-md-level="2">
+        <label class="md-nav__title" for="__nav_4_1">
+          <span class="md-nav__icon md-icon"></span>
+          DNS
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+  
+  
+    
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" data-md-toggle="toc" type="checkbox" id="__toc">
+      
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          How Does DNS Work?
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        How Does DNS Work?
+      </a>
+      
+        
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#introduction" class="md-nav__link">
+    Introduction
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#how-does-dns-work" class="md-nav__link">
+    How Does DNS Work?
+  </a>
+  
+    <nav class="md-nav" aria-label="How Does DNS Work?">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#dns-query-and-nameservers" class="md-nav__link">
+    DNS Query and Nameservers
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#dns-resource-records" class="md-nav__link">
+    DNS Resource Records
+  </a>
+  
+    <nav class="md-nav" aria-label="DNS Resource Records">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#a-record" class="md-nav__link">
+    A Record
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cname-record" class="md-nav__link">
+    CNAME Record
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#aliasaname-record" class="md-nav__link">
+    ALIAS/ANAME Record
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+      
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_5" type="checkbox" id="__nav_5" >
+      
+      <label class="md-nav__link" for="__nav_5">
+        DevOps
+        <span class="md-nav__icon md-icon"></span>
+      </label>
+      <nav class="md-nav" aria-label="DevOps" data-md-level="1">
+        <label class="md-nav__title" for="__nav_5">
+          <span class="md-nav__icon md-icon"></span>
+          DevOps
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_5_1" type="checkbox" id="__nav_5_1" >
+      
+      <label class="md-nav__link" for="__nav_5_1">
+        Git
+        <span class="md-nav__icon md-icon"></span>
+      </label>
+      <nav class="md-nav" aria-label="Git" data-md-level="2">
+        <label class="md-nav__title" for="__nav_5_1">
+          <span class="md-nav__icon md-icon"></span>
+          Git
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../devops/git/getting-started-with-git/" class="md-nav__link">
+        Getting Started With Git
+      </a>
+    </li>
+  
+
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#introduction" class="md-nav__link">
+    Introduction
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#how-does-dns-work" class="md-nav__link">
+    How Does DNS Work?
+  </a>
+  
+    <nav class="md-nav" aria-label="How Does DNS Work?">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#dns-query-and-nameservers" class="md-nav__link">
+    DNS Query and Nameservers
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#dns-resource-records" class="md-nav__link">
+    DNS Resource Records
+  </a>
+  
+    <nav class="md-nav" aria-label="DNS Resource Records">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#a-record" class="md-nav__link">
+    A Record
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cname-record" class="md-nav__link">
+    CNAME Record
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#aliasaname-record" class="md-nav__link">
+    ALIAS/ANAME Record
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          <div class="md-content" data-md-component="content">
+            <article class="md-content__inner md-typeset">
+              
+                
+                
+                  <h1>How Does DNS Work?</h1>
+                
+                <h2 id="introduction">Introduction<a class="headerlink" href="#introduction" title="Permanent link">#</a></h2>
+<p>Here's what I did for hosting my website on GitHub Pages using a custom domain. I'll probably self
+host a web server on a VPS as well.</p>
+<p>Go ahead and purchase a domain from a registrar which offers decent purchase as well as renewal
+prices on domains. Choose a top-level domain (TLD) which doesn't restrict WHOIS privacy and has
+DNSSEC. The <code>.com</code> TLD fulfills these criteria but the <code>.in</code> TLD doesn't. The registrar you choose
+should also offer WHOIS privacy by default for free.</p>
+<p>As on 14<sup>th</sup> April 2021, CloudFlare doesn't allow you to buy domain names but does allow you to
+transfer domain names to them but this is a time consuming process. After your domain has been
+transferred, you'll be locked into CloudFlare's services which might be a bummer depending on your
+use case and preferences. However, buying and renewing domains from CloudFlare would be
+<a href="https://www.cloudflare.com/products/registrar/">cheaper</a>.</p>
+<p>The domain name registrar you use would typically offer their own authoritative name servers. You
+can keep using them if you wish. They might also offer free TLS certificates. You can choose to use
+them or create your own. For now, we're hosting our website on GitHub Pages and that takes care of
+the TLS part. If we use a VPS in the future and host our own content on our own web server, that'd
+need messing around with our TLS certs.</p>
+<h2 id="how-does-dns-work">How Does DNS Work?<a class="headerlink" href="#how-does-dns-work" title="Permanent link">#</a></h2>
+<h3 id="dns-query-and-nameservers">DNS Query and Nameservers<a class="headerlink" href="#dns-query-and-nameservers" title="Permanent link">#</a></h3>
+<p>I've tried to envision how DNS works, from a bird's eye view, in the following diagram. This might
+need some changes though.</p>
+<p><img alt="How DNS Works - Dark Mode" class="dark-mode-img" src="/images/dns-2x-dark.webp" />
+<img alt="How DNS Works - Light Mode" class="light-mode-img" src="/images/dns-2x-light.webp" /></p>
+<p>Here's what we need to know.</p>
+<p>The domain, <code>ayushnix.com</code>, is known as the <strong>apex domain</strong> or the <strong>root domain</strong>. You might've
+come across the <code>www</code> variant on many websites. That's a subdomain, although a special one since it
+has been in use since the world wide web came along back in 1989.</p>
+<p>You'll enter <code>ayushnix.com</code> on your web browser and it'll route your query to your local DNS client
+(also sometimes called a stub resolver). In my case, that's
+<a href="https://github.com/DNSCrypt/dnscrypt-proxy">dnscrypt-proxy</a>. People call
+<a href="https://github.com/NLnetLabs/unbound">Unbound</a> a recursive DNS resolver but that's probably only
+applicable when using Unbound in an actual DNS server setup.</p>
+<p>At this point, realistically, our query can often be found in the DNS cache of the client we're
+using and gets resolved almost instantaneously. However, if it isn't, it's forwarded to a
+<strong>recursive</strong> DNS server. This can be <code>1.1.1.1</code> or <code>8.8.8.8</code> or something similar. These recursive
+DNS servers probably have our query in their cache and if that's the case, we'll get a response
+shortly. If not, depending on the situation, the recursive DNS you've queried can either query
+(recursion!) the</p>
+<ul>
+<li>authoritative nameservers</li>
+<li>top level domain (TLD) nameservers of <code>.com</code></li>
+<li>root nameservers</li>
+</ul>
+<p>These nameservers (NS) are mentioned in decreasing order of the probability of being visited.</p>
+<p>If the recursive DNS we're using doesn't have the <code>A</code> records of <code>ayushnix.com</code>, it'll go to the
+authoritative NS that <code>ayushnix.com</code> is using. For now, I'm using the NS provided by <del>my domain
+name registrar</del> but one can also use authoritative nameservers provided by Cloudflare or other
+providers for faster DNS resolution. These authoritative nameservers will provide the required <code>A</code>
+records and DNS resolution for my website will finish successfully.</p>
+<p>If the recursive DNS we're using has neither <code>A</code> records nor the authoritative NS records for
+<code>ayushnix.com</code>, it'll go to the TLD NS of <code>com</code> since I'm using the <code>com</code> top level domain. It'll
+ask for the authoritative NS records of <code>ayushnix.com</code> and upon receiving them, will visit the
+authoritative NS and get the needed <code>A</code> records.</p>
+<p>In rare cases, when the recursive DNS we're using doesn't have the address of TLD NS of <code>com</code>, it'll
+need to go the root nameservers and get the NS records for <code>com</code>. As on April 2021, there are 13
+root nameservers maintained by various organizations around the world. Obviously, there are lots of
+anycast servers behind the scenes. If you want, you can check the list of root nameservers
+<a href="https://www.internic.net/domain/named.root">here</a>.</p>
+<p>It's interesting to note that most queries to root nameservers aren't legitimate but NXDOMAIN
+queries or other queries due to caching issues. <a href="https://arstechnica.com/gadgets/2020/08/a-chrome-feature-is-creating-enormous-load-on-global-root-dns-servers/">An interesting
+case</a>
+was published on ArsTechnica which mentioned how a feature in Chrome was generating large amounts of
+traffic on root nameservers. A detailed <a href="https://blog.apnic.net/2020/08/21/chromiums-impact-on-root-dns-traffic/">blog
+post</a> was published by
+Verisign.</p>
+<p>Basically, ISPs often hijack user DNS and show ads for their products on NXDOMAIN pages.
+Interestingly, Verisign did this themselves with
+<a href="https://en.m.wikipedia.org/wiki/Site_Finder">SiteFinder</a> making a wildcard DNS record for all
+NXDOMAINs in <code>.com</code> and <code>.net</code> TLD and showing ads. Pretty ironic considering this issue with Chrome
+has been highlighted by Verisign themselves. To stop this bullshit, Chrome started generating random
+domains to check whether NXDOMAINs were being hijacked and if yes, stopped suggesting the user to
+visit <code>http://myserver</code> in case the user types <code>myserver</code> in the search plus address bar. However,
+in case NXDOMAINs weren't being hijacked, Chrome kept checking this and increased load on root
+nameservers such that more than half all traffic on the root nameserver run by Verisign came from
+Chrome.</p>
+<h3 id="dns-resource-records">DNS Resource Records<a class="headerlink" href="#dns-resource-records" title="Permanent link">#</a></h3>
+<p>DNS resource records are, apparently, often a source of confusion among website owners. I won't
+document each and every resource record in this section. The <code>A/AAAA</code> record, <code>ALIAS/ANAME</code> record,
+and the <code>CNAME</code> record are the ones we need to focus on. If you need more information about DNS
+resource records, go to <a href="https://www.cloudflare.com/learning/dns/dns-records/">Cloudflare's Learning
+Center</a>.</p>
+<h4 id="a-record">A Record<a class="headerlink" href="#a-record" title="Permanent link">#</a></h4>
+<p>Understanding the <code>A/AAAA</code> record is simple — it holds the IPv4/IPv6 address for a domain. You can
+use multiple <code>A</code> records for a single domain, kinda like how <a href="https://docs.github.com/en/pages/configuring-a-custom-domain-for-your-github-pages-site/managing-a-custom-domain-for-your-github-pages-site#configuring-an-apex-domain">GitHub
+Pages</a>
+tells you to point your apex domain to the following IP addresses and create <code>A</code> records.</p>
+<div class="highlight"><pre><span></span><code>185.199.108.153
+185.199.109.153
+185.199.110.153
+185.199.111.153
+</code></pre></div>
+<p>Some providers, like CloudFlare, might use <code>@</code> to denote the apex domain.</p>
+<h4 id="cname-record">CNAME Record<a class="headerlink" href="#cname-record" title="Permanent link">#</a></h4>
+<p><code>A</code> records are straightforward to use. However, when you're dealing with multiple subdomains,
+writing <code>A</code> records for each of them isn't the best thing we can do. If the IP addresses that all
+those <code>A</code> records would point to change, we're gonna have a hard time changing all the <code>A</code> records
+to reflect those changes.</p>
+<p>To resolve this issue, we can use <code>CNAME</code> records. A <code>CNAME</code> record must always point to another
+domain, never to an IP address. The most obvious usage of <code>CNAME</code> records is pointing the <code>www</code>
+subdomain variant to the apex domain. In my case, I have a <code>CNAME</code> record pointing
+<code>www.ayushnix.com</code> to <code>ayushnix.com</code>.  Here's a truncated output showcasing what I'm talking about.</p>
+<div class="highlight"><pre><span></span><code>➜ drill ayushnix.com
+
+;; ANSWER SECTION:
+ayushnix.com.   3599    IN      A       185.199.109.153
+ayushnix.com.   3599    IN      A       185.199.111.153
+ayushnix.com.   3599    IN      A       185.199.110.153
+ayushnix.com.   3599    IN      A       185.199.108.153
+
+➜ drill www.ayushnix.com
+
+;; ANSWER SECTION:
+www.ayushnix.com.       2399    IN      CNAME   ayushnix.github.io.
+ayushnix.github.io.     2399    IN      A       185.199.108.153
+ayushnix.github.io.     2399    IN      A       185.199.109.153
+ayushnix.github.io.     2399    IN      A       185.199.110.153
+ayushnix.github.io.     2399    IN      A       185.199.111.153
+</code></pre></div>
+<p>A <code>CNAME</code> record can't be used to point the apex domain to another domain. This is a limitation
+imposed by IETF specifications although some DNS providers, like Cloudflare, don't care about this
+and allow you to do so.
+<a href="https://blog.cloudflare.com/introducing-cname-flattening-rfc-compliant-cnames-at-a-domains-root/">Here's</a>
+a good article by Cloudflare about this.</p>
+<blockquote>
+<p>Technically, the root could be a CNAME but the RFCs state that once a record has a CNAME it can't
+have any other entries associated with it: that's a problem for a root record like example.com
+because it will often have an MX record (so email gets delivered), an NS record (to find out which
+nameserver handles the zone) and an SOA record.</p>
+<p>Because they follow this specification, most authoritative DNS servers won't allow you to include
+CNAME records at the root. At CloudFlare, we decided to let our users include a CNAME at the root
+even though we knew it violated the DNS specification. And that worked, most of the time.
+Unfortunately, there were a handful of edge cases that caused all sorts of problems.</p>
+</blockquote>
+<p>It'd be better if we err on the side of caution here and assume that <code>CNAME</code> records can't be used
+for anything else (except DNSSEC).</p>
+<p>It might not be obvious but there's no restriction regarding a <code>CNAME</code> record pointing to another
+<code>CNAME</code> record or a <code>CNAME</code> record using a subdomain pointing to another different domain. Here's an
+example.</p>
+<div class="highlight"><pre><span></span><code>$ drill www.skyscanner.net
+
+;; -&gt;&gt;HEADER&lt;&lt;- opcode: QUERY, rcode: NOERROR, id: 15722
+;; flags: qr rd ra ; QUERY: 1, ANSWER: 3, AUTHORITY: 0, ADDITIONAL: 0
+;; QUESTION SECTION:
+;; www.skyscanner.net.  IN  A
+
+;; ANSWER SECTION:
+www.skyscanner.net. 2399    IN  CNAME   www.skyscanner.net.edgekey.net.
+www.skyscanner.net.edgekey.net. 2399    IN  CNAME   e11001.a.akamaiedge.net.
+e11001.a.akamaiedge.net.    2399    IN  A   23.213.57.166
+</code></pre></div>
+<p>Just so we're clear, <code>www.skyscanner.net</code> is a label and <code>www.skyscanner.net.edgekey.net</code> is the
+CNAME.</p>
+<p>As shown, <code>www.skyscanner.net</code> points to the <code>CNAME</code> <code>www.skyscanner.net.edgekey.net</code> which in turn
+points to the <code>CNAME</code> <code>e11001.a.akamaiedge.net</code> which then gives us an IP address.</p>
+<p>Here's one of the advantages of using this setup. What if <code>www.skyscanner.net</code> suddenly starts
+experiencing too much traffic or wants to use a CDN? In this case, the CNAME of
+<code>www.skyscanner.net.edgekey.net</code> can be changed to something else like <code>e11316.a.akamaiedge.net</code>
+when needed and the actual website wouldn't experience any downtime or wouldn't need to change
+anything.</p>
+<p>The case of websites using <code>CNAME</code>s for tracking is interesting to note. Here's an example from
+<a href="https://github.com/AdguardTeam/cname-trackers">AdGuard's cname-trackers repository</a>.</p>
+<div class="highlight"><pre><span></span><code>&quot;tybfxw.puma.com&quot;: &quot;gum.am5.vip.prod.criteo.com&quot;
+</code></pre></div>
+<p>Yes, a web browser without CNAME tracking protection would consider <code>tybfxw.puma.com</code> a first party
+domain of <code>puma.com</code> but it isn't. It redirects to a subdomain of <code>criteo.com</code> which is a well known
+advertising company.</p>
+<p><a href="https://blog.apnic.net/2020/08/04/characterizing-cname-cloaking-based-tracking/">Here's</a> a good
+blog post about this issue. Basically, use uBlock Origin on Firefox if you want protection against
+CNAME tracking.</p>
+<h4 id="aliasaname-record">ALIAS/ANAME Record<a class="headerlink" href="#aliasaname-record" title="Permanent link">#</a></h4>
+<p>An <code>ALIAS/ANAME</code> record is basically a <code>CNAME</code> record without the limitations and inefficiency of
+<code>CNAME</code> records. Cloudflare calls this <code>CNAME</code> flattening.</p>
+<p>If we use an <code>ALIAS</code> record, we can point <code>ayushnix.com</code> to <code>ayushnix.github.io</code> without any
+worries. This takes care of the primary limitation of <code>CNAME</code> records.</p>
+<p>To understand how inefficient <code>CNAME</code> records can be, let's go back to our <code>www.skyscanner.net</code>
+example mentioned above.</p>
+<div class="highlight"><pre><span></span><code>www.skyscanner.net.             🠊 www.skyscanner.net.edgekey.net.
+www.skyscanner.net.edgekey.net. 🠊 e11001.a.akamaiedge.net.
+e11001.a.akamaiedge.net.        🠊 23.213.57.166
+</code></pre></div>
+<p>In this case, our recursive NS will start with resolving <code>www.skyscanner.net</code>. After traveling all
+the way to an authoritative NS and back, it has to visit an authoritative server again to resolve
+<code>www.skyscanner.net.edgekey.net</code>. This process will be repeated for the resolution of
+<code>e11001.a.akamaiedge.net</code>. We've essentially ended up making three DNS queries to resolve a single
+domain.  Obviously, this introduces latency.</p>
+<p>In contrast, when using an <code>ALIAS</code> record, the authoritative NS of <code>www.skyscanner.net</code> should
+resolve the underlying domains and return an IP address as the answer to the recursive resolver
+we're using. As you can imagine, this is relatively faster and the final answer looks like an <code>A</code>
+record. This can be confirmed by using <code>drill</code> on <code>ayushnix.com</code>.</p>
+<p>One of the disadvantages of <code>ALIAS</code> mentioned on <a href="https://ns1.com/blog/the-difference-between-alias-and-cname">this blog
+post</a> tells us that <code>ALIAS</code> records may
+make CDN efforts worthless because the CDN will respond to the location of the authoritative
+nameserver, not yours.</p>
+                
+                  
+                    
+
+<hr>
+<div class="md-source-date">
+  <small>
+    
+      Last update: <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date">July 21, 2021</span>
+      
+    
+  </small>
+</div>
+                  
+                
+              
+              
+                
+
+
+              
+            </article>
+          </div>
+        </div>
+        
+      </main>
+      
+        
+<footer class="md-footer">
+  
+    <nav class="md-footer__inner md-grid" aria-label="Footer">
+      
+        
+        <a href="../../../sysadmin/rants/linux/" class="md-footer__link md-footer__link--prev" aria-label="Previous: Linux on Desktop is a Shit Show" rel="prev">
+          <div class="md-footer__button md-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12z"/></svg>
+          </div>
+          <div class="md-footer__title">
+            <div class="md-ellipsis">
+              <span class="md-footer__direction">
+                Previous
+              </span>
+              Linux on Desktop is a Shit Show
+            </div>
+          </div>
+        </a>
+      
+      
+        
+        <a href="../../../devops/git/getting-started-with-git/" class="md-footer__link md-footer__link--next" aria-label="Next: Getting Started With Git" rel="next">
+          <div class="md-footer__title">
+            <div class="md-ellipsis">
+              <span class="md-footer__direction">
+                Next
+              </span>
+              Getting Started With Git
+            </div>
+          </div>
+          <div class="md-footer__button md-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11H4z"/></svg>
+          </div>
+        </a>
+      
+    </nav>
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-footer-copyright">
+        
+          <div class="md-footer-copyright__highlight">
+            &copy; Licensed Under <a href=https://creativecommons.org/licenses/by-sa/4.0/> CC BY-SA 4.0</a>
+          </div>
+        
+        Made with
+        <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+          Material for MkDocs
+        </a>
+        
+      </div>
+      
+  <div class="md-footer-social">
+    
+      
+      
+      <a href="https://github.com/ayushnix" target="_blank" rel="noopener" title="Ayush Agarwal on GitHub" class="md-footer-social__link">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 496 512"><path d="M165.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6zm-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3zm44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9zM244.8 8C106.1 8 0 113.3 0 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C428.2 457.8 496 362.9 496 252 496 113.3 383.5 8 244.8 8zM97.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1zm-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7zm32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1zm-11.4-14.7c-1.6 1-1.6 3.6 0 5.9 1.6 2.3 4.3 3.3 5.6 2.3 1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2z"/></svg>
+      </a>
+    
+      
+      
+      <a href="https://www.buymeacoffee.com/ayushnix" target="_blank" rel="noopener" title="Buy Me a Coffee on buymeacoffee.com" class="md-footer-social__link">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M2 21v-2h18v2H2M20 8V5h-2v3h2m0-5a2 2 0 0 1 2 2v3a2 2 0 0 1-2 2h-2v3a4 4 0 0 1-4 4H8a4 4 0 0 1-4-4V3h16m-4 2H6v8a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V5z"/></svg>
+      </a>
+    
+      
+      
+      <a href="https://ko-fi.com/O5O64SQ4C" target="_blank" rel="noopener" title="Buy Me a Coffee on ko-fi.com" class="md-footer-social__link">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M2 21v-2h18v2H2M20 8V5h-2v3h2m0-5a2 2 0 0 1 2 2v3a2 2 0 0 1-2 2h-2v3a4 4 0 0 1-4 4H8a4 4 0 0 1-4-4V3h16m-4 2H6v8a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V5z"/></svg>
+      </a>
+    
+  </div>
+
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    <script id="__config" type="application/json">{"base": "../../..", "features": ["navigation.instant", "navigation.sections", "header.autohide"], "translations": {"clipboard.copy": "Copy to clipboard", "clipboard.copied": "Copied to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.placeholder": "Search", "search.result.placeholder": "Type to start searching", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.term.missing": "Missing", "select.version.title": "Select version"}, "search": "../../../assets/javascripts/workers/search.477d984a.min.js", "version": null}</script>
+    
+    
+      <script src="../../../assets/javascripts/bundle.ddd52ceb.min.js"></script>
+      
+    
+  </body>
+</html>

@@ -1,0 +1,1169 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Personal Wiki of Ayush Agarwal">
+      
+      
+      
+        <meta name="author" content="Ayush Agarwal">
+      
+      
+        <link rel="canonical" href="https://ayushnix.com/wiki/devops/git/getting-started-with-git/">
+      
+      <link rel="icon" href="../../../images/book-open-outline.svg">
+      <meta name="generator" content="mkdocs-1.2.2, mkdocs-material-7.1.11">
+    
+    
+      
+        <title>Getting Started With Git - AyushNix Wiki</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../../assets/stylesheets/main.3754935a.min.css">
+      
+        
+        <link rel="stylesheet" href="../../../assets/stylesheets/palette.f1a3b89f.min.css">
+        
+      
+    
+    
+    
+      
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Red+Hat+Text:300,400,400i,700%7CDM+Mono&display=fallback">
+        <style>:root{--md-text-font-family:"Red Hat Text";--md-code-font-family:"DM Mono"}</style>
+      
+    
+    
+    
+      <link rel="stylesheet" href="../../../css/dark-light-image.css">
+    
+    
+      
+
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="white" data-md-color-accent="blue">
+  
+    
+    <script>function __prefix(e){return new URL("../../..",location).pathname+"."+e}function __get(e,t=localStorage){return JSON.parse(t.getItem(__prefix(e)))}</script>
+    
+      <script>var palette=__get("__palette");if(null!==palette&&"object"==typeof palette.color)for(var key in palette.color)document.body.setAttribute("data-md-color-"+key,palette.color[key])</script>
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#introduction" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+      <header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../../.." title="AyushNix Wiki" class="md-header__button md-logo" aria-label="AyushNix Wiki" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M21 4H3a2 2 0 0 0-2 2v13a2 2 0 0 0 2 2h18a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2M3 19V6h8v13H3m18 0h-8V6h8v13m-7-9.5h6V11h-6V9.5m0 2.5h6v1.5h-6V12m0 2.5h6V16h-6v-1.5z"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3V6m0 5h18v2H3v-2m0 5h18v2H3v-2z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            AyushNix Wiki
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Getting Started With Git
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      <form class="md-header__option" data-md-component="palette">
+        
+          
+          
+          <input class="md-option" data-md-color-media="(prefers-color-scheme: light)" data-md-color-scheme="default" data-md-color-primary="white" data-md-color-accent="blue"  aria-label="Switch to Dark Mode"  type="radio" name="__palette" id="__palette_1">
+          
+            <label class="md-header__button md-icon" title="Switch to Dark Mode" for="__palette_2" hidden>
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M7 10a2 2 0 0 1 2 2 2 2 0 0 1-2 2 2 2 0 0 1-2-2 2 2 0 0 1 2-2m10-3a5 5 0 0 1 5 5 5 5 0 0 1-5 5H7a5 5 0 0 1-5-5 5 5 0 0 1 5-5h10M7 9a3 3 0 0 0-3 3 3 3 0 0 0 3 3h10a3 3 0 0 0 3-3 3 3 0 0 0-3-3H7z"/></svg>
+            </label>
+          
+        
+          
+          
+          <input class="md-option" data-md-color-media="(prefers-color-scheme: dark)" data-md-color-scheme="slate" data-md-color-primary="black" data-md-color-accent="blue"  aria-label="Switch to Light Mode"  type="radio" name="__palette" id="__palette_2">
+          
+            <label class="md-header__button md-icon" title="Switch to Light Mode" for="__palette_1" hidden>
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M17 7H7a5 5 0 0 0-5 5 5 5 0 0 0 5 5h10a5 5 0 0 0 5-5 5 5 0 0 0-5-5m0 8a3 3 0 0 1-3-3 3 3 0 0 1 3-3 3 3 0 0 1 3 3 3 3 0 0 1-3 3z"/></svg>
+            </label>
+          
+        
+      </form>
+    
+    
+    
+      <label class="md-header__button md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5z"/></svg>
+      </label>
+      
+<div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" data-md-state="active" required>
+      <label class="md-search__icon md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5z"/></svg>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12z"/></svg>
+      </label>
+      <button type="reset" class="md-search__icon md-icon" aria-label="Clear" tabindex="-1">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41z"/></svg>
+      </button>
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+      <div class="md-header__source">
+        
+<a href="https://github.com/ayushnix/wiki" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 496 512"><path d="M165.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6zm-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3zm44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9zM244.8 8C106.1 8 0 113.3 0 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C428.2 457.8 496 362.9 496 252 496 113.3 383.5 8 244.8 8zM97.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1zm-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7zm32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1zm-11.4-14.7c-1.6 1-1.6 3.6 0 5.9 1.6 2.3 4.3 3.3 5.6 2.3 1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    AyushNix Wiki
+  </div>
+</a>
+      </div>
+    
+  </nav>
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../../.." title="AyushNix Wiki" class="md-nav__button md-logo" aria-label="AyushNix Wiki" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M21 4H3a2 2 0 0 0-2 2v13a2 2 0 0 0 2 2h18a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2M3 19V6h8v13H3m18 0h-8V6h8v13m-7-9.5h6V11h-6V9.5m0 2.5h6v1.5h-6V12m0 2.5h6V16h-6v-1.5z"/></svg>
+
+    </a>
+    AyushNix Wiki
+  </label>
+  
+    <div class="md-nav__source">
+      
+<a href="https://github.com/ayushnix/wiki" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 496 512"><path d="M165.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6zm-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3zm44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9zM244.8 8C106.1 8 0 113.3 0 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C428.2 457.8 496 362.9 496 252 496 113.3 383.5 8 244.8 8zM97.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1zm-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7zm32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1zm-11.4-14.7c-1.6 1-1.6 3.6 0 5.9 1.6 2.3 4.3 3.3 5.6 2.3 1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    AyushNix Wiki
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../.." class="md-nav__link">
+        Home
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="https://ayushnix.com/blog" class="md-nav__link">
+        Blog
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+      
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_3" type="checkbox" id="__nav_3" >
+      
+      <label class="md-nav__link" for="__nav_3">
+        Linux System Administration
+        <span class="md-nav__icon md-icon"></span>
+      </label>
+      <nav class="md-nav" aria-label="Linux System Administration" data-md-level="1">
+        <label class="md-nav__title" for="__nav_3">
+          <span class="md-nav__icon md-icon"></span>
+          Linux System Administration
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_3_1" type="checkbox" id="__nav_3_1" >
+      
+      <label class="md-nav__link" for="__nav_3_1">
+        Shell
+        <span class="md-nav__icon md-icon"></span>
+      </label>
+      <nav class="md-nav" aria-label="Shell" data-md-level="2">
+        <label class="md-nav__title" for="__nav_3_1">
+          <span class="md-nav__icon md-icon"></span>
+          Shell
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../sysadmin/shell/scripting/" class="md-nav__link">
+        Shell Scripting
+      </a>
+    </li>
+  
+
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_3_2" type="checkbox" id="__nav_3_2" >
+      
+      <label class="md-nav__link" for="__nav_3_2">
+        Tools
+        <span class="md-nav__icon md-icon"></span>
+      </label>
+      <nav class="md-nav" aria-label="Tools" data-md-level="2">
+        <label class="md-nav__title" for="__nav_3_2">
+          <span class="md-nav__icon md-icon"></span>
+          Tools
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../sysadmin/tools/tmux/" class="md-nav__link">
+        tmux
+      </a>
+    </li>
+  
+
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_3_3" type="checkbox" id="__nav_3_3" >
+      
+      <label class="md-nav__link" for="__nav_3_3">
+        Rants
+        <span class="md-nav__icon md-icon"></span>
+      </label>
+      <nav class="md-nav" aria-label="Rants" data-md-level="2">
+        <label class="md-nav__title" for="__nav_3_3">
+          <span class="md-nav__icon md-icon"></span>
+          Rants
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../sysadmin/rants/linux/" class="md-nav__link">
+        Linux on Desktop is a Shit Show
+      </a>
+    </li>
+  
+
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+      
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_4" type="checkbox" id="__nav_4" >
+      
+      <label class="md-nav__link" for="__nav_4">
+        Networking
+        <span class="md-nav__icon md-icon"></span>
+      </label>
+      <nav class="md-nav" aria-label="Networking" data-md-level="1">
+        <label class="md-nav__title" for="__nav_4">
+          <span class="md-nav__icon md-icon"></span>
+          Networking
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_4_1" type="checkbox" id="__nav_4_1" >
+      
+      <label class="md-nav__link" for="__nav_4_1">
+        DNS
+        <span class="md-nav__icon md-icon"></span>
+      </label>
+      <nav class="md-nav" aria-label="DNS" data-md-level="2">
+        <label class="md-nav__title" for="__nav_4_1">
+          <span class="md-nav__icon md-icon"></span>
+          DNS
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../networking/dns/how-does-dns-work/" class="md-nav__link">
+        How Does DNS Work?
+      </a>
+    </li>
+  
+
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+    
+  
+  
+    
+      
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_5" type="checkbox" id="__nav_5" checked>
+      
+      <label class="md-nav__link" for="__nav_5">
+        DevOps
+        <span class="md-nav__icon md-icon"></span>
+      </label>
+      <nav class="md-nav" aria-label="DevOps" data-md-level="1">
+        <label class="md-nav__title" for="__nav_5">
+          <span class="md-nav__icon md-icon"></span>
+          DevOps
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+  
+  
+    
+  
+  
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_5_1" type="checkbox" id="__nav_5_1" checked>
+      
+      <label class="md-nav__link" for="__nav_5_1">
+        Git
+        <span class="md-nav__icon md-icon"></span>
+      </label>
+      <nav class="md-nav" aria-label="Git" data-md-level="2">
+        <label class="md-nav__title" for="__nav_5_1">
+          <span class="md-nav__icon md-icon"></span>
+          Git
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+  
+  
+    
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" data-md-toggle="toc" type="checkbox" id="__toc">
+      
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          Getting Started With Git
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        Getting Started With Git
+      </a>
+      
+        
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#introduction" class="md-nav__link">
+    Introduction
+  </a>
+  
+    <nav class="md-nav" aria-label="Introduction">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#git-objects" class="md-nav__link">
+    Git Objects
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#git-references" class="md-nav__link">
+    Git References
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#visualizing-git" class="md-nav__link">
+    Visualizing Git
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#questions" class="md-nav__link">
+    Questions
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#references" class="md-nav__link">
+    References
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#introduction" class="md-nav__link">
+    Introduction
+  </a>
+  
+    <nav class="md-nav" aria-label="Introduction">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#git-objects" class="md-nav__link">
+    Git Objects
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#git-references" class="md-nav__link">
+    Git References
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#visualizing-git" class="md-nav__link">
+    Visualizing Git
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#questions" class="md-nav__link">
+    Questions
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#references" class="md-nav__link">
+    References
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          <div class="md-content" data-md-component="content">
+            <article class="md-content__inner md-typeset">
+              
+                
+                
+                  <h1>Getting Started With Git</h1>
+                
+                <p>Instead of rote learning and hoping not to mess up when executing git commands, it's better to
+understand what's going on under the hood and how git actually works. This guide isn't meant to be a
+traditional git 101 guide. We'll cover basic terminology briefly but focus solely on git internals
+because, in my opinion, that's how one should get started with git.</p>
+<h2 id="introduction">Introduction<a class="headerlink" href="#introduction" title="Permanent link">#</a></h2>
+<p>There are several insightful one line definitions of what a git repository is but we'll start with
+this one.</p>
+<blockquote>
+<p>A git repository is a collection of objects and names for those objects called references or,
+simply, refs.</p>
+</blockquote>
+<p>Let's see this for ourselves.</p>
+<div class="highlight"><pre><span></span><code>$ git init repo
+$ cd repo/
+$ tree .git/
+.git/
+├── branches
+├── HEAD
+├── objects
+│   ├── info
+│   └── pack
+└── refs
+    ├── heads
+    └── tags
+</code></pre></div>
+<p>For now, we are concerned with the <code>objects/</code> and <code>refs/</code> directories inside <code>.git/</code>. Yes, we've
+omitted some output from the <code>tree</code> command to focus on what's important.</p>
+<p>We usually deal with git using its high level porcelain commands rather than its low level plumbing
+commands. We'll use the plumbing commands to do a basic operation in git.</p>
+<h3 id="git-objects">Git Objects<a class="headerlink" href="#git-objects" title="Permanent link">#</a></h3>
+<p>Let's start by adding something to a git repo.</p>
+<div class="highlight"><pre><span></span><code>$ echo &quot;git internals&quot; | git hash-object -w --stdin
+613b11344587e365a3e20af88e29fbaea95cd458
+$ tree .git/objects/
+.git/objects/
+├── 61
+│   └── 3b11344587e365a3e20af88e29fbaea95cd458
+├── info
+└── pack
+</code></pre></div>
+<p>Notice that we didn't even use a file to store content in git, we just <code>echo</code>ed content into the
+standard input which is received by the <code>git hash-object</code> command which then computes the
+hexadecimal sha1 hash of the content passed via stdin and stores it in the objects folder.</p>
+<p>Oh, if you try to use the <code>sha1sum</code> command on the same input, you won't get the same result. Git
+appends some meta data about the content that it stores in its <code>objects/</code> <em>key-value store</em>. You'll
+need to prefix the type of the object, its size, and a NULL byte to get the same result. You can get
+the type and size of the object you just stored in the git repo using the <code>git cat-file</code> command.</p>
+<div class="highlight"><pre><span></span><code>$ git cat-file -t 613b11
+blob
+$ git cat-file -s 613b11
+14
+$ echo -e &quot;blob 14\0git internals&quot; | sha1sum | tr -d &#39;[:blank:]&#39; | tr -d &#39;-&#39;
+613b11344587e365a3e20af88e29fbaea95cd458
+</code></pre></div>
+<p>This brings us to the fundamental object used by git to store data — <strong>blobs</strong>.  Git stores the
+contents of files in objects called blobs, binary large objects.  The difference between a blob and
+a file is that a file also contains meta data.  For example, a file “remembers” when it was created,
+so if you move that file into another directory, its creation time remains the same. A blob, on the
+other hand, is just content — binary streams of data. A blob doesn't register its creation date, its
+name, or anything but its content.</p>
+<p>As seen above, we can compute the sha1 hash of the blob that the git computes using the format
+<code>"blob ${#CONTENTS}\0$CONTENTS"</code>.</p>
+<p>What now?</p>
+<div class="highlight"><pre><span></span><code>$ git status
+On branch master
+
+No commits yet
+
+nothing to commit (create/copy files and use &quot;git add&quot; to track)
+</code></pre></div>
+<p>Git doesn't know anything about the object we just created because there's nothing inside our
+<strong>working directory</strong>, the directory where your actual content should be. The blob we created is
+also not present in the <strong>staging area</strong> aka <strong>index</strong> yet. Let's add it to the staging area.</p>
+<div class="highlight"><pre><span></span><code>$ git update-index --add --cacheinfo 100644,613b11344587e365a3e20af88e29fbaea95cd458,git-internals.txt
+$ git status
+On branch master
+
+No commits yet
+
+Changes to be committed:
+  (use &quot;git rm --cached &lt;file&gt;...&quot; to unstage)
+    new file:   git-internals.txt
+
+Changes not staged for commit:
+  (use &quot;git add/rm &lt;file&gt;...&quot; to update what will be committed)
+  (use &quot;git restore &lt;file&gt;...&quot; to discard changes in working directory)
+    deleted:    git-internals.txt
+</code></pre></div>
+<p>This is interesting. We've added the file <code>git-internals.txt</code> into the staging area but since that
+file isn't present in the working directory, git thinks that it has been deleted. However, in
+reality, that file has never been there in the working directory to begin with. We'll come back to
+this issue later so just forget about it for now. After all, we're dealing with the git repository
+here, not its working directory and since a git repository is a <em>content addressable</em> storage and a
+key-value store, if we have the required objects, we can get the required files.</p>
+<p>Remember that we said that blobs are simply content and nothing else? Git stores the meta data of
+blobs into another fundamental storage unit called a <strong>tree</strong> object.</p>
+<div class="highlight"><pre><span></span><code>$ git write-tree
+c19878e8ba21805cc916151c15ba14f9e83d2cd9
+$ git cat-file -t c19878
+tree
+$ git cat-file -p c19878
+100644 blob 613b11344587e365a3e20af88e29fbaea95cd458    git-internals.txt
+</code></pre></div>
+<p>If you read the man page of <code>git write-tree</code>, you'll see that it mentions that it "creates a tree
+object using the current index". The tree object stores the meta data of blobs and other trees. This
+meta data includes the file mode, type of object, the sha1 hash of the object, and the file or
+directory name.</p>
+<p>If you notice the contents of the <code>.git/</code> directory now, it'll be something like this:</p>
+<div class="highlight"><pre><span></span><code>$ tree .git/objects/
+.git/objects/
+├── 61
+│   └── 3b11344587e365a3e20af88e29fbaea95cd458
+├── c1
+│   └── 9878e8ba21805cc916151c15ba14f9e83d2cd9
+├── info
+└── pack
+</code></pre></div>
+<p>The <code>objects/</code> directory now contains another entry for the tree object. At this point, the output
+of <code>git status</code> will remain unchanged.</p>
+<p>Let's go ahead and create another fundamental storage unit, the <strong>commit</strong> object.</p>
+<div class="highlight"><pre><span></span><code>$ git commit-tree -m &quot;first commit&quot; c19878
+cc219e7bb9a8275759ba1bfd7e4510bc2e6ff1d1
+$ tree .git/objects/
+.git/objects/
+├── 61
+│   └── 3b11344587e365a3e20af88e29fbaea95cd458
+├── c1
+│   └── 9878e8ba21805cc916151c15ba14f9e83d2cd9
+├── cc
+│   └── 219e7bb9a8275759ba1bfd7e4510bc2e6ff1d1
+├── info
+└── pack
+$ git cat-file -t cc219e
+commit
+$ git cat-file -p cc219e
+tree c19878e8ba21805cc916151c15ba14f9e83d2cd9
+author Ayush Agarwal &lt;email@email.com&gt; 1608903575 +0530
+committer Ayush Agarwal &lt;email@email.com&gt; 1608903575 +0530
+
+first commit
+</code></pre></div>
+<p>As shown in the output of the <code>git cat-file</code> command, the commit object stores the meta data of the
+tree object, the author, the committer, the time at which the commit was done, and the commit
+message. Since this is the first commit in our repository, this commit object doesn't point to a
+parent commit object yet.</p>
+<p>While a tree represents a particular directory state of the working directory, a commit represents
+that state in "time", and explains how to get there. Think of a commit object as a snapshot of your
+working directory at a point in time.  When we use the porcelain commands of git, we usually
+interact with commit objects and their sha1 hashes.</p>
+<p>You might notice something strange though.</p>
+<div class="highlight"><pre><span></span><code>$ git status
+On branch master
+
+No commits yet
+
+Changes to be committed:
+  (use &quot;git rm --cached &lt;file&gt;...&quot; to unstage)
+    new file:   git-internals.txt
+
+Changes not staged for commit:
+  (use &quot;git add/rm &lt;file&gt;...&quot; to update what will be committed)
+  (use &quot;git restore &lt;file&gt;...&quot; to discard changes in working directory)
+    deleted:    git-internals.txt
+</code></pre></div>
+<p><code>git status</code> still doesn't think that we've committed anything yet. There's also the issue of the
+missing file in our working directory which git thinks has been deleted.</p>
+<p>We've finally arrived at the <code>refs/</code> folder.</p>
+<h3 id="git-references">Git References<a class="headerlink" href="#git-references" title="Permanent link">#</a></h3>
+<p>Remember that we said that a git repository is a key-value store? Well, the store is the
+<code>.git/objects/</code> directory and the keys are in the <code>.git/refs/</code> directory. In git terminology, values
+are objects and <em>references</em> are keys.  References can be anything from a local branch, a remote
+branch, an immutable tag, and a file called HEAD which stores a <em>symbolic reference</em> (reference to
+another reference) unless you're in a detached HEAD state and HEAD then contains a sha1 hash as its
+reference. This also shows that the sha1 commit hashes can themselves be used as references.</p>
+<p>By default, a git repository starts with a local branch called master. Let's see what the
+<code>.git/HEAD</code> file contains.</p>
+<div class="highlight"><pre><span></span><code>$ cat .git/HEAD
+ref: refs/heads/master
+</code></pre></div>
+<p>The <code>.git/HEAD</code> file just contains a symbolic reference to the master branch.  The location of the
+master branch should be familiar - it's inside the <code>.git/refs/heads/</code> folder. All we need is a file
+called <code>master</code> which points to the sha1 hash of the commit object that we made a few minutes ago.</p>
+<div class="highlight"><pre><span></span><code>$ echo &quot;cc219e7bb9a8275759ba1bfd7e4510bc2e6ff1d1&quot; &gt; .git/refs/heads/master
+</code></pre></div>
+<p>Rather than manually adding the sha1 hash of the commit object, we can also use the <code>git update-ref</code>
+command to change the value of <code>.git/refs/heads/master</code> in a safer manner.</p>
+<div class="highlight"><pre><span></span><code>$ git update-ref refs/heads/master cc219e
+</code></pre></div>
+<p>Finally, we've successfully made a commit object.</p>
+<div class="highlight"><pre><span></span><code>$ git status
+On branch master
+Changes not staged for commit:
+  (use &quot;git add/rm &lt;file&gt;...&quot; to update what will be committed)
+  (use &quot;git restore &lt;file&gt;...&quot; to discard changes in working directory)
+    deleted:    git-internals.txt
+
+no changes added to commit (use &quot;git add&quot; and/or &quot;git commit -a&quot;)
+$ git log
+commit cc219e7bb9a8275759ba1bfd7e4510bc2e6ff1d1 (HEAD -&gt; master)
+Author: Ayush Agarwal &lt;email@email.com&gt;
+Date:   Fri Dec 25 19:09:35 2020 +0530
+
+    first commit
+</code></pre></div>
+<p>To get a clean <code>git status</code> output, we'll add the <code>git-internals.txt</code> file by getting it from git to
+demonstrate that a git repository ensures the data integrity of your working directory using commit
+objects.</p>
+<div class="highlight"><pre><span></span><code>$ git checkout git-internals.txt
+</code></pre></div>
+<p>This command retrieves the file <code>git-internals.txt</code> from the staging area and writes it in the
+working directory. We can write a specific commit object hash before the file name to checkout the
+version of the file in that commit object.</p>
+<p><code>git status</code> is now finally clean and shows us the expected output.</p>
+<div class="highlight"><pre><span></span><code>$ git status
+On branch master
+nothing to commit, working tree clean
+</code></pre></div>
+<p>Just for the sake of reference (pun not intended), we would've used the following porcelain commands
+to achieve the same result.</p>
+<div class="highlight"><pre><span></span><code>$ git init repo
+$ cd repo/
+$ echo &quot;git internals&quot; &gt; git-internals.txt
+$ git add git-internals.txt
+$ git commit -m &quot;first commit&quot;
+</code></pre></div>
+<p>The <code>git add</code> command adds the <code>git-internals.txt</code> file to the staging area and creates the blob
+object and adds it to the <code>.git/objects/</code> folder. The <code>git commit</code> command creates a tree object,
+points it to the blob object, creates a commit object which points to the tree object it just
+created, and updates the <code>.git/refs/heads/master</code> file with the sha1 hash of the commit object it
+creates.</p>
+<p>This is it. You now know the basics of how a git repo actually works under the hood. However, we can
+still dive in a bit more.</p>
+<h2 id="visualizing-git">Visualizing Git<a class="headerlink" href="#visualizing-git" title="Permanent link">#</a></h2>
+<p>Let's create another file and another commit object.</p>
+<div class="highlight"><pre><span></span><code>$ echo &quot;git internals v2&quot; &gt; git-internals-v2.txt
+$ git add git-internals-v2.txt
+$ git commit -m &quot;second commit&quot;
+[master 11e5833] second commit
+ 1 file changed, 1 insertion(+)
+ create mode 100644 git-internals-v2.txt
+$ git log --oneline --decorate --graph --all
+* 11e5833 (HEAD -&gt; master) second commit
+* cc219e7 first commit
+</code></pre></div>
+<p>In simple visual terms, all we've done is create this <em>directed acyclic graph</em>:</p>
+<p><img alt="Initial Commits - Dark Mode" class="dark-mode-img" src="/images/initial-commits-2x-dark.webp" />
+<img alt="Initial Commits - Light Mode" class="light-mode-img" src="/images/initial-commits-2x-light.webp" /></p>
+<p>However, let's see what our repo looks like when we represent all the git objects and references.</p>
+<p><img alt="Git Repo - Dark Mode" class="dark-mode-img" src="/images/git-repo-2x-dark.webp" />
+<img alt="Git Repo - Light Mode" class="light-mode-img" src="/images/git-repo-2x-light.webp" /></p>
+<p>It should be clear from this diagram that branches are just references that are pointers to commit
+objects. This pointer moves automatically throughout the graph as you commit more objects and
+perform other operations.</p>
+<div class="highlight"><pre><span></span><code>$ git checkout -b test
+$ git log --oneline --decorate --graph --all
+* 11e5833 (HEAD -&gt; test, master) second commit
+* cc219e7 first commit
+$ echo &quot;branches&quot; &gt;&gt; git-internals.txt
+$ git commit -am &quot;third commit&quot;
+[test c4691ec] third commit
+ 1 file changed, 1 insertion(+)
+$ git log --oneline --decorate --graph --all
+* c4691ec (HEAD -&gt; test) third commit
+* 11e5833 (master) second commit
+* cc219e7 first commit
+</code></pre></div>
+<p>Now, check the contents of the <code>.git/refs</code> directory.</p>
+<div class="highlight"><pre><span></span><code>$ tree .git/refs/
+.git/refs/
+├── heads
+│   ├── master
+│   └── test
+└── tags
+$ cat .git/refs/heads/test
+c4691ec4ee1a3c9fa257cfac16192dbc022c8b9a
+</code></pre></div>
+<p>Where does <code>HEAD</code> point to?</p>
+<div class="highlight"><pre><span></span><code>$ cat .git/HEAD
+ref: refs/heads/test
+</code></pre></div>
+<p>As we can see, right now, <code>HEAD</code> is symbolic reference to the <code>test</code> branch.</p>
+<h2 id="questions">Questions<a class="headerlink" href="#questions" title="Permanent link">#</a></h2>
+<p>Here are some questions that you might have come up with while reading this article:</p>
+<p><em>Why does git use a tree object? Couldn't we store the meta data stored by the tree object in the
+commit object?</em></p>
+<p>One of the reasons that git uses tree objects is that they help in preserving the working directory
+structure. Tree objects can store other tree objects which basically represent directories and
+subdirectories in a working directory. Tree objects represent a snapshot of the working directory at
+a point in time when a commit object is made.</p>
+<p>Another reason is that different commits can have the same tree objects. If you followed along with
+the commands in this guide verbatim, your git repo would have the same (the sha1 hashes would be
+identical) blob and tree object as I did. However, your commit object sha1 hash will be different
+than mine because of different meta data like the name and email of the author and committer. In
+case git encounters the same tree object in different commits in a single repository, it won't
+create new blob and tree objects and reuse the ones we already have which saves space and increases
+efficiency.</p>
+<p><em>Why does git use the first two characters of the 40-digit hash of git objects as directory names and
+the remaining 38-digits as the file name of the object itself?</em></p>
+<p>The layout of subdirectories in <code>.git/objects/</code> is in the form of <code>[0-9a-f][0-9a-f]/[0-9a-f]+</code> which
+means that there can be 256 subdirectories in <code>.git/objects/</code>. Some file systems like FAT32 can have
+only 65,536 files in a directory but, technically, there can be 2^60 SHA1 hashes. EXT2 has
+performance issues post 10k files in a directory. EXT4 doesn't any such limits but it's still
+limited by the number of inodes it can have.</p>
+<p>In essence, this directory structure is the result of optimization keeping in mind the performance
+limitations of file systems.</p>
+<h2 id="references">References<a class="headerlink" href="#references" title="Permanent link">#</a></h2>
+<p>Here are some resources that might help you get started with and understand git. This includes
+comprehensive references as well. References specific to a certain topic will be included elsewhere.</p>
+<ul>
+<li><a href="http://think-like-a-git.net/">Think Like a Git</a></li>
+<li><a href="https://jwiegley.github.io/git-from-the-bottom-up/">Git From The Bottom Up</a></li>
+<li><a href="https://codewords.recurse.com/issues/two/git-from-the-inside-out">Git From The Inside Out</a></li>
+<li><a href="https://git-scm.com/book/en/v2/Git-Internals-Plumbing-and-Porcelain">Chapter 10 of the Pro Git Book</a></li>
+</ul>
+<p>Here are some videos that use git internals to explain how git works.<sup id="fnref:1"><a class="footnote-ref" href="#fn:1">1</a></sup></p>
+<ul>
+<li><a href="https://www.youtube.com/watch?v=MYP56QJpDr4">Git From the Bits Up</a></li>
+<li><a href="https://www.youtube.com/watch?v=Y2Msq90ZknI">Dissecting Git Guts</a></li>
+<li><a href="https://www.youtube.com/watch?v=ig5E8CcdM9g">Advanced Git: Graphs, Hashes, and Compression, Oh My!</a></li>
+</ul>
+<p>Visualizing a git repository and its graph can become easier using:</p>
+<ul>
+<li><a href="https://git-school.github.io/visualizing-git/#free-remote">this</a> tool</li>
+<li><a href="https://learngitbranching.js.org/">this</a> tool which can help you visualize
+  various operations on a git repository</li>
+<li><a href="https://github.com/jubobs/gitdags/">gitDAGs</a> LaTeX package might come in
+  handy to draw git graphs. There are instructions on how to install it
+  <a href="https://chrisfreeman.github.io/gitdags_install.html">here</a>. Yeah, I know,
+  LaTeX. But unfortunately, I haven't found anything that looks better than
+  this yet. Mermaid support for git graphs is experimental and looks shabby as
+  of Dec 2020. Please let me know if you find something better.</li>
+<li>you can use software like <a href="https://gitlab.gnome.org/GNOME/gitg">gitg</a> and the
+  <a href="https://marketplace.visualstudio.com/items?itemName=mhutchie.git-graph">gitgraph</a>
+  vscode extension to view pretty graphs of your repos.</li>
+</ul>
+<p>These resources might help you as well. I haven't completed studying them myself though.</p>
+<ul>
+<li><a href="https://github.com/pluralsight/git-internals-pdf/">Git Internals by Scott Chacon</a></li>
+<li><a href="https://www.freecodecamp.org/news/git-internals-objects-branches-create-repo/">A Visual Guide to Git Internals</a></li>
+<li><a href="https://www.aosabook.org/en/git.html">The chapter on Git in the AOSA book</a></li>
+<li><a href="http://www-cs-students.stanford.edu/~blynn/gitmagic/ch01.html">Git Magic</a></li>
+<li><a href="https://maryrosecook.com/blog/post/git-from-the-inside-out">Git From the Inside Out</a></li>
+<li><a href="https://www.oreilly.com/library/view/version-control-with/9781449345037/ch04.html">Chapter 4. Basic Git Concepts</a></li>
+</ul>
+<div class="footnote">
+<hr />
+<ol>
+<li id="fn:1">
+<p>If you like these videos, consider saving them off-line. In my opinion, YouTube cannot
+be relied upon for data availability.&#160;<a class="footnote-backref" href="#fnref:1" title="Jump back to footnote 1 in the text">&#8617;</a></p>
+</li>
+</ol>
+</div>
+                
+                  
+                    
+
+<hr>
+<div class="md-source-date">
+  <small>
+    
+      Last update: <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date">July 21, 2021</span>
+      
+    
+  </small>
+</div>
+                  
+                
+              
+              
+                
+
+
+              
+            </article>
+          </div>
+        </div>
+        
+      </main>
+      
+        
+<footer class="md-footer">
+  
+    <nav class="md-footer__inner md-grid" aria-label="Footer">
+      
+        
+        <a href="../../../networking/dns/how-does-dns-work/" class="md-footer__link md-footer__link--prev" aria-label="Previous: How Does DNS Work?" rel="prev">
+          <div class="md-footer__button md-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12z"/></svg>
+          </div>
+          <div class="md-footer__title">
+            <div class="md-ellipsis">
+              <span class="md-footer__direction">
+                Previous
+              </span>
+              How Does DNS Work?
+            </div>
+          </div>
+        </a>
+      
+      
+    </nav>
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-footer-copyright">
+        
+          <div class="md-footer-copyright__highlight">
+            &copy; Licensed Under <a href=https://creativecommons.org/licenses/by-sa/4.0/> CC BY-SA 4.0</a>
+          </div>
+        
+        Made with
+        <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+          Material for MkDocs
+        </a>
+        
+      </div>
+      
+  <div class="md-footer-social">
+    
+      
+      
+      <a href="https://github.com/ayushnix" target="_blank" rel="noopener" title="Ayush Agarwal on GitHub" class="md-footer-social__link">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 496 512"><path d="M165.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6zm-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3zm44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9zM244.8 8C106.1 8 0 113.3 0 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C428.2 457.8 496 362.9 496 252 496 113.3 383.5 8 244.8 8zM97.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1zm-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7zm32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1zm-11.4-14.7c-1.6 1-1.6 3.6 0 5.9 1.6 2.3 4.3 3.3 5.6 2.3 1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2z"/></svg>
+      </a>
+    
+      
+      
+      <a href="https://www.buymeacoffee.com/ayushnix" target="_blank" rel="noopener" title="Buy Me a Coffee on buymeacoffee.com" class="md-footer-social__link">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M2 21v-2h18v2H2M20 8V5h-2v3h2m0-5a2 2 0 0 1 2 2v3a2 2 0 0 1-2 2h-2v3a4 4 0 0 1-4 4H8a4 4 0 0 1-4-4V3h16m-4 2H6v8a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V5z"/></svg>
+      </a>
+    
+      
+      
+      <a href="https://ko-fi.com/O5O64SQ4C" target="_blank" rel="noopener" title="Buy Me a Coffee on ko-fi.com" class="md-footer-social__link">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M2 21v-2h18v2H2M20 8V5h-2v3h2m0-5a2 2 0 0 1 2 2v3a2 2 0 0 1-2 2h-2v3a4 4 0 0 1-4 4H8a4 4 0 0 1-4-4V3h16m-4 2H6v8a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V5z"/></svg>
+      </a>
+    
+  </div>
+
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    <script id="__config" type="application/json">{"base": "../../..", "features": ["navigation.instant", "navigation.sections", "header.autohide"], "translations": {"clipboard.copy": "Copy to clipboard", "clipboard.copied": "Copied to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.placeholder": "Search", "search.result.placeholder": "Type to start searching", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.term.missing": "Missing", "select.version.title": "Select version"}, "search": "../../../assets/javascripts/workers/search.477d984a.min.js", "version": null}</script>
+    
+    
+      <script src="../../../assets/javascripts/bundle.ddd52ceb.min.js"></script>
+      
+    
+  </body>
+</html>
