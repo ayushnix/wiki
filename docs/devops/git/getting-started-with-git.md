@@ -322,13 +322,13 @@ $ git log --oneline --decorate --graph --all
 
 In simple visual terms, all we've done is create this *directed acyclic graph*:
 
-![Initial Commits - Dark Mode](/images/initial-commits-2x-dark.webp){ .dark-mode-img }
-![Initial Commits - Light Mode](/images/initial-commits-2x-light.webp){ .light-mode-img }
+![Initial Commits - Dark Mode](/wiki/images/initial-commits-2x-dark.webp){ .dark-mode-img }
+![Initial Commits - Light Mode](/wiki/images/initial-commits-2x-light.webp){ .light-mode-img }
 
 However, let's see what our repo looks like when we represent all the git objects and references.
 
-![Git Repo - Dark Mode](/images/git-repo-2x-dark.webp){ .dark-mode-img }
-![Git Repo - Light Mode](/images/git-repo-2x-light.webp){ .light-mode-img }
+![Git Repo - Dark Mode](/wiki/images/git-repo-2x-dark.webp){ .dark-mode-img }
+![Git Repo - Light Mode](/wiki/images/git-repo-2x-light.webp){ .light-mode-img }
 
 It should be clear from this diagram that branches are just references that are pointers to commit
 objects. This pointer moves automatically throughout the graph as you commit more objects and

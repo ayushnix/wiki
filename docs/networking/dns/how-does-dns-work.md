@@ -33,8 +33,8 @@ need messing around with our TLS certs.
 I've tried to envision how DNS works, from a bird's eye view, in the following diagram. This might
 need some changes though.
 
-![How DNS Works - Dark Mode](/images/dns-2x-dark.webp){ .dark-mode-img }
-![How DNS Works - Light Mode](/images/dns-2x-light.webp){ .light-mode-img }
+![How DNS Works - Dark Mode](/wiki/images/dns-2x-dark.webp){ .dark-mode-img }
+![How DNS Works - Light Mode](/wiki/images/dns-2x-light.webp){ .light-mode-img }
 
 Here's what we need to know.
 
