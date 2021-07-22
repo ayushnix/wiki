@@ -6,8 +6,6 @@ summary: >-
 date: 2021-03-01
 ---
 
-# Doing The Unusual — Criticising Linux
-
 This article is meant to serve as the collection of my gripes and frustrations I'm either facing
 right now, or have faced in the past, when using the Linux on the desktop. I've been using Linux on
 my desktop exclusively since 2015 instead of Windows or MacOS.
@@ -15,6 +13,17 @@ my desktop exclusively since 2015 instead of Windows or MacOS.
 For people out there who're pedantic and radicalized enough to miss the point of the article, this
 isn't just about the Linux kernel itself but rather about using the Linux ecosystem on a desktop. I
 doubt you can use the Linux kernel itself on your desktop to do anything meaningful.
+
+To be clear, me writing this article doesn't mean that I'm anti-Linux (which is a pretty naive way
+of looking at things) or against using Linux on the desktop. As I said, I've been using Linux as my
+desktop since 2015 and probably will continue to do so although I haven't used MacOS yet so I guess
+I might change my mind once I use it. The primary reasons I'm still using Linux is because I've
+gotten used to its customizability and user freedom. I tried using KDE for a short amount of time
+and although it was a breath of fresh air considering how insane GNOME is, I quickly went back to
+[i3wm](https://i3wm.org/). However, this freedom and customization comes at the cost of security,
+reliability, polish, and your time.
+
+# Doing The Unusual — Criticising Linux
 
 People on Reddit and other online communities see Linux as this perfect panacea of user freedom,
 customization, and power. The shilling never stops and unsuspecting users are led to believe that
@@ -26,7 +35,7 @@ Wayland is supposed to be a replacement for Xorg but it is nowhere close to bein
 least not for me. No, I'm not a gamer or a streamer or someone with an exotic use-case. I simply
 browse the web, use neovim and vscode, and watch videos. I tried using [sway](https://swaywm.org/)
 from mid 2020 to early 2021 and at the end, I thought about throwing my laptop out the window.
-Fortunately, I had the good sense to go back to [i3](https://i3wm.org/). My laptop is still on my
+Fortunately, I had the good sense to go back to [i3wm](https://i3wm.org/). My laptop is still on my
 table since then.
 
 # Undisclosed Disclaimers Before You Start Using Linux
@@ -50,8 +59,16 @@ In essence, what they mean is
 
 > Either be grateful for the free shit you're using or fuck off. You don't get to complain.
 
-Why don't Linux distributions write something like this on their websites? It would save the users a
-lot of time wouldn't it?
+Why don't Linux distributions write something like this on their websites? Instead of making blog
+posts like [this](https://drewdevault.com/2021/06/14/Provided-as-is-without-warranty.html), why not
+write this at the start of the `README.md` of your projects? It would save the users a lot of time
+wouldn't it? A polite, and appropriate disclaimer, can be mentioned at the start of your project.
+
+> This project isn't meant for serious use. Please don't expect that you'll be able to carry on your
+> personal or professional work reliably using this software.
+
+If something like this would've been mentioned on sway's GitHub page, I probably wouldn't have
+wasted 6 months on it.
 
 > We've sacrificed our spare time to build this for you for free. If you turn around and harass us
 > based on some utterly nonsensical conspiracy theories, then you’re a fucking asshole.
