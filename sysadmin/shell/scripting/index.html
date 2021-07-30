@@ -16,7 +16,7 @@
         <link rel="canonical" href="https://ayushnix.com/wiki/sysadmin/shell/scripting/">
       
       <link rel="icon" href="../../../images/book-open-outline.svg">
-      <meta name="generator" content="mkdocs-1.2.2, mkdocs-material-7.2.0">
+      <meta name="generator" content="mkdocs-1.2.2, mkdocs-material-7.2.1">
     
     
       
@@ -24,7 +24,7 @@
       
     
     
-      <link rel="stylesheet" href="../../../assets/stylesheets/main.fe914879.min.css">
+      <link rel="stylesheet" href="../../../assets/stylesheets/main.1118c9be.min.css">
       
         
         <link rel="stylesheet" href="../../../assets/stylesheets/palette.ba0d045b.min.css">
@@ -924,7 +924,7 @@ seems to have popularized strict mode in shell scripting.</p>
 <p>We'll use our own version of the unofficial strict mode with reasons explained below.</p>
 <div class="tabbed-set" data-tabs="1:2"><input checked="checked" id="__tabbed_1_1" name="__tabbed_1" type="radio" /><label for="__tabbed_1_1"><code>/bin/sh</code></label><div class="tabbed-content">
 <div class="highlight"><pre><span></span><code><span class="nb">set</span> -Eu
-<span class="nb">trap</span> <span class="s1">&#39;echo &quot;...&quot; &gt;&amp;2&#39;</span> ERR
+<span class="nb">trap</span> <span class="s1">&#39;echo &quot;...&quot; &gt;&amp;2&#39;</span> EXIT
 
 <span class="nb">set</span> -e
 ...
@@ -1046,6 +1046,8 @@ cleaned as intended, the script exits? What if it was an expensive VM or a conta
 <p>We can, and should, use <code>trap</code> on both <code>/bin/sh</code> and <code>/bin/bash</code> to catch different exit signals and
 execute a command before the script actually comes to a stop. A simple example would be to catch a
 silent <code>ERR</code>.</p>
+<details class="warning" open="open"><summary>Warning</summary><p><code>ERR</code> doesn't work on POSIX sh</p>
+</details>
 <p>The standard format for an <code>ERR</code> trap can be as follows</p>
 <div class="highlight"><pre><span></span><code><span class="nb">trap</span> <span class="s1">&#39;echo &gt;&amp;2 &quot;$LINENO: error while executing $BASH_COMMAND&quot;&#39;</span> ERR
 </code></pre></div>
@@ -1384,7 +1386,7 @@ directory names, especially people who come from a Windows background.&#160;<a c
 <div class="md-source-date">
   <small>
     
-      Last update: <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date">July 21, 2021</span>
+      Last update: <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date">July 30, 2021</span>
       
     
   </small>
