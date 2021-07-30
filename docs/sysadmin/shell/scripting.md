@@ -62,7 +62,7 @@ We'll use our own version of the unofficial strict mode with reasons explained b
 === "`/bin/sh`"
     ```sh
     set -Eu
-    trap 'echo "..." >&2' ERR
+    trap 'echo "..." >&2' EXIT
 
     set -e
     ...
@@ -215,6 +215,9 @@ cleaned as intended, the script exits? What if it was an expensive VM or a conta
 We can, and should, use `trap` on both `/bin/sh` and `/bin/bash` to catch different exit signals and
 execute a command before the script actually comes to a stop. A simple example would be to catch a
 silent `ERR`.
+
+???+ warning
+    `ERR` doesn't work on POSIX sh
 
 The standard format for an `ERR` trap can be as follows
 
