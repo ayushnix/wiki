@@ -67,6 +67,9 @@ wouldn't it? A polite, and appropriate disclaimer, can be mentioned at the start
 > This project isn't meant for serious use. Please don't expect that you'll be able to carry on your
 > personal or professional work reliably using this software.
 
+The README.md page of [home-manager](https://github.com/nix-community/home-manager#words-of-warning)
+is a great example. I decided not to touch home-manager after reading the warning on their page.
+
 If something like this would've been mentioned on sway's GitHub page, I probably wouldn't have
 wasted 6 months on it.
 
@@ -323,7 +326,8 @@ When I asked for help on the Arch forums, [I was told to stop whining and compil
 kernel](https://bbs.archlinux.org/viewtopic.php?pid=1962561#p1962561) with patches found on gitlab
 which the developer himself called hacks.
 
-Let's see how many years it takes for this bug to be fixed.
+Let's see how many years it takes for this bug to be fixed. Judging by the comments on [this
+thread](https://news.ycombinator.com/item?id=25385860), most likely never.
 
 ??? success "Successful Resume on kernel 5.10.23"
     ```
