@@ -250,9 +250,11 @@ As mentioned before, **WE'LL USE** `set -E` to make `trap '...' ERR` work when u
 subshells. However, unlike `set -e`, `set -E` doesn't make the script exit. It simply allows `trap`
 to recognize `ERR` when it wouldn't.
 
-=== "Without `set -E`"
+=== "With `set -E`"
     ```sh
-    # the trap is never executed
+    # the trap is executed when the function is called
+    set -E
+
     trap '"error occured at $BASH_COMMAND"' ERR
 
     sample() {
@@ -264,11 +266,9 @@ to recognize `ERR` when it wouldn't.
     sample
     ```
 
-=== "With `set -E`"
+=== "Without `set -E`"
     ```sh
-    # the trap is executed when the function is called
-    set -E
-
+    # the trap is never executed
     trap '"error occured at $BASH_COMMAND"' ERR
 
     sample() {
@@ -296,21 +296,32 @@ good reference.
     can't be trusted. Then again, your scripts may not always be used on your system so there's
     that.
 
+- try not to use external programs like `sed`, `awk`, `tr`, `cut` etc unless absolutely necessary or
+  unless you can save yourself a lot of LOC by using them
+
+    One of the primary issues with writing shell scripts is that they lack robust error handling.
+    `set -e` isn't really a solution and our so-called "strict mode" is mostly duct tape. The lack
+    of robust error handling is mostly exacerbated by using external programs because shell has no
+    idea how to handle them. By using external programs, you're also introducing dependencies to
+    your shell script which may be unnecessary. There's also the penalty to speed when using
+    external programs.
+
 - we'll prefer not to use the following features because they're either not POSIX sh compatible, can
   be easily replicated using other available features, or simply not needed
 
     - `&> file` and `|& tee`
-
     - `select` — just use a combination of `while`, `read`, `case`, and `if`
       instead
-
     - `until` loop
-
     - `$'...'` ANSI C style quotes
-
     - `;&` and `;;&` terminators in `case`
-
     - `function` keyword to define functions
+    - `declare ` built in keyword, except when defining an associative array
+
+It's better to keep things as minimal and simple as possible when writing shell scripts. Although
+they can be powerful and might seem fun to write (hey, it might be for some people), if your shell
+scripts start becoming too complex[^4], you probably wanna rewrite them in a better language like
+Python.
 
 # `/bin/bash`
 
@@ -406,14 +417,26 @@ present on the system before executing a script.
 DO NOT use the `which` command for this. The reason is pretty simple. `command` is a built-in
 command and it's also POSIX compatible. However, `which` is an external command.
 
-[^1]: C'mon, who uses white spaces in file and directory names in Linux? Okay,
-I know I don't but not everyone is averse to using white spaces in file and
-directory names, especially people who come from a Windows background.
+[^1]:
+C'mon, who uses white spaces in file and directory names in Linux? Okay, I know I don't but not
+everyone is averse to using white spaces in file and directory names, especially people who come
+from a Windows background.
 
-[^2]: You can still write sh compatible scripts while using bash if you use `set
--o posix`. Or, just install dash, symlink `/bin/sh` to it, and use
-`#!/bin/sh`.
+[^2]:
+You can still write sh compatible scripts while using bash if you use `set -o posix`. Or, just
+install dash, symlink `/bin/sh` to it, and use `#!/bin/sh` although this may not work well on your
+system. I've done this on Arch Linux and things have been working fine ... so far.
 
-[^3]: [Part 1](https://catonmat.net/bash-one-liners-explained-part-one), [Part
-2](https://catonmat.net/bash-one-liners-explained-part-two), and [Part
-3](https://catonmat.net/bash-one-liners-explained-part-three).
+[^3]:
+[Part 1](https://catonmat.net/bash-one-liners-explained-part-one)
+[Part 2](https://catonmat.net/bash-one-liners-explained-part-two)
+[Part 3](https://catonmat.net/bash-one-liners-explained-part-three)
+
+[^4]:
+I guess "complex" is a subjective word in this case. In my opinion, any script you personally
+consider to be remotely serious should probably be written in another language like Python. But hey,
+there's projects like
+[password-store](https://git.zx2c4.com/password-store/tree/src/password-store.sh) and
+[neofetch](https://github.com/dylanaraps/neofetch/blob/master/neofetch) out there. One of them is a
+password manager (well, it uses `gpg` under the hood but it still wraps the whole thing using a bash
+script) and the other has 10k+ LOC.
