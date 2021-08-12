@@ -16,7 +16,7 @@
         <link rel="canonical" href="https://ayushnix.com/wiki/sysadmin/shell/scripting/">
       
       <link rel="icon" href="../../../images/book-open-outline.svg">
-      <meta name="generator" content="mkdocs-1.2.2, mkdocs-material-7.2.2">
+      <meta name="generator" content="mkdocs-1.2.2, mkdocs-material-7.2.4">
     
     
       
@@ -24,10 +24,10 @@
       
     
     
-      <link rel="stylesheet" href="../../../assets/stylesheets/main.1118c9be.min.css">
+      <link rel="stylesheet" href="../../../assets/stylesheets/main.f7f47774.min.css">
       
         
-        <link rel="stylesheet" href="../../../assets/stylesheets/palette.ba0d045b.min.css">
+        <link rel="stylesheet" href="../../../assets/stylesheets/palette.3f5d1f46.min.css">
         
       
     
@@ -1068,8 +1068,10 @@ use <code>set -E</code>.</p>
 <p>As mentioned before, <strong>WE'LL USE</strong> <code>set -E</code> to make <code>trap '...' ERR</code> work when using functions and
 subshells. However, unlike <code>set -e</code>, <code>set -E</code> doesn't make the script exit. It simply allows <code>trap</code>
 to recognize <code>ERR</code> when it wouldn't.</p>
-<div class="tabbed-set" data-tabs="2:2"><input checked="checked" id="__tabbed_2_1" name="__tabbed_2" type="radio" /><label for="__tabbed_2_1">Without <code>set -E</code></label><div class="tabbed-content">
-<div class="highlight"><pre><span></span><code><span class="c1"># the trap is never executed</span>
+<div class="tabbed-set" data-tabs="2:2"><input checked="checked" id="__tabbed_2_1" name="__tabbed_2" type="radio" /><label for="__tabbed_2_1">With <code>set -E</code></label><div class="tabbed-content">
+<div class="highlight"><pre><span></span><code><span class="c1"># the trap is executed when the function is called</span>
+<span class="nb">set</span> -E
+
 <span class="nb">trap</span> <span class="s1">&#39;&quot;error occured at $BASH_COMMAND&quot;&#39;</span> ERR
 
 sample<span class="o">()</span> <span class="o">{</span>
@@ -1081,10 +1083,8 @@ sample<span class="o">()</span> <span class="o">{</span>
 sample
 </code></pre></div>
 </div>
-<input id="__tabbed_2_2" name="__tabbed_2" type="radio" /><label for="__tabbed_2_2">With <code>set -E</code></label><div class="tabbed-content">
-<div class="highlight"><pre><span></span><code><span class="c1"># the trap is executed when the function is called</span>
-<span class="nb">set</span> -E
-
+<input id="__tabbed_2_2" name="__tabbed_2" type="radio" /><label for="__tabbed_2_2">Without <code>set -E</code></label><div class="tabbed-content">
+<div class="highlight"><pre><span></span><code><span class="c1"># the trap is never executed</span>
 <span class="nb">trap</span> <span class="s1">&#39;&quot;error occured at $BASH_COMMAND&quot;&#39;</span> ERR
 
 sample<span class="o">()</span> <span class="o">{</span>
@@ -1112,31 +1112,34 @@ can't be trusted. Then again, your scripts may not always be used on your system
 that.</p>
 </li>
 <li>
+<p>try not to use external programs like <code>sed</code>, <code>awk</code>, <code>tr</code>, <code>cut</code> etc unless absolutely necessary or
+  unless you can save yourself a lot of LOC by using them</p>
+<p>One of the primary issues with writing shell scripts is that they lack robust error handling.
+<code>set -e</code> isn't really a solution and our so-called "strict mode" is mostly duct tape. The lack
+of robust error handling is mostly exacerbated by using external programs because shell has no
+idea how to handle them. By using external programs, you're also introducing dependencies to
+your shell script which may be unnecessary. There's also the penalty to speed when using
+external programs.</p>
+</li>
+<li>
 <p>we'll prefer not to use the following features because they're either not POSIX sh compatible, can
   be easily replicated using other available features, or simply not needed</p>
 <ul>
-<li>
-<p><code>&amp;&gt; file</code> and <code>|&amp; tee</code></p>
-</li>
-<li>
-<p><code>select</code> — just use a combination of <code>while</code>, <code>read</code>, <code>case</code>, and <code>if</code>
-  instead</p>
-</li>
-<li>
-<p><code>until</code> loop</p>
-</li>
-<li>
-<p><code>$'...'</code> ANSI C style quotes</p>
-</li>
-<li>
-<p><code>;&amp;</code> and <code>;;&amp;</code> terminators in <code>case</code></p>
-</li>
-<li>
-<p><code>function</code> keyword to define functions</p>
-</li>
+<li><code>&amp;&gt; file</code> and <code>|&amp; tee</code></li>
+<li><code>select</code> — just use a combination of <code>while</code>, <code>read</code>, <code>case</code>, and <code>if</code>
+  instead</li>
+<li><code>until</code> loop</li>
+<li><code>$'...'</code> ANSI C style quotes</li>
+<li><code>;&amp;</code> and <code>;;&amp;</code> terminators in <code>case</code></li>
+<li><code>function</code> keyword to define functions</li>
+<li><code>declare</code> built in keyword, except when defining an associative array</li>
 </ul>
 </li>
 </ul>
+<p>It's better to keep things as minimal and simple as possible when writing shell scripts. Although
+they can be powerful and might seem fun to write (hey, it might be for some people), if your shell
+scripts start becoming too complex<sup id="fnref:4"><a class="footnote-ref" href="#fn:4">4</a></sup>, you probably wanna rewrite them in a better language like
+Python.</p>
 <h2 id="binbash"><code>/bin/bash</code><a class="headerlink" href="#binbash" title="Permanent link">#</a></h2>
 <h3 id="redirections">Redirections<a class="headerlink" href="#redirections" title="Permanent link">#</a></h3>
 <p>The following table depicts the effect of redirection and piping to a file.</p>
@@ -1362,19 +1365,28 @@ command and it's also POSIX compatible. However, <code>which</code> is an extern
 <hr />
 <ol>
 <li id="fn:1">
-<p>C'mon, who uses white spaces in file and directory names in Linux? Okay,
-I know I don't but not everyone is averse to using white spaces in file and
-directory names, especially people who come from a Windows background.&#160;<a class="footnote-backref" href="#fnref:1" title="Jump back to footnote 1 in the text">&#8617;</a></p>
+<p>C'mon, who uses white spaces in file and directory names in Linux? Okay, I know I don't but not
+everyone is averse to using white spaces in file and directory names, especially people who come
+from a Windows background.&#160;<a class="footnote-backref" href="#fnref:1" title="Jump back to footnote 1 in the text">&#8617;</a></p>
 </li>
 <li id="fn:2">
-<p>You can still write sh compatible scripts while using bash if you use <code>set
--o posix</code>. Or, just install dash, symlink <code>/bin/sh</code> to it, and use
-<code>#!/bin/sh</code>.&#160;<a class="footnote-backref" href="#fnref:2" title="Jump back to footnote 2 in the text">&#8617;</a></p>
+<p>You can still write sh compatible scripts while using bash if you use <code>set -o posix</code>. Or, just
+install dash, symlink <code>/bin/sh</code> to it, and use <code>#!/bin/sh</code> although this may not work well on your
+system. I've done this on Arch Linux and things have been working fine ... so far.&#160;<a class="footnote-backref" href="#fnref:2" title="Jump back to footnote 2 in the text">&#8617;</a></p>
 </li>
 <li id="fn:3">
-<p><a href="https://catonmat.net/bash-one-liners-explained-part-one">Part 1</a>, <a href="https://catonmat.net/bash-one-liners-explained-part-two">Part
-2</a>, and <a href="https://catonmat.net/bash-one-liners-explained-part-three">Part
-3</a>.&#160;<a class="footnote-backref" href="#fnref:3" title="Jump back to footnote 3 in the text">&#8617;</a></p>
+<p><a href="https://catonmat.net/bash-one-liners-explained-part-one">Part 1</a>
+<a href="https://catonmat.net/bash-one-liners-explained-part-two">Part 2</a>
+<a href="https://catonmat.net/bash-one-liners-explained-part-three">Part 3</a>&#160;<a class="footnote-backref" href="#fnref:3" title="Jump back to footnote 3 in the text">&#8617;</a></p>
+</li>
+<li id="fn:4">
+<p>I guess "complex" is a subjective word in this case. In my opinion, any script you personally
+consider to be remotely serious should probably be written in another language like Python. But hey,
+there's projects like
+<a href="https://git.zx2c4.com/password-store/tree/src/password-store.sh">password-store</a> and
+<a href="https://github.com/dylanaraps/neofetch/blob/master/neofetch">neofetch</a> out there. One of them is a
+password manager (well, it uses <code>gpg</code> under the hood but it still wraps the whole thing using a bash
+script) and the other has 10k+ LOC.&#160;<a class="footnote-backref" href="#fnref:4" title="Jump back to footnote 4 in the text">&#8617;</a></p>
 </li>
 </ol>
 </div>
@@ -1386,7 +1398,7 @@ directory names, especially people who come from a Windows background.&#160;<a c
 <div class="md-source-date">
   <small>
     
-      Last update: <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date">July 30, 2021</span>
+      Last update: <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date">August 12, 2021</span>
       
     
   </small>
@@ -1491,7 +1503,7 @@ directory names, especially people who come from a Windows background.&#160;<a c
     <script id="__config" type="application/json">{"base": "../../..", "features": ["navigation.instant", "navigation.sections", "header.autohide"], "translations": {"clipboard.copy": "Copy to clipboard", "clipboard.copied": "Copied to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.placeholder": "Search", "search.result.placeholder": "Type to start searching", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.term.missing": "Missing", "select.version.title": "Select version"}, "search": "../../../assets/javascripts/workers/search.709b4209.min.js", "version": null}</script>
     
     
-      <script src="../../../assets/javascripts/bundle.2b46852b.min.js"></script>
+      <script src="../../../assets/javascripts/bundle.febc23d1.min.js"></script>
       
     
   </body>
