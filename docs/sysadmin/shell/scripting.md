@@ -61,37 +61,46 @@ We'll use our own version of the unofficial strict mode with reasons explained b
 
 === "`/bin/sh`"
     ```sh
-    set -Eu
-    trap 'echo "..." >&2' EXIT
+    set -u
 
-    set -e
-    ...
-    ...
-    set +e
+    trap '...' EXIT
     ```
 
 === "`/bin/bash`"
     ```sh
-    set -Euo pipefail
-    trap 'echo "..." >&2' ERR
+    set -uo pipefail
 
-    set -e
-    ...
-    ...
-    set +e
+    trap '...' EXIT
     ```
 
-`set -e` will be used sparingly in cases where unexpected input/output can't be tolerated and in
-cases where we'd want the script to exit in case of errors.
+`set -e` will be used sparingly in isolated cases where its behavior can be predicted. We probably
+won't use `trap '...' ERR` in our scripts at all.
+
+Why are we not using `set -e` globally? Because, in my opinion, it's better to compensate with
+shellcheck and our own error handling code in most cases rather than relying on the false sense of
+security offered by `set -e`. `trap '...' ERR` makes things even worse. While you can use `set -e`
+and `set +e` to enable it for specific blocks of code, `trap '...' ERR` globally unless you reset
+the trap.
+
+This section should probably be enough to convince someone that error handling in shell scripting is
+basically broken and shouldn't always be relied upon. If you are writing serious scripts or programs
+that need robust error handling, don't use shell scripts.
 
 ### errexit
 
 `set -e` is supposed to make a script exit immediately whenever it finds a non-zero exit code.
-Exceptions include commands executed as part of `while`, `if`, `elif`, and commands in `&&`, `||`,
-and `|` except the last command.
+However, this doesn't always work as expected. This is from `man bash`,
 
-However, this doesn't always work as expected. `set -e` may cause our script to exit when we may not
-want it to.
+> The shell does not exit if the command that fails is part of the command list immediately
+> following a `while` or `until` keyword, part of the test following the if or elif reserved words,
+> part of any command executed in a `&&` or `||` list except the command following the final `&&` or
+> `||`, any command in a pipeline but the last, or if the command's return value is being inverted
+> with `!`.  If a compound command other than a subshell returns a non-zero status because a command
+> failed while `-e` was being ignored, the shell does not exit.
+
+Basically, if you're using `set -e` or `trap ERR`, you've gotta keep these caveats in mind.
+
+If that wasn't enough, `set -e` may cause our script to exit when we may not want it to.
 
 ```sh
 set -e
@@ -118,7 +127,8 @@ echo "$i"
 In the first case, if `grep` fails to find any match, the exit code becomes non-zero. However,
 that's fine, because we intend to use it as a test case. But using `set -e` aborts execution. In the
 second case, the shell exits when it finds that the value of the arithmetic expression is 0. Of
-course, the better method here is to write `((i = i + 1))` instead.
+course, writing `((i = i + 1))` would've been better but we shouldn't have to deal with unexpected
+events like this.
 
 There are [plenty](http://typingducks.com/blog/bash/) of other
 [examples](https://mywiki.wooledge.org/BashFAQ/105) of unintended behavior when using `set -e`. As a
@@ -207,78 +217,78 @@ that file over to the intended file.
 
 ### trap
 
-Even after using [shellcheck](https://github.com/koalaman/shellcheck) and writing scripts carefully,
-you never know when a script might exit abruptly due to unforseen reasons. The exit may not be
-informative either. What if you created a bunch of directories and files but before those are
-cleaned as intended, the script exits? What if it was an expensive VM or a container?
+Using `trap` can be helpful if you want to implement cleanup jobs before a script exits. A simple
+use case can be deleting temporary files and directories created as part of the script.
 
-We can, and should, use `trap` on both `/bin/sh` and `/bin/bash` to catch different exit signals and
-execute a command before the script actually comes to a stop. A simple example would be to catch a
-silent `ERR`.
+However, we should probably avoid using `trap '...' ERR` because it is subject to the same caveats
+as `set -e` and unlike `set -e`, we can't enable it selectively. Once enabled, it works globally
+throughout your script and may end up catching errors that you don't want and not catching errors
+that you do want.
 
 ???+ warning
     `ERR` doesn't work on POSIX sh
 
-The standard format for an `ERR` trap can be as follows
+Here's a good example to show how `trap` works with `ERR`, `EXIT`, `exit 1`, and `return 1`.
 
 ```sh
-trap 'echo >&2 "$LINENO: error while executing $BASH_COMMAND"' ERR
-```
+set -Euo pipefail
 
-The commands that should be executed with a trap can also be mentioned in a function
-
-```sh
-# $LINENO doesn't give expected results when used inside a function
-cleanexit() {
-  echo >&2 "$0: error while executing $BASH_COMMAND"
+# we don't need to check the status code
+clean_return() {
+    printf '%s\n' 'deleting the namespace -- return' >&2
 }
-trap cleanexit ERR
+
+# we need to check the status code to determine if action should be taken
+# otherwise, even if script exits normally, this function will execute
+# and maybe undo everything unintentionally
+clean_exit() {
+  if [[ "$?" -ne 0 ]]; then
+    printf '%s\n' 'deleting the namespace -- exit' >&2
+  fi
+}
+
+trap clean_return ERR
+trap clean_exit EXIT
+
+# triggers the ERR trap
+test_err() {
+  printf '%s\n' 'begin return'
+  if true; then
+    return 1                  # return 0 does NOT trigger the ERR trap
+  fi
+  printf '%s\n' 'end return'
+}
+
+# triggers the EXIT trap
+test_exit() {
+  printf '%s\n' 'begin exit'
+  if true; then
+    exit 1                    # both exit 0 and exit 1 trigger the EXIT trap
+  fi
+  printf '%s\n' 'end exit'
+}
+
+test_err
+test_exit
 ```
 
-The `ERR` signal behaves much like `set -e` except that it doesn't stop the script execution. For
-that, you can use `exit` in the commands passed to the trap. Of course, you can trap other signals
-like `INT`, `TERM`, and `EXIT` and execute the tasks that you want.
+As we've said before, although `trap clean_return ERR` catches `return 1`, it will also catch
+anything `set -e` was meant to act upon. As a result, it might be wiser to not use `set -E` and
+`trap '...' ERR` at all and call the cleanup function manually instead whenever we use `return 1`.
+
+We can also reset traps to their default behavior inside the script by writing `trap - NAMEOFSIG`.
 
 [This](http://redsymbol.net/articles/bash-exit-traps/) blog post has more details about `trap`.
 
-In order to ensure that the trap works as expected when using functions and subshells, we'll also
-use `set -E`.
-
 ### errtrace
 
-As mentioned before, **WE'LL USE** `set -E` to make `trap '...' ERR` work when using functions and
-subshells. However, unlike `set -e`, `set -E` doesn't make the script exit. It simply allows `trap`
-to recognize `ERR` when it wouldn't.
+The usage of `set -E` is only relevant when pairing it with `trap '...' ERR`. From `man bash`,
 
-=== "With `set -E`"
-    ```sh
-    # the trap is executed when the function is called
-    set -E
+> If set, any trap on `ERR` is inherited by shell functions, command substitutions, and commands
+> executed in a subshell environment.  The `ERR` trap is normally not inherited in such cases.
 
-    trap '"error occured at $BASH_COMMAND"' ERR
-
-    sample() {
-      printf '%s\n' 'first line followed by false'
-      false
-      printf '%s\n' 'second line after false'
-    }
-
-    sample
-    ```
-
-=== "Without `set -E`"
-    ```sh
-    # the trap is never executed
-    trap '"error occured at $BASH_COMMAND"' ERR
-
-    sample() {
-      printf '%s\n' 'first line followed by false'
-      false
-      printf '%s\n' 'second line after false'
-    }
-
-    sample
-    ```
+???+ warning
+    `set -E` doesn't work on POSIX sh
 
 ## Style Guide
 
