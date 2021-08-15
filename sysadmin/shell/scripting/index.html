@@ -923,34 +923,41 @@ it. I'm using <code>-i 2 -ci -sr -bn</code> options with shfmt.  You'll need a p
 seems to have popularized strict mode in shell scripting.</p>
 <p>We'll use our own version of the unofficial strict mode with reasons explained below.</p>
 <div class="tabbed-set" data-tabs="1:2"><input checked="checked" id="__tabbed_1_1" name="__tabbed_1" type="radio" /><label for="__tabbed_1_1"><code>/bin/sh</code></label><div class="tabbed-content">
-<div class="highlight"><pre><span></span><code><span class="nb">set</span> -Eu
-<span class="nb">trap</span> <span class="s1">&#39;echo &quot;...&quot; &gt;&amp;2&#39;</span> EXIT
+<div class="highlight"><pre><span></span><code><span class="nb">set</span> -u
 
-<span class="nb">set</span> -e
-...
-...
-<span class="nb">set</span> +e
+<span class="nb">trap</span> <span class="s1">&#39;...&#39;</span> EXIT
 </code></pre></div>
 </div>
 <input id="__tabbed_1_2" name="__tabbed_1" type="radio" /><label for="__tabbed_1_2"><code>/bin/bash</code></label><div class="tabbed-content">
-<div class="highlight"><pre><span></span><code><span class="nb">set</span> -Euo pipefail
-<span class="nb">trap</span> <span class="s1">&#39;echo &quot;...&quot; &gt;&amp;2&#39;</span> ERR
+<div class="highlight"><pre><span></span><code><span class="nb">set</span> -uo pipefail
 
-<span class="nb">set</span> -e
-...
-...
-<span class="nb">set</span> +e
+<span class="nb">trap</span> <span class="s1">&#39;...&#39;</span> EXIT
 </code></pre></div>
 </div>
 </div>
-<p><code>set -e</code> will be used sparingly in cases where unexpected input/output can't be tolerated and in
-cases where we'd want the script to exit in case of errors.</p>
+<p><code>set -e</code> will be used sparingly in isolated cases where its behavior can be predicted. We probably
+won't use <code>trap '...' ERR</code> in our scripts at all.</p>
+<p>Why are we not using <code>set -e</code> globally? Because, in my opinion, it's better to compensate with
+shellcheck and our own error handling code in most cases rather than relying on the false sense of
+security offered by <code>set -e</code>. <code>trap '...' ERR</code> makes things even worse. While you can use <code>set -e</code>
+and <code>set +e</code> to enable it for specific blocks of code, <code>trap '...' ERR</code> globally unless you reset
+the trap.</p>
+<p>This section should probably be enough to convince someone that error handling in shell scripting is
+basically broken and shouldn't always be relied upon. If you are writing serious scripts or programs
+that need robust error handling, don't use shell scripts.</p>
 <h4 id="errexit">errexit<a class="headerlink" href="#errexit" title="Permanent link">#</a></h4>
 <p><code>set -e</code> is supposed to make a script exit immediately whenever it finds a non-zero exit code.
-Exceptions include commands executed as part of <code>while</code>, <code>if</code>, <code>elif</code>, and commands in <code>&amp;&amp;</code>, <code>||</code>,
-and <code>|</code> except the last command.</p>
-<p>However, this doesn't always work as expected. <code>set -e</code> may cause our script to exit when we may not
-want it to.</p>
+However, this doesn't always work as expected. This is from <code>man bash</code>,</p>
+<blockquote>
+<p>The shell does not exit if the command that fails is part of the command list immediately
+following a <code>while</code> or <code>until</code> keyword, part of the test following the if or elif reserved words,
+part of any command executed in a <code>&amp;&amp;</code> or <code>||</code> list except the command following the final <code>&amp;&amp;</code> or
+<code>||</code>, any command in a pipeline but the last, or if the command's return value is being inverted
+with <code>!</code>.  If a compound command other than a subshell returns a non-zero status because a command
+failed while <code>-e</code> was being ignored, the shell does not exit.</p>
+</blockquote>
+<p>Basically, if you're using <code>set -e</code> or <code>trap ERR</code>, you've gotta keep these caveats in mind.</p>
+<p>If that wasn't enough, <code>set -e</code> may cause our script to exit when we may not want it to.</p>
 <div class="highlight"><pre><span></span><code><span class="nb">set</span> -e
 
 <span class="nv">count</span><span class="o">=</span><span class="k">$(</span>grep -c some-string /usr/bin/pass<span class="k">)</span> <span class="c1"># script execution aborts here</span>
@@ -971,7 +978,8 @@ want it to.</p>
 <p>In the first case, if <code>grep</code> fails to find any match, the exit code becomes non-zero. However,
 that's fine, because we intend to use it as a test case. But using <code>set -e</code> aborts execution. In the
 second case, the shell exits when it finds that the value of the arithmetic expression is 0. Of
-course, the better method here is to write <code>((i = i + 1))</code> instead.</p>
+course, writing <code>((i = i + 1))</code> would've been better but we shouldn't have to deal with unexpected
+events like this.</p>
 <p>There are <a href="http://typingducks.com/blog/bash/">plenty</a> of other
 <a href="https://mywiki.wooledge.org/BashFAQ/105">examples</a> of unintended behavior when using <code>set -e</code>. As a
 result, <strong>we WON'T be using</strong> <code>set -e</code> in our scripts, at least not globally.</p>
@@ -1039,64 +1047,68 @@ on the person writing the code. When using <code>set -C</code>, if you really ne
 file, either use <code>&gt;|</code> or, better yet, redirect the command in question to a temporary file and copy
 that file over to the intended file.</p>
 <h4 id="trap">trap<a class="headerlink" href="#trap" title="Permanent link">#</a></h4>
-<p>Even after using <a href="https://github.com/koalaman/shellcheck">shellcheck</a> and writing scripts carefully,
-you never know when a script might exit abruptly due to unforseen reasons. The exit may not be
-informative either. What if you created a bunch of directories and files but before those are
-cleaned as intended, the script exits? What if it was an expensive VM or a container?</p>
-<p>We can, and should, use <code>trap</code> on both <code>/bin/sh</code> and <code>/bin/bash</code> to catch different exit signals and
-execute a command before the script actually comes to a stop. A simple example would be to catch a
-silent <code>ERR</code>.</p>
+<p>Using <code>trap</code> can be helpful if you want to implement cleanup jobs before a script exits. A simple
+use case can be deleting temporary files and directories created as part of the script.</p>
+<p>However, we should probably avoid using <code>trap '...' ERR</code> because it is subject to the same caveats
+as <code>set -e</code> and unlike <code>set -e</code>, we can't enable it selectively. Once enabled, it works globally
+throughout your script and may end up catching errors that you don't want and not catching errors
+that you do want.</p>
 <details class="warning" open="open"><summary>Warning</summary><p><code>ERR</code> doesn't work on POSIX sh</p>
 </details>
-<p>The standard format for an <code>ERR</code> trap can be as follows</p>
-<div class="highlight"><pre><span></span><code><span class="nb">trap</span> <span class="s1">&#39;echo &gt;&amp;2 &quot;$LINENO: error while executing $BASH_COMMAND&quot;&#39;</span> ERR
-</code></pre></div>
-<p>The commands that should be executed with a trap can also be mentioned in a function</p>
-<div class="highlight"><pre><span></span><code><span class="c1"># $LINENO doesn&#39;t give expected results when used inside a function</span>
-cleanexit<span class="o">()</span> <span class="o">{</span>
-  <span class="nb">echo</span> &gt;<span class="p">&amp;</span><span class="m">2</span> <span class="s2">&quot;</span><span class="nv">$0</span><span class="s2">: error while executing </span><span class="nv">$BASH_COMMAND</span><span class="s2">&quot;</span>
+<p>Here's a good example to show how <code>trap</code> works with <code>ERR</code>, <code>EXIT</code>, <code>exit 1</code>, and <code>return 1</code>.</p>
+<div class="highlight"><pre><span></span><code><span class="nb">set</span> -Euo pipefail
+
+<span class="c1"># we don&#39;t need to check the status code</span>
+clean_return<span class="o">()</span> <span class="o">{</span>
+    <span class="nb">printf</span> <span class="s1">&#39;%s\n&#39;</span> <span class="s1">&#39;deleting the namespace -- return&#39;</span> &gt;<span class="p">&amp;</span><span class="m">2</span>
 <span class="o">}</span>
-<span class="nb">trap</span> cleanexit ERR
+
+<span class="c1"># we need to check the status code to determine if action should be taken</span>
+<span class="c1"># otherwise, even if script exits normally, this function will execute</span>
+<span class="c1"># and maybe undo everything unintentionally</span>
+clean_exit<span class="o">()</span> <span class="o">{</span>
+  <span class="k">if</span> <span class="o">[[</span> <span class="s2">&quot;</span><span class="nv">$?</span><span class="s2">&quot;</span> -ne <span class="m">0</span> <span class="o">]]</span><span class="p">;</span> <span class="k">then</span>
+    <span class="nb">printf</span> <span class="s1">&#39;%s\n&#39;</span> <span class="s1">&#39;deleting the namespace -- exit&#39;</span> &gt;<span class="p">&amp;</span><span class="m">2</span>
+  <span class="k">fi</span>
+<span class="o">}</span>
+
+<span class="nb">trap</span> clean_return ERR
+<span class="nb">trap</span> clean_exit EXIT
+
+<span class="c1"># triggers the ERR trap</span>
+test_err<span class="o">()</span> <span class="o">{</span>
+  <span class="nb">printf</span> <span class="s1">&#39;%s\n&#39;</span> <span class="s1">&#39;begin return&#39;</span>
+  <span class="k">if</span> true<span class="p">;</span> <span class="k">then</span>
+    <span class="k">return</span> <span class="m">1</span>                  <span class="c1"># return 0 does NOT trigger the ERR trap</span>
+  <span class="k">fi</span>
+  <span class="nb">printf</span> <span class="s1">&#39;%s\n&#39;</span> <span class="s1">&#39;end return&#39;</span>
+<span class="o">}</span>
+
+<span class="c1"># triggers the EXIT trap</span>
+test_exit<span class="o">()</span> <span class="o">{</span>
+  <span class="nb">printf</span> <span class="s1">&#39;%s\n&#39;</span> <span class="s1">&#39;begin exit&#39;</span>
+  <span class="k">if</span> true<span class="p">;</span> <span class="k">then</span>
+    <span class="nb">exit</span> <span class="m">1</span>                    <span class="c1"># both exit 0 and exit 1 trigger the EXIT trap</span>
+  <span class="k">fi</span>
+  <span class="nb">printf</span> <span class="s1">&#39;%s\n&#39;</span> <span class="s1">&#39;end exit&#39;</span>
+<span class="o">}</span>
+
+test_err
+test_exit
 </code></pre></div>
-<p>The <code>ERR</code> signal behaves much like <code>set -e</code> except that it doesn't stop the script execution. For
-that, you can use <code>exit</code> in the commands passed to the trap. Of course, you can trap other signals
-like <code>INT</code>, <code>TERM</code>, and <code>EXIT</code> and execute the tasks that you want.</p>
+<p>As we've said before, although <code>trap clean_return ERR</code> catches <code>return 1</code>, it will also catch
+anything <code>set -e</code> was meant to act upon. As a result, it might be wiser to not use <code>set -E</code> and
+<code>trap '...' ERR</code> at all and call the cleanup function manually instead whenever we use <code>return 1</code>.</p>
+<p>We can also reset traps to their default behavior inside the script by writing <code>trap - NAMEOFSIG</code>.</p>
 <p><a href="http://redsymbol.net/articles/bash-exit-traps/">This</a> blog post has more details about <code>trap</code>.</p>
-<p>In order to ensure that the trap works as expected when using functions and subshells, we'll also
-use <code>set -E</code>.</p>
 <h4 id="errtrace">errtrace<a class="headerlink" href="#errtrace" title="Permanent link">#</a></h4>
-<p>As mentioned before, <strong>WE'LL USE</strong> <code>set -E</code> to make <code>trap '...' ERR</code> work when using functions and
-subshells. However, unlike <code>set -e</code>, <code>set -E</code> doesn't make the script exit. It simply allows <code>trap</code>
-to recognize <code>ERR</code> when it wouldn't.</p>
-<div class="tabbed-set" data-tabs="2:2"><input checked="checked" id="__tabbed_2_1" name="__tabbed_2" type="radio" /><label for="__tabbed_2_1">With <code>set -E</code></label><div class="tabbed-content">
-<div class="highlight"><pre><span></span><code><span class="c1"># the trap is executed when the function is called</span>
-<span class="nb">set</span> -E
-
-<span class="nb">trap</span> <span class="s1">&#39;&quot;error occured at $BASH_COMMAND&quot;&#39;</span> ERR
-
-sample<span class="o">()</span> <span class="o">{</span>
-  <span class="nb">printf</span> <span class="s1">&#39;%s\n&#39;</span> <span class="s1">&#39;first line followed by false&#39;</span>
-  <span class="nb">false</span>
-  <span class="nb">printf</span> <span class="s1">&#39;%s\n&#39;</span> <span class="s1">&#39;second line after false&#39;</span>
-<span class="o">}</span>
-
-sample
-</code></pre></div>
-</div>
-<input id="__tabbed_2_2" name="__tabbed_2" type="radio" /><label for="__tabbed_2_2">Without <code>set -E</code></label><div class="tabbed-content">
-<div class="highlight"><pre><span></span><code><span class="c1"># the trap is never executed</span>
-<span class="nb">trap</span> <span class="s1">&#39;&quot;error occured at $BASH_COMMAND&quot;&#39;</span> ERR
-
-sample<span class="o">()</span> <span class="o">{</span>
-  <span class="nb">printf</span> <span class="s1">&#39;%s\n&#39;</span> <span class="s1">&#39;first line followed by false&#39;</span>
-  <span class="nb">false</span>
-  <span class="nb">printf</span> <span class="s1">&#39;%s\n&#39;</span> <span class="s1">&#39;second line after false&#39;</span>
-<span class="o">}</span>
-
-sample
-</code></pre></div>
-</div>
-</div>
+<p>The usage of <code>set -E</code> is only relevant when pairing it with <code>trap '...' ERR</code>. From <code>man bash</code>,</p>
+<blockquote>
+<p>If set, any trap on <code>ERR</code> is inherited by shell functions, command substitutions, and commands
+executed in a subshell environment.  The <code>ERR</code> trap is normally not inherited in such cases.</p>
+</blockquote>
+<details class="warning" open="open"><summary>Warning</summary><p><code>set -E</code> doesn't work on POSIX sh</p>
+</details>
 <h3 id="style-guide">Style Guide<a class="headerlink" href="#style-guide" title="Permanent link">#</a></h3>
 <p><a href="https://google.github.io/styleguide/shellguide.html">Google's Shell Style Guide</a> should serve as a
 good reference.</p>
@@ -1341,14 +1353,14 @@ evaluation of the expression inside.</p>
 <p>If you're using shell scripts, you're most likely using commands that aren't built-in commands of
 the shell. Therefore, it makes sense to check whether the commands that you'll use are actually
 present on the system before executing a script.</p>
-<div class="tabbed-set" data-tabs="3:2"><input checked="checked" id="__tabbed_3_1" name="__tabbed_3" type="radio" /><label for="__tabbed_3_1">Single Dependency</label><div class="tabbed-content">
+<div class="tabbed-set" data-tabs="2:2"><input checked="checked" id="__tabbed_2_1" name="__tabbed_2" type="radio" /><label for="__tabbed_2_1">Single Dependency</label><div class="tabbed-content">
 <div class="highlight"><pre><span></span><code><span class="k">if</span> ! <span class="nb">command</span> -v fzf &gt; /dev/null <span class="m">2</span>&gt;<span class="p">&amp;</span><span class="m">1</span><span class="p">;</span> <span class="k">then</span>
   <span class="nb">printf</span> <span class="s1">&#39;%s\n&#39;</span> <span class="s2">&quot;the dependency package fzf was not found!&quot;</span> &gt;<span class="p">&amp;</span><span class="m">2</span>
   <span class="nb">exit</span> <span class="m">1</span>
 <span class="k">fi</span>
 </code></pre></div>
 </div>
-<input id="__tabbed_3_2" name="__tabbed_3" type="radio" /><label for="__tabbed_3_2">Multiple Dependencies</label><div class="tabbed-content">
+<input id="__tabbed_2_2" name="__tabbed_2" type="radio" /><label for="__tabbed_2_2">Multiple Dependencies</label><div class="tabbed-content">
 <div class="highlight"><pre><span></span><code><span class="nv">dependencies</span><span class="o">=(</span><span class="s2">&quot;fzf&quot;</span> <span class="s2">&quot;rg&quot;</span> <span class="s2">&quot;bat&quot;</span> <span class="s2">&quot;lsls&quot;</span><span class="o">)</span>
 <span class="k">for</span> d <span class="k">in</span> <span class="s2">&quot;</span><span class="si">${</span><span class="nv">dependencies</span><span class="p">[@]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">;</span> <span class="k">do</span>
   <span class="k">if</span> ! <span class="nb">command</span> -v <span class="s2">&quot;</span><span class="nv">$d</span><span class="s2">&quot;</span> &gt; /dev/null <span class="m">2</span>&gt;<span class="p">&amp;</span><span class="m">1</span><span class="p">;</span> <span class="k">then</span>
@@ -1398,7 +1410,7 @@ script) and the other has 10k+ LOC.&#160;<a class="footnote-backref" href="#fnre
 <div class="md-source-date">
   <small>
     
-      Last update: <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date">August 12, 2021</span>
+      Last update: <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date">August 15, 2021</span>
       
     
   </small>
