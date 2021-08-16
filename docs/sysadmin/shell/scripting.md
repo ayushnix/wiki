@@ -29,12 +29,11 @@ using shell scripts.
 
     [Here's](http://typingducks.com/blog/bash/) a blog post about issues when using shell scripts.
 
-However, if you know what you're doing, shell scripting using POSIX sh or bash[^2] can be an
-incredibly powerful tool in your repertoire. You may or may not have access to Python in your
-Unix-like platform or in your container but you will always have a shell.
+However, if you know what you're doing, shell scripting using POSIX sh or bash[^2] can be a powerful
+tool in your repertoire. You may or may not have access to Python in your Unix-like platform or in
+your container but you will always have a shell.
 
-We'll talk about POSIX `sh` first and then we'll move on to features specific to `bash`. In case
-your `/bin/sh` is symlinked to `bash`, install
+In case your `/bin/sh` is symlinked to `/bin/bash`, install
 [dash](https://git.kernel.org/pub/scm/utils/dash/dash.git). There's also
 [mksh](http://www.mirbsd.org/mksh.htm) which seems to be POSIX compliant, a better interactive shell
 than dash, and is also used on Android.
@@ -396,6 +395,39 @@ A list of common tests you can do inside `[[ ... ]]` are
 | `int1 -eq int2`        | TRUE, if both integers are identical; `-ne` for the antonym        |
 | `int1 -lt int2`        | TRUE, if int1 is less than int2; `-gt` for the antonym             |
 | `int1 -le int2`        | TRUE, if int1 is less than or equal to int2; `-ge` for the antonym |
+
+## Variable Scope
+
+This should give you a good idea of how variables and their scopes work in shell scripting.
+
+```sh linenums="1"
+#!/bin/bash
+
+set -uo pipefail
+
+readonly GLOBALVAR="this is a truly global var"
+
+func_ichi() {
+  local TORSRV="this is a local variable"
+  readonly WGSRV="global variable inside a function"
+  return 0
+}
+
+func_ni() {
+  # get the WGSRV variable in scope by calling the function
+  func_ichi
+
+  # we've assigned default values to these variables by using `${VAR-}`
+  # otherwise set -u will make the script exit
+  printf '%s\n' "output of local variable is - \"${TORSRV-}\""
+  printf '%s\n' "output of global variable inside func_one is - \"${WGSRV-}\""
+  printf '%s\n' "output of truly global variable is - \"${GLOBALVAR-}\""
+}
+
+func_ni
+```
+
+Try commenting out line number 15 and see what happens to get the full picture.
 
 # Useful Patterns
 
