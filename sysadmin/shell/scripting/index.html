@@ -445,6 +445,13 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#variable-scope" class="md-nav__link">
+    Variable Scope
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -837,6 +844,13 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#variable-scope" class="md-nav__link">
+    Variable Scope
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -901,11 +915,10 @@ out</a> the flaws in the operation<sup id="fnref:1"><a class="footnote-ref" href
 <p><a href="http://typingducks.com/blog/bash/">Here's</a> a blog post about issues when using shell scripts.</p>
 </li>
 </ul>
-<p>However, if you know what you're doing, shell scripting using POSIX sh or bash<sup id="fnref:2"><a class="footnote-ref" href="#fn:2">2</a></sup> can be an
-incredibly powerful tool in your repertoire. You may or may not have access to Python in your
-Unix-like platform or in your container but you will always have a shell.</p>
-<p>We'll talk about POSIX <code>sh</code> first and then we'll move on to features specific to <code>bash</code>. In case
-your <code>/bin/sh</code> is symlinked to <code>bash</code>, install
+<p>However, if you know what you're doing, shell scripting using POSIX sh or bash<sup id="fnref:2"><a class="footnote-ref" href="#fn:2">2</a></sup> can be a powerful
+tool in your repertoire. You may or may not have access to Python in your Unix-like platform or in
+your container but you will always have a shell.</p>
+<p>In case your <code>/bin/sh</code> is symlinked to <code>/bin/bash</code>, install
 <a href="https://git.kernel.org/pub/scm/utils/dash/dash.git">dash</a>. There's also
 <a href="http://www.mirbsd.org/mksh.htm">mksh</a> which seems to be POSIX compliant, a better interactive shell
 than dash, and is also used on Android.</p>
@@ -1348,6 +1361,58 @@ evaluation of the expression inside.</p>
 </tr>
 </tbody>
 </table>
+<h3 id="variable-scope">Variable Scope<a class="headerlink" href="#variable-scope" title="Permanent link">#</a></h3>
+<p>This should give you a good idea of how variables and their scopes work in shell scripting.</p>
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 1</span>
+<span class="normal"> 2</span>
+<span class="normal"> 3</span>
+<span class="normal"> 4</span>
+<span class="normal"> 5</span>
+<span class="normal"> 6</span>
+<span class="normal"> 7</span>
+<span class="normal"> 8</span>
+<span class="normal"> 9</span>
+<span class="normal">10</span>
+<span class="normal">11</span>
+<span class="normal">12</span>
+<span class="normal">13</span>
+<span class="normal">14</span>
+<span class="normal">15</span>
+<span class="normal">16</span>
+<span class="normal">17</span>
+<span class="normal">18</span>
+<span class="normal">19</span>
+<span class="normal">20</span>
+<span class="normal">21</span>
+<span class="normal">22</span>
+<span class="normal">23</span>
+<span class="normal">24</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><code><span class="ch">#!/bin/bash</span>
+
+<span class="nb">set</span> -uo pipefail
+
+<span class="nb">readonly</span> <span class="nv">GLOBALVAR</span><span class="o">=</span><span class="s2">&quot;this is a truly global var&quot;</span>
+
+func_ichi<span class="o">()</span> <span class="o">{</span>
+  <span class="nb">local</span> <span class="nv">TORSRV</span><span class="o">=</span><span class="s2">&quot;this is a local variable&quot;</span>
+  <span class="nb">readonly</span> <span class="nv">WGSRV</span><span class="o">=</span><span class="s2">&quot;global variable inside a function&quot;</span>
+  <span class="k">return</span> <span class="m">0</span>
+<span class="o">}</span>
+
+func_ni<span class="o">()</span> <span class="o">{</span>
+  <span class="c1"># get the WGSRV variable in scope by calling the function</span>
+  func_ichi
+
+  <span class="c1"># we&#39;ve assigned default values to these variables by using `${VAR-}`</span>
+  <span class="c1"># otherwise set -u will make the script exit</span>
+  <span class="nb">printf</span> <span class="s1">&#39;%s\n&#39;</span> <span class="s2">&quot;output of local variable is - \&quot;</span><span class="si">${</span><span class="nv">TORSRV</span><span class="p">-</span><span class="si">}</span><span class="s2">\&quot;&quot;</span>
+  <span class="nb">printf</span> <span class="s1">&#39;%s\n&#39;</span> <span class="s2">&quot;output of global variable inside func_one is - \&quot;</span><span class="si">${</span><span class="nv">WGSRV</span><span class="p">-</span><span class="si">}</span><span class="s2">\&quot;&quot;</span>
+  <span class="nb">printf</span> <span class="s1">&#39;%s\n&#39;</span> <span class="s2">&quot;output of truly global variable is - \&quot;</span><span class="si">${</span><span class="nv">GLOBALVAR</span><span class="p">-</span><span class="si">}</span><span class="s2">\&quot;&quot;</span>
+<span class="o">}</span>
+
+func_ni
+</code></pre></div>
+</td></tr></table>
+<p>Try commenting out line number 15 and see what happens to get the full picture.</p>
 <h2 id="useful-patterns">Useful Patterns<a class="headerlink" href="#useful-patterns" title="Permanent link">#</a></h2>
 <h3 id="check-dependencies">Check Dependencies<a class="headerlink" href="#check-dependencies" title="Permanent link">#</a></h3>
 <p>If you're using shell scripts, you're most likely using commands that aren't built-in commands of
@@ -1410,7 +1475,7 @@ script) and the other has 10k+ LOC.&#160;<a class="footnote-backref" href="#fnre
 <div class="md-source-date">
   <small>
     
-      Last update: <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date">August 15, 2021</span>
+      Last update: <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date">August 16, 2021</span>
       
     
   </small>
