@@ -19,6 +19,7 @@ nav:
           - "Shell Scripting": "sysadmin/shell/scripting.md"
       - Tools:
           - "tmux": "sysadmin/tools/tmux.md"
+          - "one liners": "sysadmin/tools/oneliners.md"
       - Rants:
           - "Linux on Desktop is a Shit Show": "sysadmin/rants/linux.md"
   - "Networking":
