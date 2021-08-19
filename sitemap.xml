@@ -2,32 +2,37 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
     <url>
          <loc>https://ayushnix.com/wiki/</loc>
-         <lastmod>2021-08-16</lastmod>
+         <lastmod>2021-08-19</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://ayushnix.com/wiki/devops/git/getting-started-with-git/</loc>
-         <lastmod>2021-08-16</lastmod>
+         <lastmod>2021-08-19</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://ayushnix.com/wiki/networking/dns/how-does-dns-work/</loc>
-         <lastmod>2021-08-16</lastmod>
+         <lastmod>2021-08-19</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://ayushnix.com/wiki/sysadmin/rants/linux/</loc>
-         <lastmod>2021-08-16</lastmod>
+         <lastmod>2021-08-19</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://ayushnix.com/wiki/sysadmin/shell/scripting/</loc>
-         <lastmod>2021-08-16</lastmod>
+         <lastmod>2021-08-19</lastmod>
+         <changefreq>daily</changefreq>
+    </url>
+    <url>
+         <loc>https://ayushnix.com/wiki/sysadmin/tools/oneliners/</loc>
+         <lastmod>2021-08-19</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://ayushnix.com/wiki/sysadmin/tools/tmux/</loc>
-         <lastmod>2021-08-16</lastmod>
+         <lastmod>2021-08-19</lastmod>
          <changefreq>daily</changefreq>
     </url>
 </urlset>

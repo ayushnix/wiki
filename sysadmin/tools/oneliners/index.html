@@ -13,19 +13,21 @@
         <meta name="author" content="Ayush Agarwal">
       
       
-      <link rel="icon" href="/wiki/images/book-open-outline.svg">
+        <link rel="canonical" href="https://ayushnix.com/wiki/sysadmin/tools/oneliners/">
+      
+      <link rel="icon" href="../../../images/book-open-outline.svg">
       <meta name="generator" content="mkdocs-1.2.2, mkdocs-material-7.2.4">
     
     
       
-        <title>AyushNix Wiki</title>
+        <title>Useful One Liners - AyushNix Wiki</title>
       
     
     
-      <link rel="stylesheet" href="/wiki/assets/stylesheets/main.f7f47774.min.css">
+      <link rel="stylesheet" href="../../../assets/stylesheets/main.f7f47774.min.css">
       
         
-        <link rel="stylesheet" href="/wiki/assets/stylesheets/palette.3f5d1f46.min.css">
+        <link rel="stylesheet" href="../../../assets/stylesheets/palette.3f5d1f46.min.css">
         
       
     
@@ -40,7 +42,7 @@
     
     
     
-      <link rel="stylesheet" href="/wiki/css/dark-light-image.css">
+      <link rel="stylesheet" href="../../../css/dark-light-image.css">
     
     
       
@@ -61,7 +63,7 @@
     <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="white" data-md-color-accent="blue">
   
     
-    <script>function __prefix(e){return new URL("/wiki/",location).pathname+"."+e}function __get(e,t=localStorage){return JSON.parse(t.getItem(__prefix(e)))}</script>
+    <script>function __prefix(e){return new URL("../../..",location).pathname+"."+e}function __get(e,t=localStorage){return JSON.parse(t.getItem(__prefix(e)))}</script>
     
       <script>var palette=__get("__palette");if(null!==palette&&"object"==typeof palette.color)for(var key in palette.color)document.body.setAttribute("data-md-color-"+key,palette.color[key])</script>
     
@@ -70,6 +72,11 @@
     <label class="md-overlay" for="__drawer"></label>
     <div data-md-component="skip">
       
+        
+        <a href="#sed-awk-regex" class="md-skip">
+          Skip to content
+        </a>
+      
     </div>
     <div data-md-component="announce">
       
@@ -77,7 +84,7 @@
     
       <header class="md-header" data-md-component="header">
   <nav class="md-header__inner md-grid" aria-label="Header">
-    <a href="/wiki/." title="AyushNix Wiki" class="md-header__button md-logo" aria-label="AyushNix Wiki" data-md-component="logo">
+    <a href="../../.." title="AyushNix Wiki" class="md-header__button md-logo" aria-label="AyushNix Wiki" data-md-component="logo">
       
   
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M21 4H3a2 2 0 0 0-2 2v13a2 2 0 0 0 2 2h18a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2M3 19V6h8v13H3m18 0h-8V6h8v13m-7-9.5h6V11h-6V9.5m0 2.5h6v1.5h-6V12m0 2.5h6V16h-6v-1.5z"/></svg>
@@ -96,7 +103,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              
+              Useful One Liners
             
           </span>
         </div>
@@ -196,7 +203,7 @@
 
 <nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
   <label class="md-nav__title" for="__drawer">
-    <a href="/wiki/." title="AyushNix Wiki" class="md-nav__button md-logo" aria-label="AyushNix Wiki" data-md-component="logo">
+    <a href="../../.." title="AyushNix Wiki" class="md-nav__button md-logo" aria-label="AyushNix Wiki" data-md-component="logo">
       
   
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M21 4H3a2 2 0 0 0-2 2v13a2 2 0 0 0 2 2h18a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2M3 19V6h8v13H3m18 0h-8V6h8v13m-7-9.5h6V11h-6V9.5m0 2.5h6v1.5h-6V12m0 2.5h6V16h-6v-1.5z"/></svg>
@@ -228,7 +235,7 @@
   
   
     <li class="md-nav__item">
-      <a href="/wiki/." class="md-nav__link">
+      <a href="../../.." class="md-nav__link">
         Home
       </a>
     </li>
@@ -256,14 +263,16 @@
 
   
   
+    
+  
   
     
       
     
-    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
       
       
-        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_3" type="checkbox" id="__nav_3" >
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_3" type="checkbox" id="__nav_3" checked>
       
       <label class="md-nav__link" for="__nav_3">
         Linux System Administration
@@ -302,7 +311,7 @@
   
   
     <li class="md-nav__item">
-      <a href="/wiki/sysadmin/shell/scripting/" class="md-nav__link">
+      <a href="../../shell/scripting/" class="md-nav__link">
         Shell Scripting
       </a>
     </li>
@@ -318,12 +327,14 @@
             
   
   
+    
+  
   
     
-    <li class="md-nav__item md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
       
       
-        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_3_2" type="checkbox" id="__nav_3_2" >
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_3_2" type="checkbox" id="__nav_3_2" checked>
       
       <label class="md-nav__link" for="__nav_3_2">
         Tools
@@ -341,7 +352,7 @@
   
   
     <li class="md-nav__item">
-      <a href="/wiki/sysadmin/tools/tmux/" class="md-nav__link">
+      <a href="../tmux/" class="md-nav__link">
         tmux
       </a>
     </li>
@@ -351,11 +362,61 @@
             
   
   
+    
   
-    <li class="md-nav__item">
-      <a href="/wiki/sysadmin/tools/oneliners/" class="md-nav__link">
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" data-md-toggle="toc" type="checkbox" id="__toc">
+      
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          one liners
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
         one liners
       </a>
+      
+        
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#sed-awk-regex" class="md-nav__link">
+    sed, awk, regex
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#ffmpeg" class="md-nav__link">
+    ffmpeg
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#dd" class="md-nav__link">
+    dd
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
     </li>
   
 
@@ -392,7 +453,7 @@
   
   
     <li class="md-nav__item">
-      <a href="/wiki/sysadmin/rants/linux/" class="md-nav__link">
+      <a href="../../rants/linux/" class="md-nav__link">
         Linux on Desktop is a Shit Show
       </a>
     </li>
@@ -463,7 +524,7 @@
   
   
     <li class="md-nav__item">
-      <a href="/wiki/networking/dns/how-does-dns-work/" class="md-nav__link">
+      <a href="../../../networking/dns/how-does-dns-work/" class="md-nav__link">
         How Does DNS Work?
       </a>
     </li>
@@ -534,7 +595,7 @@
   
   
     <li class="md-nav__item">
-      <a href="/wiki/devops/git/getting-started-with-git/" class="md-nav__link">
+      <a href="../../../devops/git/getting-started-with-git/" class="md-nav__link">
         Getting Started With Git
       </a>
     </li>
@@ -560,11 +621,100 @@
               </div>
             
             
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#sed-awk-regex" class="md-nav__link">
+    sed, awk, regex
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#ffmpeg" class="md-nav__link">
+    ffmpeg
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#dd" class="md-nav__link">
+    dd
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
           
           <div class="md-content" data-md-component="content">
             <article class="md-content__inner md-typeset">
               
-  <h1>404 - Not found</h1>
+                
+                
+                  <h1>one liners</h1>
+                
+                <h2 id="sed-awk-regex">sed, awk, regex<a class="headerlink" href="#sed-awk-regex" title="Permanent link">#</a></h2>
+<p>print the content between line numbers <code>a</code> and <code>b</code></p>
+<div class="highlight"><pre><span></span><code>sed -n &#39;a,bp&#39; file.txt
+</code></pre></div>
+<p>replace all the MAC addresses in a file with a custom mac address</p>
+<div class="highlight"><pre><span></span><code>sed -E -i &#39;s|[a-f0-9A-F:]{17}|00:00:00:00:00:00|g&#39; test.json
+</code></pre></div>
+<h2 id="ffmpeg">ffmpeg<a class="headerlink" href="#ffmpeg" title="Permanent link">#</a></h2>
+<p>trim audio from a video without re-encoding the audio</p>
+<div class="highlight"><pre><span></span><code>ffmpeg -i mashiro_no_oto_episode_1.mkv -ss 00:16:28.780 -t 167 -vn -acodec copy setsu_first_performance.aac
+</code></pre></div>
+<h2 id="dd">dd<a class="headerlink" href="#dd" title="Permanent link">#</a></h2>
+<p>use dd to write an iso file to a flash drive<sup id="fnref:1"><a class="footnote-ref" href="#fn:1">1</a></sup></p>
+<div class="highlight"><pre><span></span><code>dd if=/data/ubuntu.iso of=/dev/sda bs=4096 status=progress conv=fsync
+</code></pre></div>
+<div class="footnote">
+<hr />
+<ol>
+<li id="fn:1">
+<p><a href="https://abbbi.github.io/dd/">See this</a> for an explanation for why to use <code>conv=fsync</code>&#160;<a class="footnote-backref" href="#fnref:1" title="Jump back to footnote 1 in the text">&#8617;</a></p>
+</li>
+</ol>
+</div>
+                
+                  
+                    
+
+<hr>
+<div class="md-source-date">
+  <small>
+    
+      Last update: <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date">August 19, 2021</span>
+      
+    
+  </small>
+</div>
+                  
+                
+              
+              
+                
+
 
               
             </article>
@@ -575,6 +725,41 @@
       
         
 <footer class="md-footer">
+  
+    <nav class="md-footer__inner md-grid" aria-label="Footer">
+      
+        
+        <a href="../tmux/" class="md-footer__link md-footer__link--prev" aria-label="Previous: tmux" rel="prev">
+          <div class="md-footer__button md-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12z"/></svg>
+          </div>
+          <div class="md-footer__title">
+            <div class="md-ellipsis">
+              <span class="md-footer__direction">
+                Previous
+              </span>
+              tmux
+            </div>
+          </div>
+        </a>
+      
+      
+        
+        <a href="../../rants/linux/" class="md-footer__link md-footer__link--next" aria-label="Next: Linux on Desktop is a Shit Show" rel="next">
+          <div class="md-footer__title">
+            <div class="md-ellipsis">
+              <span class="md-footer__direction">
+                Next
+              </span>
+              Linux on Desktop is a Shit Show
+            </div>
+          </div>
+          <div class="md-footer__button md-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11H4z"/></svg>
+          </div>
+        </a>
+      
+    </nav>
   
   <div class="md-footer-meta md-typeset">
     <div class="md-footer-meta__inner md-grid">
@@ -621,10 +806,10 @@
     <div class="md-dialog" data-md-component="dialog">
       <div class="md-dialog__inner md-typeset"></div>
     </div>
-    <script id="__config" type="application/json">{"base": "/wiki/", "features": ["navigation.instant", "navigation.sections", "header.autohide"], "translations": {"clipboard.copy": "Copy to clipboard", "clipboard.copied": "Copied to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.placeholder": "Search", "search.result.placeholder": "Type to start searching", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.term.missing": "Missing", "select.version.title": "Select version"}, "search": "/wiki/assets/javascripts/workers/search.709b4209.min.js", "version": null}</script>
+    <script id="__config" type="application/json">{"base": "../../..", "features": ["navigation.instant", "navigation.sections", "header.autohide"], "translations": {"clipboard.copy": "Copy to clipboard", "clipboard.copied": "Copied to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.placeholder": "Search", "search.result.placeholder": "Type to start searching", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.term.missing": "Missing", "select.version.title": "Select version"}, "search": "../../../assets/javascripts/workers/search.709b4209.min.js", "version": null}</script>
     
     
-      <script src="/wiki/assets/javascripts/bundle.febc23d1.min.js"></script>
+      <script src="../../../assets/javascripts/bundle.febc23d1.min.js"></script>
       
     
   </body>
