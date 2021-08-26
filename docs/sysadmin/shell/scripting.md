@@ -72,14 +72,9 @@ We'll use our own version of the unofficial strict mode with reasons explained b
     trap '...' EXIT
     ```
 
-`set -e` will be used sparingly in isolated cases where its behavior can be predicted. We probably
-won't use `trap '...' ERR` in our scripts at all.
-
-Why are we not using `set -e` globally? Because, in my opinion, it's better to compensate with
-shellcheck and our own error handling code in most cases rather than relying on the false sense of
-security offered by `set -e`. `trap '...' ERR` makes things even worse. While you can use `set -e`
-and `set +e` to enable it for specific blocks of code, `trap '...' ERR` globally unless you reset
-the trap.
+We can use `set -e` in `/bin/sh` and `set -Ee` combined with `trap '...' ERR` in `/bin/bash`.
+However, we'll do so in isolated cases where the behavior of `set -e` is somewhat predictable. We'll
+need to remember to reset our `ERR` trap using `trap - ERR` when we do use it.
 
 This section should probably be enough to convince someone that error handling in shell scripting is
 basically broken and shouldn't always be relied upon. If you are writing serious scripts or programs
@@ -435,7 +430,8 @@ Try commenting out line number 15 and see what happens to get the full picture.
 
 If you're using shell scripts, you're most likely using commands that aren't built-in commands of
 the shell. Therefore, it makes sense to check whether the commands that you'll use are actually
-present on the system before executing a script.
+present on the system before executing a script. Although this is the job of a package manager, it
+doesn't hurt to simply not allow running a script in case a dependency isn't present.
 
 === "Single Dependency"
     ```sh
