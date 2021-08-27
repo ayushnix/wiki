@@ -31,9 +31,7 @@ nav:
 
 theme:
   name: material
-  font:
-    text: Red Hat Text
-    code: DM Mono
+  font: false
   icon:
     logo: material/book-open-outline
     repo: fontawesome/brands/github
