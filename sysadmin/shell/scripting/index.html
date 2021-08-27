@@ -16,7 +16,7 @@
         <link rel="canonical" href="https://ayushnix.com/wiki/sysadmin/shell/scripting/">
       
       <link rel="icon" href="../../../images/book-open-outline.svg">
-      <meta name="generator" content="mkdocs-1.2.2, mkdocs-material-7.2.4">
+      <meta name="generator" content="mkdocs-1.2.2, mkdocs-material-7.2.5">
     
     
       
@@ -24,7 +24,7 @@
       
     
     
-      <link rel="stylesheet" href="../../../assets/stylesheets/main.f7f47774.min.css">
+      <link rel="stylesheet" href="../../../assets/stylesheets/main.be71726b.min.css">
       
         
         <link rel="stylesheet" href="../../../assets/stylesheets/palette.3f5d1f46.min.css">
@@ -33,11 +33,6 @@
     
     
     
-      
-        
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Red+Hat+Text:300,400,400i,700%7CDM+Mono&display=fallback">
-        <style>:root{--md-text-font-family:"Red Hat Text";--md-code-font-family:"DM Mono"}</style>
       
     
     
@@ -960,13 +955,9 @@ seems to have popularized strict mode in shell scripting.</p>
 </code></pre></div>
 </div>
 </div>
-<p><code>set -e</code> will be used sparingly in isolated cases where its behavior can be predicted. We probably
-won't use <code>trap '...' ERR</code> in our scripts at all.</p>
-<p>Why are we not using <code>set -e</code> globally? Because, in my opinion, it's better to compensate with
-shellcheck and our own error handling code in most cases rather than relying on the false sense of
-security offered by <code>set -e</code>. <code>trap '...' ERR</code> makes things even worse. While you can use <code>set -e</code>
-and <code>set +e</code> to enable it for specific blocks of code, <code>trap '...' ERR</code> globally unless you reset
-the trap.</p>
+<p>We can use <code>set -e</code> in <code>/bin/sh</code> and <code>set -Ee</code> combined with <code>trap '...' ERR</code> in <code>/bin/bash</code>.
+However, we'll do so in isolated cases where the behavior of <code>set -e</code> is somewhat predictable. We'll
+need to remember to reset our <code>ERR</code> trap using <code>trap - ERR</code> when we do use it.</p>
 <p>This section should probably be enough to convince someone that error handling in shell scripting is
 basically broken and shouldn't always be relied upon. If you are writing serious scripts or programs
 that need robust error handling, don't use shell scripts.</p>
@@ -1429,7 +1420,8 @@ func_ni
 <h3 id="check-dependencies">Check Dependencies<a class="headerlink" href="#check-dependencies" title="Permanent link">#</a></h3>
 <p>If you're using shell scripts, you're most likely using commands that aren't built-in commands of
 the shell. Therefore, it makes sense to check whether the commands that you'll use are actually
-present on the system before executing a script.</p>
+present on the system before executing a script. Although this is the job of a package manager, it
+doesn't hurt to simply not allow running a script in case a dependency isn't present.</p>
 <div class="tabbed-set" data-tabs="2:2"><input checked="checked" id="__tabbed_2_1" name="__tabbed_2" type="radio" /><label for="__tabbed_2_1">Single Dependency</label><div class="tabbed-content">
 <div class="highlight"><pre><span></span><code><span class="k">if</span> ! <span class="nb">command</span> -v fzf &gt; /dev/null <span class="m">2</span>&gt;<span class="p">&amp;</span><span class="m">1</span><span class="p">;</span> <span class="k">then</span>
   <span class="nb">printf</span> <span class="s1">&#39;%s\n&#39;</span> <span class="s2">&quot;the dependency package fzf was not found!&quot;</span> &gt;<span class="p">&amp;</span><span class="m">2</span>
@@ -1487,7 +1479,7 @@ script) and the other has 10k+ LOC.&#160;<a class="footnote-backref" href="#fnre
 <div class="md-source-date">
   <small>
     
-      Last update: <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date">August 16, 2021</span>
+      Last update: <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date">August 26, 2021</span>
       
     
   </small>
@@ -1589,10 +1581,10 @@ script) and the other has 10k+ LOC.&#160;<a class="footnote-backref" href="#fnre
     <div class="md-dialog" data-md-component="dialog">
       <div class="md-dialog__inner md-typeset"></div>
     </div>
-    <script id="__config" type="application/json">{"base": "../../..", "features": ["navigation.instant", "navigation.sections", "header.autohide"], "translations": {"clipboard.copy": "Copy to clipboard", "clipboard.copied": "Copied to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.placeholder": "Search", "search.result.placeholder": "Type to start searching", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.term.missing": "Missing", "select.version.title": "Select version"}, "search": "../../../assets/javascripts/workers/search.709b4209.min.js", "version": null}</script>
+    <script id="__config" type="application/json">{"base": "../../..", "features": ["navigation.instant", "navigation.sections", "header.autohide"], "translations": {"clipboard.copy": "Copy to clipboard", "clipboard.copied": "Copied to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.placeholder": "Search", "search.result.placeholder": "Type to start searching", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.term.missing": "Missing", "select.version.title": "Select version"}, "search": "../../../assets/javascripts/workers/search.409db549.min.js", "version": null}</script>
     
     
-      <script src="../../../assets/javascripts/bundle.febc23d1.min.js"></script>
+      <script src="../../../assets/javascripts/bundle.56a63758.min.js"></script>
       
     
   </body>
