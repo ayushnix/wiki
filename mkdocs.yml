@@ -39,15 +39,15 @@ theme:
   palette:
     - media: "(prefers-color-scheme: light)"
       scheme: default
-      primary: white
-      accent: blue
+      primary: light-blue-900
+      accent: deep-purple
       toggle:
         icon: material/toggle-switch-off-outline
         name: Switch to Dark Mode
     - media: "(prefers-color-scheme: dark)"
       scheme: slate
-      primary: black
-      accent: blue
+      primary: light-blue-300
+      accent: orange
       toggle:
         icon: material/toggle-switch
         name: Switch to Light Mode
@@ -96,6 +96,7 @@ plugins:
 extra_css:
   - css/dark-light-image.css
   - css/font-family.css
+  - css/primary-color.css
 # extra_javascript:
 #   - js/custom.js
 
