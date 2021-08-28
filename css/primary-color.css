@@ -1,0 +1,19 @@
+/* materialui.co/colors */
+
+/* light-blue-300 */
+[data-md-color-primary="light-blue-300"] {
+  --md-primary-fg-color: hsla(198.57, 91.3%, 63.92%, 1);
+  --md-primary-fg-color--light: hsla(198.84, 92.37%, 74.31%, 1);
+  --md-primary-fg-color--dark: hsla(198.73, 91.93%, 56.27%, 1);
+  --md-primary-bg-color: hsla(0, 0%, 0%, 0.87);
+  --md-primary-bg-color--light: hsla(0, 0%, 0%, 0.54);
+}
+
+/* light-blue-900 */
+[data-md-color-primary="light-blue-900"] {
+  --md-primary-fg-color: hsla(206.49, 98.72%, 30.59%, 1);
+  --md-primary-fg-color--light: hsla(202.46, 97.91%, 37.45%, 1);
+  --md-primary-fg-color--dark: hsla(207, 99, 28, 1);
+  --md-primary-bg-color: hsla(0, 0%, 100%, 1);
+  --md-primary-bg-color--light: hsla(0, 0%, 100%, 0.7);
+}
