@@ -90,11 +90,12 @@ markdown_extensions:
 
 plugins:
   - search
-  - git-revision-date-localized
-  # enable_creation_date: true
+  - git-revision-date-localized:
+      enable_creation_date: true
 
 extra_css:
   - css/dark-light-image.css
+  - css/font-family.css
 # extra_javascript:
 #   - js/custom.js
 
