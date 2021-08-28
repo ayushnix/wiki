@@ -1,0 +1,6 @@
+:root {
+  --md-text-font-family: "Inter", "Red Hat Text", "Roboto", "Source Sans Pro",
+    "Karla", "Nunito";
+  --md-code-font-family: "SF Mono", "DM Mono", "IBM Plex Mono", "JetBrains Mono",
+    "Roboto Mono", "Fira Code", "Source Code Pro";
+}
