@@ -16,7 +16,7 @@
         <link rel="canonical" href="https://ayushnix.com/wiki/sysadmin/shell/scripting/">
       
       <link rel="icon" href="../../../images/book-open-outline.svg">
-      <meta name="generator" content="mkdocs-1.2.2, mkdocs-material-7.2.5">
+      <meta name="generator" content="mkdocs-1.2.2, mkdocs-material-7.2.6">
     
     
       
@@ -24,7 +24,7 @@
       
     
     
-      <link rel="stylesheet" href="../../../assets/stylesheets/main.be71726b.min.css">
+      <link rel="stylesheet" href="../../../assets/stylesheets/main.802231af.min.css">
       
         
         <link rel="stylesheet" href="../../../assets/stylesheets/palette.3f5d1f46.min.css">
@@ -465,8 +465,15 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#check-dependencies" class="md-nav__link">
-    Check Dependencies
+  <a href="#checking-dependencies" class="md-nav__link">
+    Checking Dependencies
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#parsing-options-and-flags-using-getopts" class="md-nav__link">
+    Parsing Options and Flags using getopts
   </a>
   
 </li>
@@ -876,8 +883,15 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#check-dependencies" class="md-nav__link">
-    Check Dependencies
+  <a href="#checking-dependencies" class="md-nav__link">
+    Checking Dependencies
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#parsing-options-and-flags-using-getopts" class="md-nav__link">
+    Parsing Options and Flags using getopts
   </a>
   
 </li>
@@ -1421,13 +1435,13 @@ func_ni
 </td></tr></table>
 <p>Try commenting out line number 15 and see what happens to get the full picture.</p>
 <h2 id="useful-patterns">Useful Patterns<a class="headerlink" href="#useful-patterns" title="Permanent link">#</a></h2>
-<h3 id="check-dependencies">Check Dependencies<a class="headerlink" href="#check-dependencies" title="Permanent link">#</a></h3>
+<h3 id="checking-dependencies">Checking Dependencies<a class="headerlink" href="#checking-dependencies" title="Permanent link">#</a></h3>
 <p>If you're using shell scripts, you're most likely using commands that aren't built-in commands of
 the shell. Therefore, it makes sense to check whether the commands that you'll use are actually
 present on the system before executing a script. Although this is the job of a package manager, it
 doesn't hurt to simply not allow running a script in case a dependency isn't present.</p>
 <div class="tabbed-set" data-tabs="2:2"><input checked="checked" id="__tabbed_2_1" name="__tabbed_2" type="radio" /><label for="__tabbed_2_1">Single Dependency</label><div class="tabbed-content">
-<div class="highlight"><pre><span></span><code><span class="k">if</span> ! <span class="nb">command</span> -v fzf &gt; /dev/null <span class="m">2</span>&gt;<span class="p">&amp;</span><span class="m">1</span><span class="p">;</span> <span class="k">then</span>
+<div class="highlight"><pre><span></span><code><span class="k">if</span> ! <span class="nb">hash</span> fzf <span class="m">2</span>&gt; /dev/null<span class="p">;</span> <span class="k">then</span>
   <span class="nb">printf</span> <span class="s1">&#39;%s\n&#39;</span> <span class="s2">&quot;the dependency package fzf was not found!&quot;</span> &gt;<span class="p">&amp;</span><span class="m">2</span>
   <span class="nb">exit</span> <span class="m">1</span>
 <span class="k">fi</span>
@@ -1436,7 +1450,7 @@ doesn't hurt to simply not allow running a script in case a dependency isn't pre
 <input id="__tabbed_2_2" name="__tabbed_2" type="radio" /><label for="__tabbed_2_2">Multiple Dependencies</label><div class="tabbed-content">
 <div class="highlight"><pre><span></span><code><span class="nv">dependencies</span><span class="o">=(</span><span class="s2">&quot;fzf&quot;</span> <span class="s2">&quot;rg&quot;</span> <span class="s2">&quot;bat&quot;</span> <span class="s2">&quot;lsls&quot;</span><span class="o">)</span>
 <span class="k">for</span> d <span class="k">in</span> <span class="s2">&quot;</span><span class="si">${</span><span class="nv">dependencies</span><span class="p">[@]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">;</span> <span class="k">do</span>
-  <span class="k">if</span> ! <span class="nb">command</span> -v <span class="s2">&quot;</span><span class="nv">$d</span><span class="s2">&quot;</span> &gt; /dev/null <span class="m">2</span>&gt;<span class="p">&amp;</span><span class="m">1</span><span class="p">;</span> <span class="k">then</span>
+  <span class="k">if</span> ! <span class="nb">hash</span> <span class="s2">&quot;</span><span class="nv">$d</span><span class="s2">&quot;</span> <span class="m">2</span>&gt; /dev/null<span class="p">;</span> <span class="k">then</span>
     <span class="nb">printf</span> <span class="s1">&#39;%s\n&#39;</span> <span class="s2">&quot;the dependency package </span><span class="nv">$d</span><span class="s2"> was not found!&quot;</span> &gt;<span class="p">&amp;</span><span class="m">2</span>
     <span class="nb">exit</span> <span class="m">1</span>
   <span class="k">fi</span>
@@ -1444,8 +1458,12 @@ doesn't hurt to simply not allow running a script in case a dependency isn't pre
 </code></pre></div>
 </div>
 </div>
-<p>DO NOT use the <code>which</code> command for this. The reason is pretty simple. <code>command</code> is a built-in
-command and it's also POSIX compatible. However, <code>which</code> is an external command.</p>
+<p>You can also use <code>command -v</code> or <code>type -p</code> instead of <code>hash</code> but then you'll have to redirect stdout
+as well.</p>
+<p>DO NOT use the <code>which</code> command for this. The reason is pretty simple. <code>command -v</code>, <code>type -p</code>, and
+<code>hash</code> are POSIX compatible and shell built in keywords. They're supported by both <code>dash</code> and
+busybox <code>ash</code>. There's no reason to use an external command if you don't need to.</p>
+<h3 id="parsing-options-and-flags-using-getopts">Parsing Options and Flags using <code>getopts</code><a class="headerlink" href="#parsing-options-and-flags-using-getopts" title="Permanent link">#</a></h3>
 <div class="footnote">
 <hr />
 <ol>
@@ -1483,7 +1501,7 @@ script) and the other has 10k+ LOC.&#160;<a class="footnote-backref" href="#fnre
 <div class="md-source-date">
   <small>
     
-      Last update: <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date">August 26, 2021</span>
+      Last update: <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date">September 3, 2021</span>
       
         <br>Created: <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date">July 21, 2021</span> 
       
@@ -1590,7 +1608,7 @@ script) and the other has 10k+ LOC.&#160;<a class="footnote-backref" href="#fnre
     <script id="__config" type="application/json">{"base": "../../..", "features": ["navigation.instant", "navigation.sections", "header.autohide"], "translations": {"clipboard.copy": "Copy to clipboard", "clipboard.copied": "Copied to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.placeholder": "Search", "search.result.placeholder": "Type to start searching", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.term.missing": "Missing", "select.version.title": "Select version"}, "search": "../../../assets/javascripts/workers/search.409db549.min.js", "version": null}</script>
     
     
-      <script src="../../../assets/javascripts/bundle.56a63758.min.js"></script>
+      <script src="../../../assets/javascripts/bundle.756773cc.min.js"></script>
       
     
   </body>
