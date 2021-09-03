@@ -20,8 +20,6 @@ nav:
       - Tools:
           - "tmux": "sysadmin/tools/tmux.md"
           - "one liners": "sysadmin/tools/oneliners.md"
-      - Rants:
-          - "Linux on Desktop is a Shit Show": "sysadmin/rants/linux.md"
   - "Networking":
       - DNS:
           - "How Does DNS Work?": "networking/dns/how-does-dns-work.md"
