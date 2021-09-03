@@ -426,7 +426,7 @@ Try commenting out line number 15 and see what happens to get the full picture.
 
 # Useful Patterns
 
-## Check Dependencies
+## Checking Dependencies
 
 If you're using shell scripts, you're most likely using commands that aren't built-in commands of
 the shell. Therefore, it makes sense to check whether the commands that you'll use are actually
@@ -435,7 +435,7 @@ doesn't hurt to simply not allow running a script in case a dependency isn't pre
 
 === "Single Dependency"
     ```sh
-    if ! command -v fzf > /dev/null 2>&1; then
+    if ! hash fzf 2> /dev/null; then
       printf '%s\n' "the dependency package fzf was not found!" >&2
       exit 1
     fi
@@ -445,15 +445,21 @@ doesn't hurt to simply not allow running a script in case a dependency isn't pre
     ```sh
     dependencies=("fzf" "rg" "bat" "lsls")
     for d in "${dependencies[@]}"; do
-      if ! command -v "$d" > /dev/null 2>&1; then
+      if ! hash "$d" 2> /dev/null; then
         printf '%s\n' "the dependency package $d was not found!" >&2
         exit 1
       fi
     done
     ```
 
-DO NOT use the `which` command for this. The reason is pretty simple. `command` is a built-in
-command and it's also POSIX compatible. However, `which` is an external command.
+You can also use `command -v` or `type -p` instead of `hash` but then you'll have to redirect stdout
+as well.
+
+DO NOT use the `which` command for this. The reason is pretty simple. `command -v`, `type -p`, and
+`hash` are POSIX compatible and shell built in keywords. They're supported by both `dash` and
+busybox `ash`. There's no reason to use an external command if you don't need to.
+
+## Parsing Options and Flags using `getopts`
 
 [^1]:
 C'mon, who uses white spaces in file and directory names in Linux? Okay, I know I don't but not
