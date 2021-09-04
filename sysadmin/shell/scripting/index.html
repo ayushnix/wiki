@@ -1402,7 +1402,7 @@ the shell. Therefore, it makes sense to check whether the commands that you'll u
 present on the system before executing a script. Although this is the job of a package manager, it
 doesn't hurt to simply not allow running a script in case a dependency isn't present.</p>
 <div class="tabbed-set" data-tabs="2:2"><input checked="checked" id="__tabbed_2_1" name="__tabbed_2" type="radio" /><label for="__tabbed_2_1">Single Dependency</label><div class="tabbed-content">
-<div class="highlight"><pre><span></span><code><span class="k">if</span> ! <span class="nb">hash</span> fzf <span class="m">2</span>&gt; /dev/null<span class="p">;</span> <span class="k">then</span>
+<div class="highlight"><pre><span></span><code><span class="k">if</span> ! <span class="nb">command</span> -v fzf &gt; /dev/null <span class="m">2</span>&gt;<span class="p">&amp;</span><span class="m">1</span><span class="p">;</span> <span class="k">then</span>
   <span class="nb">printf</span> <span class="s1">&#39;%s\n&#39;</span> <span class="s2">&quot;the dependency package fzf was not found!&quot;</span> &gt;<span class="p">&amp;</span><span class="m">2</span>
   <span class="nb">exit</span> <span class="m">1</span>
 <span class="k">fi</span>
@@ -1411,7 +1411,7 @@ doesn't hurt to simply not allow running a script in case a dependency isn't pre
 <input id="__tabbed_2_2" name="__tabbed_2" type="radio" /><label for="__tabbed_2_2">Multiple Dependencies</label><div class="tabbed-content">
 <div class="highlight"><pre><span></span><code><span class="nv">dependencies</span><span class="o">=(</span><span class="s2">&quot;fzf&quot;</span> <span class="s2">&quot;rg&quot;</span> <span class="s2">&quot;bat&quot;</span> <span class="s2">&quot;lsls&quot;</span><span class="o">)</span>
 <span class="k">for</span> d <span class="k">in</span> <span class="s2">&quot;</span><span class="si">${</span><span class="nv">dependencies</span><span class="p">[@]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">;</span> <span class="k">do</span>
-  <span class="k">if</span> ! <span class="nb">hash</span> <span class="s2">&quot;</span><span class="nv">$d</span><span class="s2">&quot;</span> <span class="m">2</span>&gt; /dev/null<span class="p">;</span> <span class="k">then</span>
+  <span class="k">if</span> ! <span class="nb">command</span> -v <span class="s2">&quot;</span><span class="nv">$d</span><span class="s2">&quot;</span> &gt; /dev/null <span class="m">2</span>&gt;<span class="p">&amp;</span><span class="m">1</span><span class="p">;</span> <span class="k">then</span>
     <span class="nb">printf</span> <span class="s1">&#39;%s\n&#39;</span> <span class="s2">&quot;the dependency package </span><span class="nv">$d</span><span class="s2"> was not found!&quot;</span> &gt;<span class="p">&amp;</span><span class="m">2</span>
     <span class="nb">exit</span> <span class="m">1</span>
   <span class="k">fi</span>
@@ -1419,11 +1419,14 @@ doesn't hurt to simply not allow running a script in case a dependency isn't pre
 </code></pre></div>
 </div>
 </div>
-<p>You can also use <code>command -v</code> or <code>type -p</code> instead of <code>hash</code> but then you'll have to redirect stdout
-as well.</p>
-<p>DO NOT use the <code>which</code> command for this. The reason is pretty simple. <code>command -v</code>, <code>type -p</code>, and
-<code>hash</code> are POSIX compatible and shell built in keywords. They're supported by both <code>dash</code> and
-busybox <code>ash</code>. There's no reason to use an external command if you don't need to.</p>
+<p>You can use the shell built-in commands <code>hash</code> and <code>type -p</code> as well although I'm not sure if they
+are POSIX compatible. From what I've tested so far, both of them are available on <code>dash</code>, <code>mksh</code>,
+and busybox <code>ash</code>. The <code>hash</code> built-in is interesting because it stores the entries you ask for in a
+hash table for faster access. It also doesn't append anything to stdout so you can write something
+like <code>hash "$d" 2&gt; /dev/null</code> instead which is shorter.</p>
+<p><strong>DO NOT</strong> use the <code>which</code> command for this. The reason is pretty simple. <code>command -v</code> is POSIX
+compatible and a shell built in keyword. There's no reason to use an external command and take on
+the extra costs and uncertainties when you don't need to.</p>
 <h3 id="parsing-options-and-flags-using-getopts">Parsing Options and Flags using <code>getopts</code><a class="headerlink" href="#parsing-options-and-flags-using-getopts" title="Permanent link">#</a></h3>
 <div class="footnote">
 <hr />
@@ -1462,7 +1465,7 @@ script) and the other has 10k+ LOC.&#160;<a class="footnote-backref" href="#fnre
 <div class="md-source-date">
   <small>
     
-      Last update: <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date">September 3, 2021</span>
+      Last update: <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date">September 4, 2021</span>
       
         <br>Created: <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date">July 21, 2021</span> 
       
