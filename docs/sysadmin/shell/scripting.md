@@ -435,7 +435,7 @@ doesn't hurt to simply not allow running a script in case a dependency isn't pre
 
 === "Single Dependency"
     ```sh
-    if ! hash fzf 2> /dev/null; then
+    if ! command -v fzf > /dev/null 2>&1; then
       printf '%s\n' "the dependency package fzf was not found!" >&2
       exit 1
     fi
@@ -445,19 +445,22 @@ doesn't hurt to simply not allow running a script in case a dependency isn't pre
     ```sh
     dependencies=("fzf" "rg" "bat" "lsls")
     for d in "${dependencies[@]}"; do
-      if ! hash "$d" 2> /dev/null; then
+      if ! command -v "$d" > /dev/null 2>&1; then
         printf '%s\n' "the dependency package $d was not found!" >&2
         exit 1
       fi
     done
     ```
 
-You can also use `command -v` or `type -p` instead of `hash` but then you'll have to redirect stdout
-as well.
+You can use the shell built-in commands `hash` and `type -p` as well although I'm not sure if they
+are POSIX compatible. From what I've tested so far, both of them are available on `dash`, `mksh`,
+and busybox `ash`. The `hash` built-in is interesting because it stores the entries you ask for in a
+hash table for faster access. It also doesn't append anything to stdout so you can write something
+like `hash "$d" 2> /dev/null` instead which is shorter.
 
-DO NOT use the `which` command for this. The reason is pretty simple. `command -v`, `type -p`, and
-`hash` are POSIX compatible and shell built in keywords. They're supported by both `dash` and
-busybox `ash`. There's no reason to use an external command if you don't need to.
+**DO NOT** use the `which` command for this. The reason is pretty simple. `command -v` is POSIX
+compatible and a shell built in keyword. There's no reason to use an external command and take on
+the extra costs and uncertainties when you don't need to.
 
 ## Parsing Options and Flags using `getopts`
 
