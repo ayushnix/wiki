@@ -28,6 +28,8 @@ using shell scripts.
     out](https://news.ycombinator.com/item?id=25402003) the flaws in the operation[^1].
 
     [Here's](http://typingducks.com/blog/bash/) a blog post about issues when using shell scripts.
+    [Here's](https://mywiki.wooledge.org/BashWeaknesses) another page on Greg's Wiki about
+    weaknesses in bash.
 
 However, if you know what you're doing, shell scripting using POSIX sh or bash[^2] can be a powerful
 tool in your repertoire. You may or may not have access to Python in your Unix-like platform or in
@@ -62,12 +64,22 @@ We'll use our own version of the unofficial strict mode with reasons explained b
     ```sh
     set -u
 
+    readonly PATH="/bin:/sbin:/usr/bin:/usr/sbin:/usr/local/bin:/usr/local/sbin"
+    export PATH
+    umask 077
+
     trap '...' EXIT
     ```
 
 === "`/bin/bash`"
     ```sh
     set -uo pipefail
+
+    shopt -s nullglob
+
+    readonly PATH="/bin:/sbin:/usr/bin:/usr/sbin:/usr/local/bin:/usr/local/sbin"
+    export PATH
+    umask 077
 
     trap '...' EXIT
     ```
@@ -268,9 +280,9 @@ test_exit
 
 As we've said before, although `trap clean_return ERR` catches `return 1`, it will also catch
 anything `set -e` was meant to act upon. As a result, it might be wiser to not use `set -E` and
-`trap '...' ERR` at all and call the cleanup function manually instead whenever we use `return 1`.
-
-We can also reset traps to their default behavior inside the script by writing `trap - NAMEOFSIG`.
+`trap '...' ERR` globally and, instead, use it in specific sections and then disable `set -E` and
+reset the ERR trap. We can reset traps to their default behavior inside a script by writing `trap
+- NAMEOFSIG`.
 
 [This](http://redsymbol.net/articles/bash-exit-traps/) blog post has more details about `trap`.
 
@@ -287,7 +299,14 @@ The usage of `set -E` is only relevant when pairing it with `trap '...' ERR`. Fr
 ## Style Guide
 
 [Google's Shell Style Guide](https://google.github.io/styleguide/shellguide.html) should serve as a
-good reference.
+good reference. There's also an additional [ChromiumOS Shell Style
+Guide](https://chromium.googlesource.com/chromiumos/docs/+/HEAD/styleguide/shell.md).
+
+- prefer writing POSIX compliant shell scripts by default unless you need to use arrays
+
+    At the end of the day, I find this a legible and sensible self-imposed rule. Use `#!/bin/sh` if
+    you don't need arrays and you're writing trivial shell scripts. If you need arrays, either use
+    `#!/bin/bash` or a better programming language.
 
 - use `#!/bin/sh` (or `#!/bin/bash`, if you need bash-isms) as the shebang
 
@@ -300,6 +319,22 @@ good reference.
     can't be trusted. Then again, your scripts may not always be used on your system so there's
     that.
 
+- explicity define and export `$PATH` in your script
+
+    This is sort of a follow up of the previous point about not using `#!/usr/bin/env`. We'll
+    explicitly define `PATH` in our scripts to make sure that we're using software inside the `/usr`
+    directories and not some random software anywhere else on the filesystem.
+
+    ```sh
+    #!/bin/sh
+
+    PATH=/bin:/sbin:/usr/bin:/usr/sbin:/usr/local/bin:/usr/local/sbin
+    export PATH
+    ```
+
+- set the `umask` to `077` to prevent other users from being able to read/write/execute the
+  temporary files that your script might create
+
 - try not to use external programs like `sed`, `awk`, `tr`, `cut` etc unless absolutely necessary or
   unless you can save yourself a lot of LOC by using them
 
@@ -311,7 +346,7 @@ good reference.
     external programs.
 
 - we'll prefer not to use the following features because they're either not POSIX sh compatible, can
-  be easily replicated using other available features, or simply not needed
+  be easily replicated using other features, not needed, or introduce unhealthy practices
 
     - `&> file` and `|& tee`
     - `select` — just use a combination of `while`, `read`, `case`, and `if`
@@ -320,7 +355,8 @@ good reference.
     - `$'...'` ANSI C style quotes
     - `;&` and `;;&` terminators in `case`
     - `function` keyword to define functions
-    - `declare ` built in keyword, except when defining an associative array
+    - `declare` built in keyword, except when defining associative arrays
+    - `eval` keyword
 
 It's better to keep things as minimal and simple as possible when writing shell scripts. Although
 they can be powerful and might seem fun to write (hey, it might be for some people), if your shell
