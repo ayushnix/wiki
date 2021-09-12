@@ -226,11 +226,6 @@ that file over to the intended file.
 Using `trap` can be helpful if you want to implement cleanup jobs before a script exits. A simple
 use case can be deleting temporary files and directories created as part of the script.
 
-However, we should probably avoid using `trap '...' ERR` because it is subject to the same caveats
-as `set -e` and unlike `set -e`, we can't enable it selectively. Once enabled, it works globally
-throughout your script and may end up catching errors that you don't want and not catching errors
-that you do want.
-
 ???+ warning
     `ERR` doesn't work on POSIX sh
 
