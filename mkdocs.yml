@@ -17,6 +17,7 @@ nav:
   - "Linux System Administration":
       - Shell:
           - "Shell Scripting": "sysadmin/shell/scripting.md"
+          - "External Commands": "sysadmin/shell/external_commands.md"
       - Tools:
           - "tmux": "sysadmin/tools/tmux.md"
           - "one liners": "sysadmin/tools/oneliners.md"
