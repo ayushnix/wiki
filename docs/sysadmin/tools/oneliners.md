@@ -23,7 +23,16 @@ sed -E -i 's|[a-f0-9A-F:]{17}|00:00:00:00:00:00|g' test.json
 trim audio from a video without re-encoding the audio
 
 ```
-ffmpeg -i mashiro_no_oto_episode_1.mkv -ss 00:16:28.780 -t 167 -vn -acodec copy setsu_first_performance.aac
+ffmpeg -i mashiro_no_oto_episode_1.mkv \
+  -ss 00:16:28.780 -t 167 -vn -acodec copy \
+  setsu_first_performance.aac
+```
+
+concatenate/merge multiple audio files
+
+```
+ffmpeg -i "concat:setsu_solo_1.aac|setsu_solo_2.aac" \
+  -c:a copy -map_metadata 0:s:0 setsu_solo.aac
 ```
 
 # dd
