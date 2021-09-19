@@ -27,6 +27,8 @@ nav:
   - "DevOps":
       - Git:
           - "Getting Started With Git": "devops/git/getting-started-with-git.md"
+  - "Others":
+      - "Quotes": "others/quotes.md"
 
 theme:
   name: material
