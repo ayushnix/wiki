@@ -19,8 +19,8 @@ nav:
           - "Shell Scripting": "sysadmin/shell/scripting.md"
           - "External Commands": "sysadmin/shell/external_commands.md"
       - Tools:
-          - "tmux": "sysadmin/tools/tmux.md"
-          - "one liners": "sysadmin/tools/oneliners.md"
+          - "Tmux": "sysadmin/tools/tmux.md"
+          - "One Liners": "sysadmin/tools/oneliners.md"
   - "Networking":
       - DNS:
           - "How Does DNS Work?": "networking/dns/how-does-dns-work.md"
