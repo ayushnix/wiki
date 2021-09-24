@@ -17,7 +17,10 @@ nav:
   - "Linux System Administration":
       - Shell:
           - "Shell Scripting": "sysadmin/shell/scripting.md"
-          - "External Commands": "sysadmin/shell/external_commands.md"
+          - "Parsing Arguments": "sysadmin/shell/parsing_arguments.md"
+          - "Using External Commands": "sysadmin/shell/using_external_commands.md"
+          - "Useful Snippets": "sysadmin/shell/useful_snippets.md"
+          - "Reference": "sysadmin/shell/reference.md"
       - Tools:
           - "Tmux": "sysadmin/tools/tmux.md"
           - "One Liners": "sysadmin/tools/oneliners.md"
