@@ -17,8 +17,8 @@ using shell scripts.
     Debian uses dash as its `/bin/sh` and Alpine, used widely in containers, uses BusyBox which uses
     its own version of [ash](https://en.wikipedia.org/wiki/Almquist_shell). There's `tcsh` used by
     FreeBSD and `pdksh` used by OpenBSD. Needless to say, there are syntactical differences between
-    all of them although scripts written in POSIX sh should probably run reliably across all of
-    these platforms.
+    all of them although scripts written for POSIX `/bin/sh` should probably run reliably across all
+    of these platforms.
 
 - shell scripts do not have robust error handling features and they can't handle
   edge cases you didn't think about
@@ -35,7 +35,7 @@ However, if you know what you're doing, shell scripting using POSIX sh or bash[^
 tool in your repertoire. You may or may not have access to Python in your Unix-like platform or in
 your container but you will always have a shell.
 
-In case your `/bin/sh` is symlinked to `/bin/bash`, install
+In case your `/bin/sh` is symlinked to `/bin/bash` (Arch Linux), install
 [dash](https://git.kernel.org/pub/scm/utils/dash/dash.git). There's also
 [mksh](http://www.mirbsd.org/mksh.htm) which seems to be POSIX compliant, a better interactive shell
 than dash, and is also used on Android.
@@ -58,7 +58,7 @@ I'm not sure if [bats](https://github.com/bats-core/bats-core) is helpful. There
 [This](http://redsymbol.net/articles/unofficial-bash-strict-mode/) blog post, for better or worse,
 seems to have popularized strict mode in shell scripting.
 
-We'll use our own version of the unofficial strict mode with reasons explained below.
+We'll use our own version of the shell "strict mode" with reasons explained below.
 
 === "`/bin/sh`"
     ```sh
@@ -75,8 +75,6 @@ We'll use our own version of the unofficial strict mode with reasons explained b
     ```sh
     set -uo pipefail
 
-    shopt -s nullglob
-
     readonly PATH="/bin:/sbin:/usr/bin:/usr/sbin:/usr/local/bin:/usr/local/sbin"
     export PATH
     umask 077
@@ -84,13 +82,33 @@ We'll use our own version of the unofficial strict mode with reasons explained b
     trap '...' EXIT
     ```
 
-We can use `set -e` in `/bin/sh` and `set -Ee` combined with `trap '...' ERR` in `/bin/bash`.
-However, we'll do so in isolated cases where the behavior of `set -e` is somewhat predictable. We'll
-need to remember to reset our `ERR` trap using `trap - ERR` when we do use it.
+- use `#!/bin/sh` (or `#!/bin/bash`) as the shebang
 
-This section should probably be enough to convince someone that error handling in shell scripting is
-basically broken and shouldn't always be relied upon. If you are writing serious scripts or programs
-that need robust error handling, don't use shell scripts.
+    If a platform doesn't have `/bin/sh` or `/bin/bash` (NixOS, BSDs), adapt your scripts at the
+    time of installation.
+
+    Although `#!/usr/bin/env` is better for portability, we'll prefer not to use it. It allows the
+    possibility of using arbitrary binaries available in `PATH`. I guess one has bigger problems to
+    worry about if the `PATH` on his system can't be trusted. Then again, your scripts may not
+    always be used on your system.
+
+- explicity define and export `$PATH` in your script
+
+    This is sort of a follow up of the previous point about not using `#!/usr/bin/env`. We'll
+    explicitly define `PATH` in our scripts to make sure that we're using software inside the `/usr`
+    directories and not some random software anywhere else on the filesystem.
+
+- set the `umask` to `077` to prevent other users from being able to read/write/execute the
+  temporary files that your script might create
+
+We can use `set -e` in `/bin/sh` and `set -Ee` combined with `trap '...' ERR` in `/bin/bash`.
+However, we'll do so in isolated blocks of code where external commands aren't involved and where
+the behavior of `set -e` is somewhat predictable. We'll need to remember to reset our `ERR` trap
+using `trap - ERR` when we do use it.
+
+This section should probably be enough to convince someone that error handling in shell scripting
+shouldn't always be relied upon. If you are writing serious scripts or programs that need robust
+error handling, you may not want to use shell scripts.
 
 ### errexit
 
@@ -189,9 +207,9 @@ echo "the exit status of the last command was $?"
 ```
 
 Normally, what you'd expect in this case after using `set -o pipefail` is that the script execution
-would stop at `grep second` but it doesn't. An empty file `sample.txt` is created and the next
-command is also executed. Adding `set -e` in this case would stop the script after all the commands
-in the pipe are executed and the next `echo` command won't be executed.
+would stop at `grep second` but it doesn't. An empty file `sample.txt` is still created. Adding `set
+-e` in this case would stop the script after all the commands in the pipe are executed and the next
+`echo` command won't be executed.
 
 If you weren't aware about this behaviour, it should probably make you see pipes in Linux with a new
 perspective. That being said, we **CAN USE** `set -o pipefail` in our `#!/bin/bash` scripts as long
@@ -216,20 +234,20 @@ line 3.
 
 You can override the effect of `set -C` by using `>|` instead of `>`.
 
-We can use `set -C` in our scripts without issues but using it can be optional I think. It depends
-on the person writing the code. When using `set -C`, if you really need to overwrite an existing
-file, either use `>|` or, better yet, redirect the command in question to a temporary file and copy
-that file over to the intended file.
+Using `set -C` is going to come down to personal preference. I don't see much point in using it
+myself but if you want to, you can use it. If you do use it and need to overwrite an existing file,
+either use `>|` or, better yet, redirect the command in question to a temporary file and copy that
+file over to the intended file.
 
 ### trap
 
 Using `trap` can be helpful if you want to implement cleanup jobs before a script exits. A simple
 use case can be deleting temporary files and directories created as part of the script.
 
-???+ warning
-    `ERR` doesn't work on POSIX sh
-
 Here's a good example to show how `trap` works with `ERR`, `EXIT`, `exit 1`, and `return 1`.
+
+???+ warning
+    The `ERR` signal doesn't work on POSIX sh
 
 ```sh
 set -Euo pipefail
@@ -274,10 +292,9 @@ test_exit
 ```
 
 As we've said before, although `trap clean_return ERR` catches `return 1`, it will also catch
-anything `set -e` was meant to act upon. As a result, it might be wiser to not use `set -E` and
-`trap '...' ERR` globally and, instead, use it in specific sections and then disable `set -E` and
-reset the ERR trap. We can reset traps to their default behavior inside a script by writing `trap
-- NAMEOFSIG`.
+anything `set -e` does. As a result, it might be wiser to not use `set -E` and `trap '...' ERR`
+globally and, instead, use them in specific sections and then disable them using `set +E` and `trap
+- ERR`.
 
 [This](http://redsymbol.net/articles/bash-exit-traps/) blog post has more details about `trap`.
 
@@ -294,225 +311,58 @@ The usage of `set -E` is only relevant when pairing it with `trap '...' ERR`. Fr
 ## Style Guide
 
 [Google's Shell Style Guide](https://google.github.io/styleguide/shellguide.html) should serve as a
-good reference. There's also an additional [ChromiumOS Shell Style
-Guide](https://chromium.googlesource.com/chromiumos/docs/+/HEAD/styleguide/shell.md).
+good reference although I don't agree with everything mentioned in it. There's also the [ChromiumOS
+Shell Style Guide](https://chromium.googlesource.com/chromiumos/docs/+/HEAD/styleguide/shell.md).
 
-- prefer writing POSIX compliant shell scripts by default unless you need to use arrays
+In addition to what's written in the links mentioned above,
 
-    At the end of the day, I find this a legible and sensible self-imposed rule. Use `#!/bin/sh` if
-    you don't need arrays and you're writing trivial shell scripts. If you need arrays, either use
-    `#!/bin/bash` or a better programming language.
+- if you don't need to use arrays, write POSIX compliant `/bin/sh` shell scripts
 
-- use `#!/bin/sh` (or `#!/bin/bash`, if you need bash-isms) as the shebang
+    This should serve as a good rule of thumb. Use `#!/bin/sh` if you don't need arrays and you're
+    writing trivial shell scripts. If you need arrays, either use `#!/bin/bash` or a better
+    programming language[^4].
 
-    If a platform doesn't have `/bin/sh` or `/bin/bash` (NixOS, BSDs), adapt your scripts
-    accordingly at the time of installation.
-
-    Although `#!/usr/bin/env sh` is better for portability, we'll prefer not to use it. You can't
-    pass arguments in this form and using it allows the possibility of using arbitrary binaries
-    available in `PATH`. I guess one has bigger problems to worry about if the `PATH` on his system
-    can't be trusted. Then again, your scripts may not always be used on your system so there's
-    that.
-
-- explicity define and export `$PATH` in your script
-
-    This is sort of a follow up of the previous point about not using `#!/usr/bin/env`. We'll
-    explicitly define `PATH` in our scripts to make sure that we're using software inside the `/usr`
-    directories and not some random software anywhere else on the filesystem.
-
-    ```sh
-    #!/bin/sh
-
-    PATH=/bin:/sbin:/usr/bin:/usr/sbin:/usr/local/bin:/usr/local/sbin
-    export PATH
-    ```
-
-- set the `umask` to `077` to prevent other users from being able to read/write/execute the
-  temporary files that your script might create
-
-- try not to use external programs like `sed`, `awk`, `tr`, `cut` etc unless absolutely necessary or
-  unless you can save yourself a lot of LOC by using them
+- don't use external programs like `sed`, `awk`, `tr`, `cut`, `find` if you don't need to
 
     One of the primary issues with writing shell scripts is that they lack robust error handling.
     `set -e` isn't really a solution and our so-called "strict mode" is mostly duct tape. The lack
-    of robust error handling is mostly exacerbated by using external programs because shell has no
-    idea how to handle them. By using external programs, you're also introducing dependencies to
-    your shell script which may be unnecessary. There's also the penalty to speed when using
-    external programs.
+    of robust error handling is mostly exacerbated by using external programs because `set -e`
+    doesn't know what to expect from them. By using external programs, you're also introducing
+    dependencies to your shell script which may be unnecessary and probably slowing down your script
+    as well.
 
-- we'll prefer not to use the following features because they're either not POSIX sh compatible, can
-  be easily replicated using other features, not needed, or introduce unhealthy practices
+### Minimalism
 
-    - `&> file` and `|& tee`
-    - `select` — just use a combination of `while`, `read`, `case`, and `if`
-      instead
-    - `until` loop
-    - `$'...'` ANSI C style quotes
-    - `;&` and `;;&` terminators in `case`
-    - `function` keyword to define functions
-    - `declare` built in keyword, except when defining associative arrays
-    - `eval` keyword
+Even though the syntax of `bash` is weird, a bit verbose, and sometimes jarring, I still ended up
+liking shell scripting because of its flexibility and potential simplicity. It's better to keep
+things as minimal and simple as possible when writing shell scripts. Your code should be easy to
+read and audit, even if it is a bit verbose at times. Here's a simple example.
 
-It's better to keep things as minimal and simple as possible when writing shell scripts. Although
-they can be powerful and might seem fun to write (hey, it might be for some people), if your shell
-scripts start becoming too complex[^4], you probably wanna rewrite them in a better language like
-Python.
+```sh
+num="${1-}"
 
-# `/bin/bash`
+if [[ "$num" -eq 5 ]]; then
+  printf '%s\n' "$num is equal to 5"
+fi
 
-## Redirections
-
-The following table depicts the effect of redirection and piping to a file.
-
-`stdin` has the file descriptor `0`, `stdout` works on `1`, and stderr works on `2`.
-
-| syntax           | terminal stdout | terminal stderr | file stdout | file stderr | effect on file |
-| ---------------- | --------------- | --------------- | ----------- | ----------- | -------------- |
-| `>`              | no              | yes             | yes         | no          | overwrite      |
-| `>>`             | no              | yes             | yes         | no          | append         |
-| `2>`             | yes             | no              | no          | yes         | overwrite      |
-| `2>>`            | yes             | no              | no          | yes         | append         |
-| `> file 2>&1`    | no              | no              | yes         | yes         | overwrite      |
-| `>> file 2>&1`   | no              | no              | yes         | yes         | append         |
-| `echo "msg" >&2` | no              | yes             | no          | no          | -              |
-| `| tee`          | yes             | yes             | yes         | no          | overwrite      |
-| `| tee -a`       | yes             | yes             | yes         | no          | append         |
-| `2>&1 | tee`     | yes             | yes             | yes         | yes         | overwrite      |
-| `2>&1 | tee -a`  | yes             | yes             | yes         | yes         | append         |
-
-You might wonder about the difference between `> file 2>&1` and `2>&1 > file`. In the first case,
-you won't get any output on the terminal and both stdout and stderr are redirected to `file`.
-However, in the 2nd case, stderr is still shown on the terminal.
-
-For understanding the meaning behind `a>&b`, read this as `a` is now pointing wherever `b` is
-pointing at the moment. Also, `a` won't stop pointing wherever `b` was pointing to if `b` starts
-pointing anywhere else.
-
-This implies that `> file 2>&1` means that point stdout to `file`, and also point stderr to wherever
-stdout is pointing to (which is `file`). Similarly, `2>&1 > file` implies that point stderr to
-wherever stdout is poiting to (which is the terminal at this point) and then point stdout to `file`.
-Now, stderr doesn't stop pointing to the terminal.
-
-[Here's](https://catonmat.net/ftp/bash-redirections-cheat-sheet.pdf) a cheatsheet that should help.
-A series[^3] of blog posts have been written as well.
-
-## Conditional Constructs
-
-The conditional expression `[[ <expression> ]]` returns a value of 0 or 1 depending on the
-evaluation of the expression inside.
-
-A list of common tests you can do inside `[[ ... ]]` are
-
-| Operator Syntax        | Description                                                        |
-| ---------------------- | ------------------------------------------------------------------ |
-| `-e file`              | TRUE, if file exists                                               |
-| `-f file`              | TRUE, if a regular file exists                                     |
-| `-d file`              | TRUE, if a directory exists                                        |
-| `-r, -w, -x file`      | TRUE, if read, write, executable permissions exist                 |
-| `-s file`              | TRUE, if size of the file is greater than 0 (not empty)            |
-| `file1 -nt file2`      | TRUE, if file1 is newer than file2; use `-ot` for the antonym      |
-| `-z string`            | TRUE, if string is empty                                           |
-| `-n string`            | TRUE, if string is not empty                                       |
-| `string1 == string2`   | TRUE, if string1 matches the **pattern** in string2                |
-| `string1 == "string2"` | TRUE, if string1 literally matches string2                         |
-| `string1 != string2`   | TRUE, if string1 doesn't match the **pattern** in string2          |
-| `string1 =~ string2`   | TRUE, if string1 matches the extended regex pattern in string2     |
-| `string1 < string2`    | TRUE, if string1 sorts before string2                              |
-| `int1 -eq int2`        | TRUE, if both integers are identical; `-ne` for the antonym        |
-| `int1 -lt int2`        | TRUE, if int1 is less than int2; `-gt` for the antonym             |
-| `int1 -le int2`        | TRUE, if int1 is less than or equal to int2; `-ge` for the antonym |
-
-## Variable Scope
-
-This should give you a good idea of how variables and their scopes work in shell scripting.
-
-```sh linenums="1"
-#!/bin/bash
-
-set -uo pipefail
-
-readonly GLOBALVAR="this is a truly global var"
-
-func_ichi() {
-  local TORSRV="this is a local variable"
-  readonly WGSRV="global variable inside a function"
-  return 0
-}
-
-func_ni() {
-  # get the WGSRV variable in scope by calling the function
-  func_ichi
-
-  # we've assigned default values to these variables by using `${VAR-}`
-  # otherwise set -u will make the script exit
-  printf '%s\n' "output of local variable is - \"${TORSRV-}\""
-  printf '%s\n' "output of global variable inside func_one is - \"${WGSRV-}\""
-  printf '%s\n' "output of truly global variable is - \"${GLOBALVAR-}\""
-}
-
-func_ni
+[[ "$num" -eq 5 ]] && printf '%s\n' "$num is equal to 5
 ```
 
-Try commenting out line number 15 and see what happens to get the full picture.
+Yes, both of them do the same thing and the 2nd form is shorter to write. I would, however, prefer
+using `if-then-fi` simply because it's much easier to understand, even for a complete beginner.
 
-# Useful Patterns
+I probably won't use the following features offered by `bash` because they're either not POSIX sh
+compatible, can be easily replicated using other features, not needed, or introduce unhealthy
+practices.
 
-## Checking Dependencies
+- `&> file` and `|& tee`
+- `$'...'` ANSI C style quotes
+- `;&` and `;;&` terminators in `case`
 
-If you're using shell scripts, you're most likely using commands that aren't built-in commands of
-the shell. Therefore, it makes sense to check whether the commands that you'll use are actually
-present on the system before executing a script. Although this is the job of a package manager, it
-doesn't hurt to simply not allow running a script in case a dependency isn't present.
+The list of keywords and built-in commands which should be avoided are
 
-=== "Single Dependency"
-    ```sh
-    if ! command -v fzf > /dev/null 2>&1; then
-      printf '%s\n' "the dependency package fzf was not found!" >&2
-      exit 1
-    fi
-    ```
-
-=== "Multiple Dependencies"
-    ```sh
-    dependencies=("fzf" "rg" "bat" "lsls")
-    for d in "${dependencies[@]}"; do
-      if ! command -v "$d" > /dev/null 2>&1; then
-        printf '%s\n' "the dependency package $d was not found!" >&2
-        exit 1
-      fi
-    done
-    ```
-
-You can use the shell built-in commands `hash` and `type -p` as well although I'm not sure if they
-are POSIX compatible. From what I've tested so far, both of them are available on `dash`, `mksh`,
-and busybox `ash`. The `hash` built-in is interesting because it stores the entries you ask for in a
-hash table for faster access. It also doesn't append anything to stdout so you can write something
-like `hash "$d" 2> /dev/null` instead which is shorter.
-
-**DO NOT** use the `which` command for this. The reason is pretty simple. `command -v` is POSIX
-compatible and a shell built in keyword. There's no reason to use an external command and take on
-the extra costs and uncertainties when you don't need to.
-
-[^1]:
-C'mon, who uses white spaces in file and directory names in Linux? Okay, I know I don't but not
-everyone is averse to using white spaces in file and directory names, especially people who come
-from a Windows background.
-
-[^2]:
-You can still write sh compatible scripts while using bash if you use `set -o posix`. Or, just
-install dash, symlink `/bin/sh` to it, and use `#!/bin/sh` although this may not work well on your
-system. I've done this on Arch Linux and things have been working fine ... so far.
-
-[^3]:
-[Part 1](https://catonmat.net/bash-one-liners-explained-part-one)
-[Part 2](https://catonmat.net/bash-one-liners-explained-part-two)
-[Part 3](https://catonmat.net/bash-one-liners-explained-part-three)
-
-[^4]:
-I guess "complex" is a subjective word in this case. In my opinion, any script you personally
-consider to be remotely serious should probably be written in another language like Python. But hey,
-there's projects like
-[password-store](https://git.zx2c4.com/password-store/tree/src/password-store.sh) and
-[neofetch](https://github.com/dylanaraps/neofetch/blob/master/neofetch) out there. One of them is a
-password manager (well, it uses `gpg` under the hood but it still wraps the whole thing using a bash
-script) and the other has 10k+ LOC.
+- `select`
+- `until`
+- `function`
+- `eval`
+- `typeset`
