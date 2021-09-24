@@ -320,7 +320,7 @@ In addition to what's written in the links mentioned above,
 
     This should serve as a good rule of thumb. Use `#!/bin/sh` if you don't need arrays and you're
     writing trivial shell scripts. If you need arrays, either use `#!/bin/bash` or a better
-    programming language[^4].
+    programming language[^3].
 
 - don't use external programs like `sed`, `awk`, `tr`, `cut`, `find` if you don't need to
 
@@ -366,3 +366,22 @@ The list of keywords and built-in commands which should be avoided are
 - `function`
 - `eval`
 - `typeset`
+
+[^1]:
+C'mon, who uses white spaces in file and directory names in Linux? Okay, I know I don't but not
+everyone is averse to using white spaces in file and directory names, especially people who come
+from a Windows background.
+
+[^2]:
+You can still write sh compatible scripts while using bash if you use `set -o posix`. Or, just
+install dash, symlink `/bin/sh` to it, and use `#!/bin/sh` although this may not work well on your
+system. I've done this on Arch Linux and things have been working fine ... so far.
+
+[^3]:
+I guess "complex" is a subjective word in this case. In my opinion, any script you personally
+consider to be remotely serious should probably be written in another language like Python. But hey,
+there's projects like
+[password-store](https://git.zx2c4.com/password-store/tree/src/password-store.sh) and
+[neofetch](https://github.com/dylanaraps/neofetch/blob/master/neofetch) out there. One of them is a
+password manager (well, it uses `gpg` under the hood but it still wraps the whole thing using a bash
+script) and the other has 10k+ LOC.
