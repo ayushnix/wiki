@@ -493,8 +493,6 @@ like `hash "$d" 2> /dev/null` instead which is shorter.
 compatible and a shell built in keyword. There's no reason to use an external command and take on
 the extra costs and uncertainties when you don't need to.
 
-## Parsing Options and Flags using `getopts`
-
 [^1]:
 C'mon, who uses white spaces in file and directory names in Linux? Okay, I know I don't but not
 everyone is averse to using white spaces in file and directory names, especially people who come
