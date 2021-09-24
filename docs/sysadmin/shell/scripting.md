@@ -358,14 +358,18 @@ practices.
 - `&> file` and `|& tee`
 - `$'...'` ANSI C style quotes
 - `;&` and `;;&` terminators in `case`
+- heredocs (just use `printf`; even though it'll be verbose, you gain flexibility with variables)
 
-The list of keywords and built-in commands which should be avoided are
+The list of keywords and built-in commands which I WON'T use are
 
-- `select`
-- `until`
-- `function`
-- `eval`
-- `typeset`
+- `let`, `test` (just use `[` in `/bin/sh` and `[[` in `/bin/bash`)
+- `echo` (just use `printf`)
+- `select` (just use `while`, `case`, `if`)
+- `until` (just use `while`)
+- `function` (completely useless, no idea why anyone would use this)
+- `eval` (security issues)
+- `typeset` (`declare` seems to be more widely used)
+- `readarray` (`mapfile` seems to be more widely used)
 
 [^1]:
 C'mon, who uses white spaces in file and directory names in Linux? Okay, I know I don't but not
