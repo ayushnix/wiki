@@ -358,7 +358,8 @@ practices.
 - `&> file` and `|& tee`
 - `$'...'` ANSI C style quotes
 - `;&` and `;;&` terminators in `case`
-- heredocs (use `printf`; even though it'll be verbose, you gain flexibility with variables)
+- heredocs for printing help (use `printf`; even though it'll be verbose, you gain flexibility with
+  variables)
 
 The list of keywords and built-in commands which I WON'T use are
 
