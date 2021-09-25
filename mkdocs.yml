@@ -32,6 +32,7 @@ nav:
           - "Getting Started With Git": "devops/git/getting-started-with-git.md"
   - "Others":
       - "Quotes": "others/quotes.md"
+      - "Monitors and Laptops": "others/monitors_and_laptops.md"
 
 theme:
   name: material
