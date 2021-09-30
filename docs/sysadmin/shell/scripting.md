@@ -251,6 +251,11 @@ In addition to what's written in the links mentioned above,
     dependencies to your shell script which may be unnecessary and probably slowing down your script
     as well.
 
+- do not use all upper case variables unless they're environment variables
+
+    You never know if the all upper case variable you're using is actually a pre-existing
+    environment variable.
+
 ### Minimalism
 
 Even though the syntax of `bash` is weird, a bit verbose, and sometimes jarring, I still ended up
