@@ -278,8 +278,8 @@ practices.
 - `&> file` and `|& tee`
 - `$'...'` ANSI C style quotes
 - `;&` and `;;&` terminators in `case`
-- heredocs for printing help (use `printf`; even though it'll be verbose, you gain flexibility with
-  variables)
+- heredocs for printing help menu (use `printf`; even though it'll be verbose, you gain flexibility
+  with variables)
 
 The list of keywords and built-in commands which I WON'T use are
 
@@ -310,4 +310,5 @@ there's projects like
 [password-store](https://git.zx2c4.com/password-store/tree/src/password-store.sh) and
 [neofetch](https://github.com/dylanaraps/neofetch/blob/master/neofetch) out there. One of them is a
 password manager (well, it uses `gpg` under the hood but it still wraps the whole thing using a bash
-script) and the other has 10k+ LOC.
+script) and the other has 10k+ LOC. [Kubernetes](https://github.com/kubernetes/kubernetes) is
+another great example which uses a significant amount of shell script code.
