@@ -294,7 +294,7 @@ The list of keywords and built-in commands which I WON'T use are
 - `until` (use `while`)
 - `function` (completely useless, no idea why anyone would use this)
 - `eval` (security issues)
-- `typeset` (`declare` seems to be more widely used)
+- `declare` (`typeset` seems to be more widely supported)
 - `readarray` (`mapfile` seems to be more widely used)
 - `let` (use `((` and `$((`)
 
