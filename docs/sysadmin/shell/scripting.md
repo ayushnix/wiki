@@ -56,64 +56,24 @@ I'm not sure if [bats](https://github.com/bats-core/bats-core) is helpful. There
 ## Shell Strict Mode
 
 [This](http://redsymbol.net/articles/unofficial-bash-strict-mode/) blog post, for better or worse,
-seems to have popularized strict mode in shell scripting.
+seems to have popularized the so-called "strict mode" in shell scripting.
 
-We'll use our own version of the shell "strict mode" with reasons explained below.
+In my opinion, you should avoid using the shell "strict mode" in your scripts simply because it's
+unreliable and not as important as it might seem provided you're using shellcheck and have spent
+time going through [Greg's Wiki](https://mywiki.wooledge.org).
 
-=== "`/bin/sh`"
-    ```sh
-    set -u
+This section should probably be enough to convince someone that native error handling in shell
+scripting is broken and shouldn't be relied upon. If you are writing serious scripts or programs
+that need robust error handling, you may not want to use shell scripts.
 
-    readonly PATH="/bin:/sbin:/usr/bin:/usr/sbin:/usr/local/bin:/usr/local/sbin"
-    export PATH
-    umask 077
+### errexit, errtrace, and ERR
 
-    trap '...' EXIT
-    ```
+`set -o errexit`, or `set -e`, is supposed to make a script exit immediately whenever it finds a
+non-zero exit code. However, this doesn't always work as expected. The usage of `set -e` comes with
+a lot of caveats that must be kept in mind and if that wasn't enough, there's no telling what'll
+happen when using `set -e` in a script which uses external commands.
 
-=== "`/bin/bash`"
-    ```sh
-    set -uo pipefail
-
-    readonly PATH="/bin:/sbin:/usr/bin:/usr/sbin:/usr/local/bin:/usr/local/sbin"
-    export PATH
-    umask 077
-
-    trap '...' EXIT
-    ```
-
-- use `#!/bin/sh` (or `#!/bin/bash`) as the shebang
-
-    If a platform doesn't have `/bin/sh` or `/bin/bash` (NixOS, BSDs), adapt your scripts at the
-    time of installation.
-
-    Although `#!/usr/bin/env` is better for portability, we'll prefer not to use it. It allows the
-    possibility of using arbitrary binaries available in `PATH`. I guess one has bigger problems to
-    worry about if the `PATH` on his system can't be trusted. Then again, your scripts may not
-    always be used on your system.
-
-- explicity define and export `$PATH` in your script
-
-    This is sort of a follow up of the previous point about not using `#!/usr/bin/env`. We'll
-    explicitly define `PATH` in our scripts to make sure that we're using software inside the `/usr`
-    directories and not some random software anywhere else on the filesystem.
-
-- set the `umask` to `077` to prevent other users from being able to read/write/execute the
-  temporary files that your script might create
-
-We can use `set -e` in `/bin/sh` and `set -Ee` combined with `trap '...' ERR` in `/bin/bash`.
-However, we'll do so in isolated blocks of code where external commands aren't involved and where
-the behavior of `set -e` is somewhat predictable. We'll need to remember to reset our `ERR` trap
-using `trap - ERR` when we do use it.
-
-This section should probably be enough to convince someone that error handling in shell scripting
-shouldn't always be relied upon. If you are writing serious scripts or programs that need robust
-error handling, you may not want to use shell scripts.
-
-### errexit
-
-`set -e` is supposed to make a script exit immediately whenever it finds a non-zero exit code.
-However, this doesn't always work as expected. This is from `man bash`,
+This is from `man bash`,
 
 > The shell does not exit if the command that fails is part of the command list immediately
 > following a `while` or `until` keyword, part of the test following the if or elif reserved words,
@@ -121,10 +81,6 @@ However, this doesn't always work as expected. This is from `man bash`,
 > `||`, any command in a pipeline but the last, or if the command's return value is being inverted
 > with `!`.  If a compound command other than a subshell returns a non-zero status because a command
 > failed while `-e` was being ignored, the shell does not exit.
-
-Basically, if you're using `set -e` or `trap ERR`, you've gotta keep these caveats in mind.
-
-If that wasn't enough, `set -e` may cause our script to exit when we may not want it to.
 
 ```sh
 set -e
@@ -138,116 +94,81 @@ else
 fi
 ```
 
-Here's another example.
-
-```sh
-set -e
-
-i=0
-((i++)) # script execution aborts here
-echo "$i"
-```
-
-In the first case, if `grep` fails to find any match, the exit code becomes non-zero. However,
-that's fine, because we intend to use it as a test case. But using `set -e` aborts execution. In the
-second case, the shell exits when it finds that the value of the arithmetic expression is 0. Of
-course, writing `((i = i + 1))` would've been better but we shouldn't have to deal with unexpected
-events like this.
+If `grep` fails to find any match, the exit code becomes non-zero and the scripts aborts execution
+even if we may not intend to.
 
 There are [plenty](http://typingducks.com/blog/bash/) of other
-[examples](https://mywiki.wooledge.org/BashFAQ/105) of unintended behavior when using `set -e`. As a
-result, **we WON'T be using** `set -e` in our scripts, at least not globally.
+[examples](https://mywiki.wooledge.org/BashFAQ/105) of unintended behavior when using `set -e`.
 
-### nounset
+`set -o errtrace`, or `set -E` is useful only if we're using `trap '..' ERR`. However, the `ERR`
+trap has the same caveats that `set -e` comes with.
 
-Unlike `set -e`, `set -u` is relatively harmless and can be useful provided we deal with unset
-positional parameters.
+Unless you know what you're doing, don't use `set -e`, `set -E`, and `trap '...' ERR`.
 
-```sh
-set -u
-
-if [ -n "${1-}" ]; then
-  echo "the first parameter wasn't empty and it had ${1-}"
-else
-  echo "the first parameter was either unset or empty"
-fi
-```
-
-If we write `$1` and it's unset, `set -u` will cause the script to exit.
-
-Since `set -u` doesn't come with potential false positives (that I know of), **we WILL USE** `set
--u` in our scripts.
+???+ warning
+    `set -E` and `ERR` don't work on POSIX sh
 
 ### pipefail
 
 ???+ warning
     `set -o pipefail` doesn't work on POSIX sh
 
-Normally, the exit status of a pipeline is the exit status of the last command in the pipe. When we
-enable `set -o pipefail` in `/bin/bash`, the exit status is that of the last command from the right
-which fails.
+Normally, the exit status of a pipeline is the exit status of the last command in the pipe,
+regardless of the exit status of the commands that appeared before it. When we enable `set -o
+pipefail` in `/bin/bash`, the exit status of the pipe is the exit status of the last command that
+failed.
 
 However, that's all that `set -o pipefail` does. In isolation, it **DOES NOT** cause the script
-execution to stop.  It simply changes the exit code of the pipe in question and allows the script
+execution to stop. It simply changes the exit code of the pipe in question and allows the script
 execution to go ahead. Only when it's coupled with `set -e` or `|| exit 1` does the script execution
 actually stop.
 
-If we do use `set -e`, all the commands in a pipe are still executed, even if the first command in a
-pipe fails. Yes, you read that right. Using `set -e` just doesn't allow the script to proceed
-further, but it doesn't actually terminate the script execution at the command which fails in a
+Even if we do use `set -eo pipefail`, all the commands in a pipe are still executed, even if the
+first command in a pipe fails. Yes, you read that right. Using `set -e` just doesn't allow the
+script to proceed further, but it doesn't actually terminate the script execution in the middle of a
 pipe.
 
-Here's a simple (albeit stupid) example to show what we're talking about.
+Here's a simple, albeit stupid, example to show what we're talking about.
 
 ```sh
 set -o pipefail
 
-echo "first commmand" | grep second | tee sample.txt
-echo "the exit status of the last command was $?"
+printf '%s\n' "first commmand" | grep second | tee sample.txt
+printf '%s\n' "the exit status of the last command was $?"
 ```
 
 Normally, what you'd expect in this case after using `set -o pipefail` is that the script execution
 would stop at `grep second` but it doesn't. An empty file `sample.txt` is still created. Adding `set
 -e` in this case would stop the script after all the commands in the pipe are executed and the next
-`echo` command won't be executed.
+`printf` command won't be executed.
 
-If you weren't aware about this behaviour, it should probably make you see pipes in Linux with a new
-perspective. That being said, we **CAN USE** `set -o pipefail` in our `#!/bin/bash` scripts as long
-as we're aware of its limitations.
+Unfortunately, just like `set -e`, `set -o pipefail` has its own
+[quirks](https://mywiki.wooledge.org/BashPitfalls#pipefail) that make it unsuitable for enabling
+globally, especially when dealing with
+[buffered](https://www.pixelbeat.org/programming/stdio_buffering/)
+[output](https://www.perkin.org.uk/posts/how-to-fix-stdio-buffering.html).
 
-### noclobber
+### nounset
 
-`set -C` prevents scripts from overwriting existing files. The commands in the following script will
-run successfully except line number 3 assuming that `sample.txt` already exists.
+`set -u` treats unset variables and parameters, except `"$@"` and `"$*"`, as an error and causes the
+script to exit. If we use `set -u` and write `$1` and it turns out to be unset, our script will
+exit.
 
-```sh linenums="1"
-set -C
+Unlike `set -e` and `set -o pipefail`, `set -u` is relatively harmless but it still has its quirks.
+If you want to use `set -u`, you'll need to ensure that you
 
-echo "overwrite" > sample.txt
-echo "append" >> sample.txt
-echo "send to null" > /dev/null
-```
+- don't use an ancient version of bash
+- use `"${1-}"`, which is relatively uglier, instead of `"$1"`
 
-If you create the file using `touch sample.txt` before line 3, that will also cause line 3 to fail.
-The only case when line 3 would succeed is when `sample.txt` didn't exist before the execution of
-line 3.
-
-You can override the effect of `set -C` by using `>|` instead of `>`.
-
-Using `set -C` is going to come down to personal preference. I don't see much point in using it
-myself but if you want to, you can use it. If you do use it and need to overwrite an existing file,
-either use `>|` or, better yet, redirect the command in question to a temporary file and copy that
-file over to the intended file.
+If you're okay with the tradeoff of making your code less readable, go ahead and use `set -u`. The
+alternative is to use shellcheck and test your scripts before deployment.
 
 ### trap
 
-Using `trap` can be helpful if you want to implement cleanup jobs before a script exits. A simple
-use case can be deleting temporary files and directories created as part of the script.
+A `trap` is typically used for implementing cleanup and fallback jobs. It "traps" a signal and does
+something else than what the signal would've done.
 
 Here's a good example to show how `trap` works with `ERR`, `EXIT`, `exit 1`, and `return 1`.
-
-???+ warning
-    The `ERR` signal doesn't work on POSIX sh
 
 ```sh
 set -Euo pipefail
@@ -292,21 +213,20 @@ test_exit
 ```
 
 As we've said before, although `trap clean_return ERR` catches `return 1`, it will also catch
-anything `set -e` does. As a result, it might be wiser to not use `set -E` and `trap '...' ERR`
-globally and, instead, use them in specific sections and then disable them using `set +E` and `trap
-- ERR`.
+anything `set -e` does. As a result, it's better to not use
+
+```
+set -E
+trap '...' ERR
+```
+globally and, instead, use them in specific sections of the code and then disable them using
+
+```
+set +E
+trap - ERR
+```
 
 [This](http://redsymbol.net/articles/bash-exit-traps/) blog post has more details about `trap`.
-
-### errtrace
-
-The usage of `set -E` is only relevant when pairing it with `trap '...' ERR`. From `man bash`,
-
-> If set, any trap on `ERR` is inherited by shell functions, command substitutions, and commands
-> executed in a subshell environment.  The `ERR` trap is normally not inherited in such cases.
-
-???+ warning
-    `set -E` doesn't work on POSIX sh
 
 ## Style Guide
 
