@@ -119,14 +119,14 @@ pipefail` in `/bin/bash`, the exit status of the pipe is the exit status of the 
 failed.
 
 However, that's all that `set -o pipefail` does. In isolation, it **DOES NOT** cause the script
-execution to stop. It simply changes the exit code of the pipe in question and allows the script
+execution to stop. It simply changes the exit code of the pipeline in question and allows the script
 execution to go ahead. Only when it's coupled with `set -e` or `|| exit 1` does the script execution
 actually stop.
 
 Even if we do use `set -eo pipefail`, all the commands in a pipe are still executed, even if the
 first command in a pipe fails. Yes, you read that right. Using `set -e` just doesn't allow the
 script to proceed further, but it doesn't actually terminate the script execution in the middle of a
-pipe.
+pipeline.
 
 Here's a simple, albeit stupid, example to show what we're talking about.
 
@@ -242,7 +242,8 @@ In addition to what's written in the links mentioned above,
     writing trivial shell scripts. If you need arrays, either use `#!/bin/bash` or a better
     programming language[^3].
 
-- don't use external programs like `sed`, `awk`, `tr`, `cut`, `find` if you don't need to
+- [don't use external programs](using_external_commands.md) like `sed`, `awk`, `tr`, `cut`, `find`
+  if you don't need to
 
     One of the primary issues with writing shell scripts is that they lack robust error handling.
     `set -e` isn't really a solution and our so-called "strict mode" is mostly duct tape. The lack
@@ -310,10 +311,9 @@ system. I've done this on Arch Linux and things have been working fine ... so fa
 
 [^3]:
 I guess "complex" is a subjective word in this case. In my opinion, any script you personally
-consider to be remotely serious should probably be written in another language like Python. But hey,
-there's projects like
-[password-store](https://git.zx2c4.com/password-store/tree/src/password-store.sh) and
-[neofetch](https://github.com/dylanaraps/neofetch/blob/master/neofetch) out there. One of them is a
-password manager (well, it uses `gpg` under the hood but it still wraps the whole thing using a bash
-script) and the other has 10k+ LOC. [Kubernetes](https://github.com/kubernetes/kubernetes) is
-another great example which uses a significant amount of shell script code.
+consider to be remotely serious should probably be written in another scripting language like
+Python. However, the existence of a significant amount of shell script code in projects like
+[Kubernetes](https://github.com/kubernetes/kubernetes) is something to think about. Another
+non-trivial example I can think of is
+[passwordstore](https://git.zx2c4.com/password-store/tree/src/password-store.sh) which is a password
+manager built on top of GPG.
