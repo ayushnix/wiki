@@ -26,3 +26,7 @@ date: 2021-09-19
      If you've got something you want to accomplish with the rest of your life, the one who's gonna
      grant your wishes isn't the gods. It's yourself. The only one who can do what you want to do -
      is you.
+
+???+ quote "Javik (Mass Effect 3)"
+     Stand in the ashes of a trillion dead souls, and ask the ghosts if honor matters. The silence
+     is your answer.
