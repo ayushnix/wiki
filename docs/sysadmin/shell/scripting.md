@@ -295,9 +295,20 @@ The list of keywords and built-in commands which I WON'T use are
 - `until` (use `while`)
 - `function` (completely useless, no idea why anyone would use this)
 - `eval` (security issues)
-- `declare` (`typeset` seems to be more widely supported)
 - `readarray` (`mapfile` seems to be more widely used)
 - `let` (use `((` and `$((`)
+
+The choice between using either `declare` or `typeset` isn't as straightforward. `declare` is a bash
+exclusive built-in command and you may not find it in other shells. `typeset` is a portable
+alternative but the bash hackers wiki
+[claims](https://wiki.bash-hackers.org/commands/builtin/declare#portability_considerations) that
+`typeset` has been marked as obsolete and deprecated. I couldn't find `typeset` being mentioned as
+obsolete in the bash reference manual or the man page though.
+
+It should be kept in mind that not all options provided by `declare/typeset` in
+[bash](https://www.gnu.org/software/bash/manual/bash.html#Bash-Builtins) are
+[portable](https://man.openbsd.org/ksh) so using `typeset` with a non-portable option is pointless
+and may even be considered a bad practice.
 
 [^1]:
 C'mon, who uses white spaces in file and directory names in Linux? Okay, I know I don't but not
