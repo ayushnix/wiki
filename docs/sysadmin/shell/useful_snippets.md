@@ -45,5 +45,12 @@ hash table for faster access. It also doesn't append anything to stdout so you c
 like `hash "$d" 2> /dev/null` instead which is shorter.
 
 **DO NOT** use the `which` command for this. The reason is pretty simple. `command -v` is POSIX
-compatible and a shell built in keyword. There's no reason to use an external command and take on
+compatible and a shell built in keyword. There's no reason[^1] to use an external command and take on
 the extra costs and uncertainties when you don't need to.
+
+[^1]:
+There's a minor caveat when using `command -v`. If you use `command -v` interactively and if the
+command you're looking for has an alias, `command -v` will print that alias instead of exiting with
+an error. So, if you've defined an alias for `ll` and you execute `command -v` interactively, you'll
+get `alias ll='ls -lAh'` as the output. This doesn't happen when using `command -v` inside scripts
+though so you can still go ahead and use `command -v` instead of `which` when writing scripts.
