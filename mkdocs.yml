@@ -21,6 +21,7 @@ nav:
           - "Using External Commands": "sysadmin/shell/using_external_commands.md"
           - "Useful Snippets": "sysadmin/shell/useful_snippets.md"
           - "Reference": "sysadmin/shell/reference.md"
+      - How SSH Certificates Work: "sysadmin/how-ssh-certs-work.md"
       - Tools:
           - "Tmux": "sysadmin/tools/tmux.md"
           - "One Liners": "sysadmin/tools/oneliners.md"
