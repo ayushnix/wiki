@@ -15,8 +15,8 @@ using shell scripts.
   used across all Unix-like systems
 
     Debian uses dash as its `/bin/sh` and Alpine, used widely in containers, uses BusyBox which uses
-    its own version of [ash](https://en.wikipedia.org/wiki/Almquist_shell). There's `tcsh` used by
-    FreeBSD and `pdksh` used by OpenBSD. Needless to say, there are syntactical differences between
+    its own version of [ash](https://en.wikipedia.org/wiki/Almquist_shell). There's ~~`tcsh` used by
+    FreeBSD~~[^4] and `pdksh` used by OpenBSD. Needless to say, there are syntactical differences between
     all of them although scripts written for POSIX `/bin/sh` should probably run reliably across all
     of these platforms.
 
@@ -326,3 +326,7 @@ Python. However, the existence of a significant amount of shell script code in p
 non-trivial example I can think of is
 [passwordstore](https://git.zx2c4.com/password-store/tree/src/password-store.sh) which is a password
 manager built on top of GPG.
+[^4]:
+FreeBSD seems to have [switched to
+`/bin/sh`](https://cgit.freebsd.org/src/commit/?id=d410b585b6f00a26c2de7724d6576a3ea7d548b7) as the
+default shell for the root user.
