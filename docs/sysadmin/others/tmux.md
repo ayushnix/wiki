@@ -1,5 +1,5 @@
 ---
-title: "Tmux"
+title: "tmux"
 summary: "An overview of some basic operations in tmux"
 date: 2021-01-17
 ---

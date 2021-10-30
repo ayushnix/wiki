@@ -21,10 +21,11 @@ nav:
           - "Using External Commands": "sysadmin/shell/using_external_commands.md"
           - "Useful Snippets": "sysadmin/shell/useful_snippets.md"
           - "Reference": "sysadmin/shell/reference.md"
-      - How SSH Certificates Work: "sysadmin/how-ssh-certs-work.md"
-      - Tools:
-          - "Tmux": "sysadmin/tools/tmux.md"
-          - "One Liners": "sysadmin/tools/oneliners.md"
+      - SSH:
+          - "SSH Certificates": "sysadmin/ssh/ssh-certificates.md"
+      - Others:
+          - "tmux": "sysadmin/others/tmux.md"
+          - "Useful One Liners": "sysadmin/others/oneliners.md"
   - "Networking":
       - DNS:
           - "How Does DNS Work?": "networking/dns/how-does-dns-work.md"
