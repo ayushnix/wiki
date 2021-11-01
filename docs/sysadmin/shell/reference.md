@@ -58,6 +58,7 @@ A list of common tests you can do inside `[[ ... ]]` are
 | `file1 -nt file2`      | TRUE, if file1 is newer than file2; use `-ot` for the antonym      |
 | `-z string`            | TRUE, if string is empty                                           |
 | `-n string`            | TRUE, if string is not empty                                       |
+| `-h string`            | TRUE, if file exists and is a symlink                              |
 | `string1 == string2`   | TRUE, if string1 matches the **pattern** in string2                |
 | `string1 == "string2"` | TRUE, if string1 literally matches string2                         |
 | `string1 != string2`   | TRUE, if string1 doesn't match the **pattern** in string2          |
