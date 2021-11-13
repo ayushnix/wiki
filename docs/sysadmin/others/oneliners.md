@@ -4,7 +4,7 @@ summary: "Useful One Line Commands — sed, awk, regex, ffmpeg etc"
 date: 2021-03-08
 ---
 
-# sed, awk, regex
+# sed, awk, vim, regex
 
 print the content between line numbers `a` and `b`
 
@@ -12,10 +12,17 @@ print the content between line numbers `a` and `b`
 sed -n 'a,bp' file.txt
 ```
 
-replace all the MAC addresses in a file with a custom mac address
+replace all the MAC addresses in a file with a custom mac address using *quantifiers* (`{17}`)
 
 ```
 sed -E -i 's|[a-f0-9A-F:]{17}|00:00:00:00:00:00|g' test.json
+```
+
+remove characters (`*` in this case) surrounding words in vim, where words contain alphabets,
+numbers, and hyphen by grouping them (`\(` and `\)`) and using backreferences (`\1`)
+
+```
+:%s/\*\([[:alnum:]-]\+\)\*/\1/g
 ```
 
 # ffmpeg
