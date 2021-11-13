@@ -4,3 +4,4 @@
 *[AWS]: Amazon Web Services
 *[GCP]: Google Cloud Platform
 *[LDAP]: Lightweight Directory Access Protocol
+*[PSK]: Pre-Shared Key

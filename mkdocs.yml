@@ -23,6 +23,8 @@ nav:
           - "Reference": "sysadmin/shell/reference.md"
       - SSH:
           - "SSH Certificates": "sysadmin/ssh/ssh-certificates.md"
+      - GPG:
+          - "GnuPG 101": "sysadmin/gpg/gpg-101.md"
       - Others:
           - "tmux": "sysadmin/others/tmux.md"
           - "Useful One Liners": "sysadmin/others/oneliners.md"
