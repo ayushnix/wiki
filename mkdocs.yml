@@ -31,6 +31,8 @@ nav:
   - "Networking":
       - DNS:
           - "How Does DNS Work?": "networking/dns/how-does-dns-work.md"
+      - TLS:
+          - "Part 1 - How Does TLS Work?": "networking/tls/how-does-tls-work-part1.md"
   - "DevOps":
       - Git:
           - "Getting Started With Git": "devops/git/getting-started-with-git.md"
