@@ -88,7 +88,7 @@ Verisign.
 
 Basically, ISPs often hijack user DNS and show ads for their products on NXDOMAIN pages.
 Interestingly, Verisign did this themselves with
-[SiteFinder](https://en.m.wikipedia.org/wiki/Site_Finder) making a wildcard DNS record for all
+[SiteFinder](https://en.wikipedia.org/wiki/Site_Finder) making a wildcard DNS record for all
 NXDOMAINs in `.com` and `.net` TLD and showing ads. Pretty ironic considering this issue with Chrome
 has been highlighted by Verisign themselves. To stop this bullshit, Chrome started generating random
 domains to check whether NXDOMAINs were being hijacked and if yes, stopped suggesting the user to
