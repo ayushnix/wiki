@@ -20,7 +20,8 @@ I decided to focus more on writing a wiki instead of blog posts because
 - having my own cheatsheet and reference sounds better than desparately searching on
   Google/DuckDuckGo for answers
 
-I'll still write blog posts but only when I find something interesting to write.
+I'll still write [blog posts](https://blog.ayushnix.com) but only when I find something interesting
+to write.
 
 If you find this wiki helpful, please consider supporting me by buying me a coffee :coffee:
 

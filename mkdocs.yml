@@ -13,7 +13,7 @@ copyright: >-
 
 nav:
   - Home: "index.md"
-  - Blog: "https://ayushnix.com/blog"
+  - Blog: "https://blog.ayushnix.com"
   - "Linux System Administration":
       - Shell:
           - "Shell Scripting": "sysadmin/shell/scripting.md"
