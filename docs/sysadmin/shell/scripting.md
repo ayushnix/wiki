@@ -309,23 +309,24 @@ It should be kept in mind that not all options provided by `declare/typeset` in
 and may even be considered a bad practice.
 
 [^1]:
-C'mon, who uses white spaces in file and directory names in Linux? Okay, I know I don't but not
+C'mon, who uses white spaces in file and directory names on Linux? Okay, I know I don't but not
 everyone is averse to using white spaces in file and directory names, especially people who come
 from a Windows background.
 
 [^2]:
-You can still write sh compatible scripts while using bash if you use `set -o posix`. Or, just
-install dash, symlink `/bin/sh` to it, and use `#!/bin/sh` although this may not work well on your
-system. I've done this on Arch Linux and things have been working fine ... so far.
+You can still write sh compatible scripts while using bash if you use `set -o posix`. Better yet,
+install `dash`, symlink `/bin/sh` to it, and use `#!/bin/sh`. However, this might not work well on
+your system if it expects `#!/bin/sh` to be `#!/bin/bash`. I've done this on Arch Linux and things
+have been working fine ... so far.
 
 [^3]:
 I guess "complex" is a subjective word in this case. In my opinion, any script you personally
-consider to be remotely serious should probably be written in another scripting language like
-Python. However, the existence of a significant amount of shell script code in projects like
-[Kubernetes](https://github.com/kubernetes/kubernetes) is something to think about. Another
-non-trivial example I can think of is
-[passwordstore](https://git.zx2c4.com/password-store/tree/src/password-store.sh) which is a password
-manager built on top of GPG.
+consider to be remotely serious should probably be written in another language with better error
+handling and memory safety. However, there are non-trivial projects like
+[pass](https://git.zx2c4.com/password-store/tree/src/password-store.sh),
+[acme.sh](https://github.com/acmesh-official/acme.sh/blob/master/acme.sh), and
+[dehydrated](https://github.com/dehydrated-io/dehydrated/blob/master/dehydrated) which makes one
+think what "complex" really is.
 [^4]:
 FreeBSD seems to have [switched to
 `/bin/sh`](https://cgit.freebsd.org/src/commit/?id=d410b585b6f00a26c2de7724d6576a3ea7d548b7) as the
