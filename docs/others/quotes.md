@@ -53,6 +53,10 @@ date: 2021-09-19
      You can get quite far in a democracy if you can convince a majority that they are victims of a
      minority, and that only you can protect them.[^3]
 
+???+ quote "Wernher von Braun (For All Mankind TV Series S01 48:48)"
+     So ... the only question that remains is who will benefit from this situation. Every political
+     system is flawed. And every bureaucray is corrupt.
+
 [^1]: [source](https://old.reddit.com/r/IAmA/comments/36ru89/just_days_left_to_kill_mass_surveillance_under/crglgh2/)
 [^2]: [source](https://theintercept.com/2016/05/03/edward-snowden-whistleblowing-is-not-just-leaking-its-an-act-of-political-resistance/)
 [^3]: [source](https://twitter.com/kasparov63/status/756503082448654336)
