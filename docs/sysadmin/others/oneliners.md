@@ -50,4 +50,12 @@ use dd to write an iso file to a flash drive[^1]
 dd if=/data/ubuntu.iso of=/dev/sda bs=4096 status=progress conv=fsync
 ```
 
+# misc
+
+generate a qrcode for sharing wifi access
+
+```
+qrencode -t SVG -o guestwifi.svg WIFI:S:<SSID>;T:<WEP|WPA|blank>;P:<PASSWORD>;H:<true|false|blank>;
+```
+
 [^1]: [See this](https://abbbi.github.io/dd/) for an explanation for why to use `conv=fsync`
