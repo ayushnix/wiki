@@ -16,3 +16,4 @@
 *[SAN]: Subject Alternative Name
 *[ACME]: Automated Certificate Management Environment
 *[ISRG]: Internet Security Research Group
+*[ALPN]: Application-Layer Protocol Negotiation
