@@ -62,10 +62,10 @@ shortly. If not, depending on the situation, the recursive DNS you've queried ca
 These nameservers (NS) are mentioned in decreasing order of the probability of being visited.
 
 If the recursive DNS we're using doesn't have the `A` records of `ayushnix.com`, it'll go to the
-authoritative NS that `ayushnix.com` is using. For now, I'm using the NS provided by ~~my domain
-name registrar~~ but one can also use authoritative nameservers provided by Cloudflare or other
-providers for faster DNS resolution. These authoritative nameservers will provide the required `A`
-records and DNS resolution for my website will finish successfully.
+authoritative NS that `ayushnix.com` is using. For now, I'm using the NS provided by my domain name
+registrar but one can also use authoritative nameservers provided by Cloudflare or other providers
+for faster DNS resolution. These authoritative nameservers will provide the required `A` records and
+DNS resolution for my website will finish successfully.
 
 If the recursive DNS we're using has neither `A` records nor the authoritative NS records for
 `ayushnix.com`, it'll go to the TLD NS of `com` since I'm using the `com` top level domain. It'll
