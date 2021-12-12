@@ -17,3 +17,11 @@
 *[ACME]: Automated Certificate Management Environment
 *[ISRG]: Internet Security Research Group
 *[ALPN]: Application-Layer Protocol Negotiation
+*[CA]: Certificate Authority
+*[PKI]: Public-Key Infrastructure
+*[PFS]: Perfect Forward Secrecy
+*[AEAD]: Authenticated Encryption with Additional Data
+*[SNI]: Server Name Indication
+*[RTT]: Round Trip Time
+*[PFS]: Perfect Forward Secrecy
+*[SRP]: Secure Remote Password
