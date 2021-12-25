@@ -1,5 +1,5 @@
 ---
-title: "Part 1 - How Does TLS Work?"
+title: "Getting A Certificate"
 summary: "Before I get a certificate for my domain, I want to know how TLS actually works."
 date: 2021-11-18
 ---

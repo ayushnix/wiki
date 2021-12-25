@@ -1,12 +1,12 @@
 ---
-title: "Part 2 - How Does TLS Work?"
+title: "Certificate Chains, Cipher Suites, and TLS Handshake"
 summary: "This article deals with what happens when you make a TLS connection"
 date: 2021-12-10
 ---
 
 # Introduction
 
-Now that we know [how to get a TLS certificate](how-does-tls-work-part1.md) from a trusted
+Now that we know [how to get a TLS certificate](getting-a-certificate.md) from a trusted
 certificate authority, we'll look at TLS from the perspective of a user who connects to a web server
 and uses a website encrypted using TLS. This will give us a complete overview of how TLS works.
 
@@ -609,7 +609,7 @@ or record of a value that uniquely identifies the client.
 [RFC 8446](https://datatracker.ietf.org/doc/html/rfc8446) is the canonical source of reference for
 TLS 1.3. The [major differences](https://datatracker.ietf.org/doc/html/rfc8446#section-1.2) and
 [updates](https://datatracker.ietf.org/doc/html/rfc8446#section-1.3) present a good overview of why
-TLS 1.3 should be preferred over TLS 1.3.
+TLS 1.3 should be preferred over TLS 1.2.
 
 For reference, the `Kx` algorithms supported by TLS 1.3 are (EC)DHE. The supported finite field
 groups and curves are mentioned [here](https://datatracker.ietf.org/doc/html/rfc8446#section-4.2.7).
