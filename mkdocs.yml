@@ -34,6 +34,7 @@ nav:
       - TLS:
           - "Getting A Certificate": "networking/tls/getting-a-certificate.md"
           - "Certificate Chain and TLS Handshake": "networking/tls/cert-chain-and-tls-handshake.md"
+          - "Certificate Transparency and Revocation": "networking/tls/certificate-transparency-and-revocation.md"
   - "DevOps":
       - Git:
           - "Getting Started With Git": "devops/git/getting-started-with-git.md"
