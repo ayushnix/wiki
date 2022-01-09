@@ -25,3 +25,8 @@
 *[RTT]: Round Trip Time
 *[PFS]: Perfect Forward Secrecy
 *[SRP]: Secure Remote Password
+*[MMD]: Maximum Merge Delay
+*[CMS]: Cryptographic Message Syntax
+*[CRL]: Certificate Revocation List
+*[OCSP]: Online Certificate Status Protocol
+*[ECH]: Encrypted Client Hello
