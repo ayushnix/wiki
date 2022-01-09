@@ -55,7 +55,7 @@ date: 2021-09-19
 
 ???+ quote "Wernher von Braun (For All Mankind TV Series S01 48:48)"
      So ... the only question that remains is who will benefit from this situation. Every political
-     system is flawed. And every bureaucray is corrupt.
+     system is flawed. And every bureaucracy is corrupt.
 
 [^1]: [source](https://old.reddit.com/r/IAmA/comments/36ru89/just_days_left_to_kill_mass_surveillance_under/crglgh2/)
 [^2]: [source](https://theintercept.com/2016/05/03/edward-snowden-whistleblowing-is-not-just-leaking-its-an-act-of-political-resistance/)
