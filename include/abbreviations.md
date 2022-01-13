@@ -30,3 +30,4 @@
 *[CRL]: Certificate Revocation List
 *[OCSP]: Online Certificate Status Protocol
 *[ECH]: Encrypted Client Hello
+*[CAA]: Certificate Authority Authorization

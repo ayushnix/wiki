@@ -105,7 +105,7 @@ and the `CNAME` record are the ones we need to focus on. If you need more inform
 resource records, go to [Cloudflare's Learning
 Center](https://www.cloudflare.com/learning/dns/dns-records/).
 
-### A Record
+### A/AAAA
 
 Understanding the `A/AAAA` record is simple — it holds the IPv4/IPv6 address for a domain. You can
 use multiple `A` records for a single domain, kinda like how [GitHub
@@ -121,7 +121,7 @@ tells you to point your apex domain to the following IP addresses and create `A`
 
 Some providers, like CloudFlare, might use `@` to denote the apex domain.
 
-### CNAME Record
+### CNAME
 
 `A` records are straightforward to use. However, when you're dealing with multiple subdomains,
 writing `A` records for each of them isn't the best thing we can do. If the IP addresses that all
@@ -134,7 +134,7 @@ subdomain variant to the apex domain. In my case, I have a `CNAME` record pointi
 `www.ayushnix.com` to `ayushnix.com`.  Here's a truncated output showcasing what I'm talking about.
 
 ```
-➜ drill ayushnix.com
+$ drill ayushnix.com
 
 ;; ANSWER SECTION:
 ayushnix.com.   3599    IN      A       185.199.109.153
@@ -142,7 +142,7 @@ ayushnix.com.   3599    IN      A       185.199.111.153
 ayushnix.com.   3599    IN      A       185.199.110.153
 ayushnix.com.   3599    IN      A       185.199.108.153
 
-➜ drill www.ayushnix.com
+$ drill www.ayushnix.com
 
 ;; ANSWER SECTION:
 www.ayushnix.com.       2399    IN      CNAME   ayushnix.github.io.
@@ -216,7 +216,7 @@ advertising company.
 blog post about this issue. Basically, use uBlock Origin on Firefox if you want protection against
 CNAME tracking.
 
-### ALIAS/ANAME Record
+### ALIAS/ANAME
 
 An `ALIAS/ANAME` record is basically a `CNAME` record without the limitations and inefficiency of
 `CNAME` records. Cloudflare calls this `CNAME` flattening.
@@ -248,3 +248,150 @@ One of the disadvantages of `ALIAS` mentioned on [this blog
 post](https://ns1.com/blog/the-difference-between-alias-and-cname) tells us that `ALIAS` records may
 make CDN efforts worthless because the CDN will respond to the location of the authoritative
 nameserver, not yours.
+
+### CAA
+
+This DNS record is defined in [RFC 8659](https://datatracker.ietf.org/doc/html/rfc8659). It is
+primarily used to define the list of certificate authorities which can issue certificates for a
+domain and its sub-domains[^1].
+
+A CAA record may be specified as
+
+```
+<flag> <tag> <value>
+```
+
+Although the value of `flag` can be an unsigned integer between 0 and 255, I don't understand what
+any value besides 0 does. The value of `tag` will be either `issue`, `issuewild`, or `iodef`. Any
+other value doesn't make sense for now, at least to me. The `value` will be ... a value.
+
+It's better to explain how CAA works using pseudocode written in RFC 8659.
+
+```
+while domain is not ".":
+    if CAA(domain) is not empty then
+        return CAA(domain)
+    domain = parent(domain)
+```
+
+Remember, each sub-domain, and the domain itself, if found non-empty, will have their own CAA RR.
+This means that if `router.ayushnix.com` doesn't have a CAA record, those of `ayushnix.com` will
+apply. However, if `router.ayushnix.com` does have a CAA record, those of `ayushnix.com` are
+irrelevant.
+
+```
+ayushnix.com.    IN    CAA    0 issue "letsencrypt.org"
+```
+
+This means that ONLY Let's Encrypt should be able to issue certificates for
+
+- the apex domain, `ayushnix.com`
+- all sub-domains of `ayushnix.com`, let's say `router.ayushnix.com`, if those sub-domains don't
+  have a CAA record of their own
+- `*.ayushnix.com`
+- `*.router.ayushnix.com`, if `router.ayushnix.com` doesn't have a CAA record of its own
+
+The `issue` tag cannot be used for a (sub-)domain for which a CNAME record has been created. If it
+is used, a CA should ignore them and check for the presence of a CAA record on the domain being
+pointed at and parent domains for the given sub-domain. Basically, don't use a CAA record for a
+domain or a sub-domain that points to another domain using a CNAME RR. This made me interested and I
+was able to confirm that CAA records do work against a domain which uses an ALIAS/ANAME record.
+Here's another reason to not use CNAME records unless needed.
+
+```
+$ dig CAA ayushnix.com +short
+0 issuewild ";"
+```
+
+If a value of `";"` is provided, it means that nobody can issue a certificate for the domain in
+question.
+
+[RFC 8657](https://datatracker.ietf.org/doc/html/rfc8657) specifies extensions in `value` for the
+`issue` tag. It defines `accounturi=` and `validationmethods=`, which are intended when using ACME.
+The `value` of the former parameter will be the ACME account URL that you received when an ACME
+client was used for the first time. The `value` of the latter parameter will be either `dns-01`,
+`http-01`, or `tls-alpn-01`, valid ACME domain validation methods.
+
+A CAA record for the `issue` tag with the extensions mentioned above may look something like
+
+```
+ayushnix.com.    IN    CAA    0 issue "letsencrypt.org; \
+  accounturi=https://acme-v02.api.letsencrypt.org/acme/acct/112233445; \
+  validationmethods=dns-01"
+```
+
+As expected, multiple records with the `issue` tag may be specified to allow multiple CAs to issue
+certificates for a domain.
+
+The `issuewild` tag can be used to define the issuance of wildcard certificates.
+
+```
+ayushnix.com.    IN    CAA    0 issuewild "letsencrypt.org"
+```
+
+This means that ONLY Let's Encrypt should be ableto issue a certificate for
+
+- `*.ayushnix.com`
+- `*.router.ayushnix.com`
+
+However, in isolation, `issuewild` doesn't say anything about certificates for domains and
+sub-domains, such as `ayushnix.com` or `router.ayushnix.com`.
+
+```
+ayushnix.com.    IN    CAA    0 issue "letsencrypt.org"
+ayushnix.com.    IN    CAA    0 issuewild "digicert.com"
+```
+
+This means that ONLY Let's Encrypt should be able to issue certificates for
+
+- `ayushnix.com`
+- `router.ayushnix.com`
+
+and ONLY DigiCert should be able to issue wildcard certificates for
+
+- `*.ayushnix.com`
+- `*.router.ayushnix.com`
+
+```
+ayushnix.com.    IN    CAA    0 issue "letsencrypt.org"
+ayushnix.com.    IN    CAA    0 issuewild ";"
+```
+
+This ensures that nobody is able to issue wildcard certificates on your domain or sub-domain, unless
+an `issuewild` tag on a specific sub-domain says otherwise. This seems like a good starting point if
+you want to use CAA records.
+
+The `issue` and `issuewild` tags should always be obeyed by certificate authorities. However,
+obeying the `iodef` tag seems to be optional. It can be used to specify an email address[^2] to
+which a CA can send a report that a CAA record violation attempt was detected.
+
+```
+ayushnix.com.    IN    CAA    0 iodef "mailto:caa-violation@gmail.com"
+```
+
+This DNS record has been mentioned in the [Certificate Transparency and
+Revocation](../tls/certificate-transparency-and-revocation.md#we-have-logs-so-what) article. It's
+interesting to note that only [12.2% of the top 150,000
+websites](https://www.ssllabs.com/ssl-pulse/) are using DNS CAA RRs as of January 04, 2022. One of
+the reasons for low rates of adoption might be that the RFC for CAA recommends using DNSSEC to
+ensure authenticity of DNS responses, especially when CAA is in use.
+
+[This](https://sslmate.com/caa/) tool should help you deploy DNS CAA RRs for your website.
+
+For example, this is how the CAA record for `google.com` looks like
+
+```
+$ dig CAA google.com +short
+0 issue "pki.goog"
+```
+
+--8<-- "include/abbreviations.md"
+
+[^1]:
+This DNS RR is intended to be used as yet another layer for defense in depth rather than a
+definitive solution to prevent fiascos like the DigiNotar incident. A standards compliant CA
+**must** obey CAA records but a malicious CA can very well ignore them (although the consequences
+for such a CA should hopefully be severe).
+[^2]:
+A [RID](https://datatracker.ietf.org/doc/html/rfc6546) message may also be sent over a HTTPS URL. I
+have no idea what this is.
