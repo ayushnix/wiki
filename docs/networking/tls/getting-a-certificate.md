@@ -488,7 +488,8 @@ acme.sh allows us to create a private key for our domain, which it calls the *do
 it doesn't encrypt it. You can also create a CSR based on that private key.
 
 ```
-root@router:~# acme.sh --staging --create-domain-key -d router.ayushnix.com -k ec-256
+root@router:~# acme.sh --staging --create-domain-key -d router.ayushnix.com \
+                 -k ec-256
 root@router:~# acme.sh --staging --create-csr --ecc -d router.ayushnix.com
 
 root@router:~# tree /etc/acme/
@@ -513,7 +514,8 @@ in our DNS. [This](https://github.com/acmesh-official/acme.sh/wiki/dnsapi) shoul
 
 ```
 root@router:~# export PROVIDER_KEYS=""
-root@router:~# acme.sh --staging --issue --dns dns_provider -d router.ayushnix.com -k ec-256
+root@router:~# acme.sh --staging --issue --dns dns_provider \
+                 -d router.ayushnix.com -k ec-256
 ```
 
 The creation of the private key and the CSR in the beginning was unnecessary because the last
