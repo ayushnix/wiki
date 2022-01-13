@@ -472,7 +472,7 @@ port 80 or 443.
 
 Let's Encrypt provides a [staging environment](https://letsencrypt.org/docs/staging-environment/)
 where you can mess around and not worry about being rate limited, to a certain extent, if you don't
-do something right. Here's what I did to get a test certificate from the staging environment of
+do something right. Here's what I did[^10] to get a test certificate from the staging environment of
 Let's Encrypt:
 
 ```
@@ -610,7 +610,7 @@ Let's go ahead and get a real certificate (finally!). Yes, I moved the `/etc/acm
 root@router:~# acme.sh --issue --dns dns_provider -d router.ayushnix.com -k ec-256
 ```
 
-[Here's](https://crt.sh/?id=5761815225) the certificate that was issued[^10].
+[Here's](https://crt.sh/?id=5761815225) the certificate that was issued[^11].
 
 Here's an image that shows what we learned in this article.
 
@@ -656,5 +656,10 @@ I replaced uhttpd with nginx in my OpenWRT router because uhttpd can't handle en
 keys. If you don't have any issues leaving your private key unencrypted on your router, stick with
 uhttpd.
 [^10]:
+OpenWRT tries to wrap `acme.sh` with their own script which I didn't like because there's no
+documentation on how to use their script. Anyways, I created a symlink in `~/.local/bin` to make
+`acme.sh` available in `$PATH` and also used `--home /etc/acme_staging` for all the commands
+mentioned to make sure the staging doesn't end up getting mixed with the production environment.
+[^11]:
 Yes, I changed the name of the domain throughout the article. A bit of an irrational paranoia I
 guess?
