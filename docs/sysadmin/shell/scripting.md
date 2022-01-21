@@ -325,8 +325,10 @@ consider to be remotely serious should probably be written in another language w
 handling and memory safety. However, there are non-trivial projects like
 [pass](https://git.zx2c4.com/password-store/tree/src/password-store.sh),
 [acme.sh](https://github.com/acmesh-official/acme.sh/blob/master/acme.sh), and
-[dehydrated](https://github.com/dehydrated-io/dehydrated/blob/master/dehydrated) which makes one
-think what "complex" really is.
+[bashtop](https://github.com/aristocratos/bashtop) which makes one think what "complex" really is.
+[Here's](https://github.com/stars/ayushnix/lists/shell-script-projetcts) a list of non-trivial shell
+script projects that I've found so far.
+
 [^4]:
 FreeBSD seems to have [switched to
 `/bin/sh`](https://cgit.freebsd.org/src/commit/?id=d410b585b6f00a26c2de7724d6576a3ea7d548b7) as the
