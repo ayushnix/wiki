@@ -31,3 +31,6 @@
 *[OCSP]: Online Certificate Status Protocol
 *[ECH]: Encrypted Client Hello
 *[CAA]: Certificate Authority Authorization
+*[DSL]: Domain Specific Language
+*[a11y]: accessibility
+*[ARIA]: Accessible Rich Internet Applications
