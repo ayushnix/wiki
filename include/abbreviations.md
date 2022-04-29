@@ -34,3 +34,5 @@
 *[DSL]: Domain Specific Language
 *[a11y]: accessibility
 *[ARIA]: Accessible Rich Internet Applications
+*[SSG]: Static Site Generator
+*[IANAL]: I Am Not A Lawyer
