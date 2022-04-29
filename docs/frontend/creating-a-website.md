@@ -542,8 +542,8 @@ you'll reference `name` and `feed` by using
 {% endif %}
 ```
 
-In addition, if you want to traverse the entire taxonomy structure, you'll find this snippet
-interesting
+In addition, if you want to traverse the entire taxonomy structure wherever (in any context and in
+any template) you want, you'll find this snippet interesting
 
 ``` jinja
 {% if config.taxonomies %}
