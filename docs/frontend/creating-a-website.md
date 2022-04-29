@@ -513,14 +513,17 @@ incorporating such complexity into this project right now. Even in the 404 page,
 probably have something like `¯\_(ツ)_/¯` but the `header`, `nav`, and `footer` would still be there
 for the website that I have in mind.
 
+## Taxonomies
+
 This may not be readily apparent from the document for taxonomies but the fields of `TaxonomyTerm`
 should be used by prefixing `term.`. For example, `term.pages` and `term.name`. This is unrelated to
 the list of taxonomies you've defined in your `config.toml` file. It becomes active (gets active in
 the context you're working on) when you actually click on a tag and view the list of posts with that
 tag, the format for which is defined by `tags/single.html`.
 
-On the other hand, the variables in `TaxonomyConfig` are referenced by using the prefix `taxonomy.`
-This is the `taxonomies` configuration that you've defined in your `config.toml` file. If it's
+On the other hand, the variables in `TaxonomyConfig` have to be referenced by using the prefix
+`config.taxonomies`. Assuming that this is the taxonomies configuration defined in your
+`config.toml`,
 
 ``` toml
 taxonomies = [
@@ -528,8 +531,43 @@ taxonomies = [
 ]
 ```
 
-you'll reference `name` by using `taxonomy.name` and `feed` by using `taxonomy.feed`. Yeah, might
-feed weird because you'll usually access variables in `config.toml` using the `config.` prefix.
+you'll reference `name` and `feed` by using
+
+``` jinja
+{% if config.taxonomies %}
+  {% for tax in config.taxonomies %}
+    <p>taxonomy name: {{ tax.name }}</p>
+    <p>generate feed: {{ tax.feed }}</p>
+  {% endfor %}
+{% endif %}
+```
+
+In addition, if you want to traverse the entire taxonomy structure, you'll find this snippet
+interesting
+
+``` jinja
+{% if config.taxonomies %}
+  {% for tax in config.taxonomies %}
+    {% set elements = get_taxonomy(kind=tax.name) %}
+    <p>taxonomy name: {{ elements.kind.name }}</p>
+    <p>total number of {{ elements.kind.name }}: {{ elements.items | length }}</p>
+    {% for tag in elements.items %}
+    {% set url = get_taxonomy_url(kind=tax.name, name=tag.name) %}
+    <p>the url for {{ tag.name }} is {{ url }}</p>
+    <p>{{ tag.name }} - has {{ tag.pages | length }} pages</p>
+    {% endfor %}
+  {% endfor %}
+{% endif %}
+```
+
+The `elements` var will get access to two elements — `kind` and `items`. As mentioned in the zola
+documentation, `kind` gives you access to `TaxonomyConfig` which means the variable `taxonomies` in
+the `config.toml` file and its values. This is functionally equivalent to the `tax` variable. The
+`items` variable gets access to the entire list of tags you've defined inside `tax.name`. You can
+iterate over these tags as done in `for tag in elements.items` and get access to `TaxonomyTerm`
+values, which can also be called using `term.pages`, `term.name`, and `term.path` in a different and
+restricted context when `term` is already defined by zola, which is when browsing the list of pages
+tagged using a specific tag.
 
 # Favicons and Web Manifest
 
