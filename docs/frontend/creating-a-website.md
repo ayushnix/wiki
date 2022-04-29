@@ -513,6 +513,24 @@ incorporating such complexity into this project right now. Even in the 404 page,
 probably have something like `¯\_(ツ)_/¯` but the `header`, `nav`, and `footer` would still be there
 for the website that I have in mind.
 
+This may not be readily apparent from the document for taxonomies but the fields of `TaxonomyTerm`
+should be used by prefixing `term.`. For example, `term.pages` and `term.name`. This is unrelated to
+the list of taxonomies you've defined in your `config.toml` file. It becomes active (gets active in
+the context you're working on) when you actually click on a tag and view the list of posts with that
+tag, the format for which is defined by `tags/single.html`.
+
+On the other hand, the variables in `TaxonomyConfig` are referenced by using the prefix `taxonomy.`
+This is the `taxonomies` configuration that you've defined in your `config.toml` file. If it's
+
+``` toml
+taxonomies = [
+  { name = "tags", feed = true }
+]
+```
+
+you'll reference `name` by using `taxonomy.name` and `feed` by using `taxonomy.feed`. Yeah, might
+feed weird because you'll usually access variables in `config.toml` using the `config.` prefix.
+
 # Favicons and Web Manifest
 
 This section maybe unexpected in this post but it turns out that, just like the rest of the modern
