@@ -4,12 +4,12 @@ repo_name: AyushNix Wiki
 repo_url: https://github.com/ayushnix/wiki
 site_url: https://ayushnix.com
 edit_uri: ""
-site_description: Personal Wiki of Ayush Agarwal
+site_description: The personal wiki of Ayush Agarwal
 site_author: Ayush Agarwal
 copyright: >-
   &copy; Licensed Under
-  <a href=https://creativecommons.org/licenses/by-sa/4.0/>
-  CC BY-SA 4.0</a>
+  <a href="https://creativecommons.org/licenses/by-nc-nd/4.0/legalcode.txt">
+  CC BY-NC-ND 4.0</a>
 
 nav:
   - Home: "index.md"
@@ -38,6 +38,8 @@ nav:
   - "DevOps":
       - Git:
           - "Getting Started With Git": "devops/git/getting-started-with-git.md"
+  - "Frontend":
+      - "Creating A Website": "frontend/creating-a-website.md"
   - "Others":
       - "Quotes": "others/quotes.md"
       - "Monitors and Laptops": "others/monitors_and_laptops.md"
@@ -114,6 +116,7 @@ extra_css:
   - css/dark-light-image.css
   - css/font-family.css
   - css/primary-color.css
+  - css/scrollbar-layoutshift.css
 # extra_javascript:
 #   - js/custom.js
 
