@@ -138,7 +138,9 @@ might as well use the NCSA license.
 ??? abstract "NCSA"
 
     ```
-    Copyright (c) [YYYY] [YOUR NAME HERE] [user@your.email]
+    University of Illinois/NCSA Open Source License
+
+    Copyright (c) [YYYY] [YOUR NAME HERE] [user@your.email]. All rights reserved.
 
     Developed by: [project]
                   [fullname]
