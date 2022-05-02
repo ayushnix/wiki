@@ -269,6 +269,142 @@ at the very least. `padding: 0;` can also be added at the cost of losing list st
 Besides the obviously important stuff about padding, borders, and margin, and what `border-box` and
 `content-box` means, we'll need to understand the *inner* and *outer* display types of boxes.
 
+## Fonts
+
+It's amazing how people just copy paste shit they find on the internet and not try to understand it.
+[This article on CSS Tricks][60] talks about system font stack but never mentions what the hell does
+the following piece of code even mean
+
+``` css
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+}
+```
+
+and if it's even necessary. I mean, why not simply use
+
+``` css
+body {
+  font-family: sans-serif;
+}
+```
+
+and call it a day?
+
+It's amusing how the information I was looking for was found on a [random comment on Reddit][61].
+Apparently, `sans-serif` is a fallback font and if a user has set some weird font that shouldn't be
+used but is used anyways, you may want to display your site in a better font. But then again, why
+would I want to override a user's wishes to use a font of his choice?
+
+The emoji fonts are further fallbacks in case your website uses emojis. Those emojis may not be
+found in the font chosen by `sans-serif` (which isn't unlikely) so it makes sense to add them. This
+is how `font-family` looks like for now
+
+``` css
+:root {
+  --sans-font: sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Noto Color Emoji";
+}
+```
+
+This should cover Apple, Windows, and Linux when it comes to emojis. However, some Linux users may
+not have installed Noto Color Emoji on their desktops. I'm not sure if there's a good solution for
+those people.
+
+As expected, Apple have their own way of doing things (perhaps for good reasons in this case) and
+that's what `-apple-system` is. I was able to find [this article on Smashing Magazine][62] which
+does bother to go into detail about what each term inside `font-family` means. Basically,
+`-apple-system` will pick the right font on the right Apple device for you and you don't have to
+think about it. `BlinkMacSystemFont` is just for doing the same thing on Chrome on MacOS.
+
+``` css
+:root {
+  --sans-font: -apple-system, BlinkMacSystemFont, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Noto Color Emoji";
+}
+```
+
+This brings us to the question of specifying custom fonts before `sans-serif` and overriding user's
+wishes, which is a difficult position to take, at least for me. There are two reasons override the
+defaults,
+
+- the user may be an idiot and may have chosen a default font that shouldn't be used
+- the operating system provides shitty fonts out of the box and you don't want your website to look
+  shitty as well
+
+It doesn't help that Chromium browsers don't let you chose the fonts you want to use, unlike
+Firefox[^2]. I'll go ahead and use two custom fonts — one for Windows and one for Linux.
+
+I don't know if you care about typography and the fonts on your system but I do and it's no wonder
+that some of them look like they belong in the garbage truck that arrives every morning. Arial,
+Courier and its variants, Times New Roman, and Verdana belong in the garbage truck[^1]. Segoe UI is
+bearable. Let's go with Segoe UI on Windows.
+
+We don't need to worry about fonts on Android, just like we didn't have to worry about it when
+considering Apple devices. For better or worse, both of them run a pretty tight ship and consumer
+freedom belongs in `/dev/null` on both of these platforms. This certainly makes things easier for
+developers but makes users dense and umimaginative. `sans-serif` will take care of fonts on Android.
+The end result should be either `Roboto` or the newer Google Sans font.
+
+The only thing that's left is Linux, which is sorta like the wild west. Unfortunately, this is
+changing, thanks to GNOME. Yeah, I used the word unfortunately because they're converging towards
+the same design decisions that Google and Apple are making on their platforms. The default font
+choices on Linux, such as Noto Sans, DejaVu Sans, Liberation Sans, and Nimbus Sans look ... bland at
+best and poor at worst. Opinion? Obviously. If there's one font that I would consider adding to this
+stack, it's the [Inter font][67]. If it's installed, we definitely want to use that. I've also
+covered this font on [this page][64] in my wiki.
+
+I've omitted `system-ui` because of [this issue][65].
+
+This brings us down to
+
+``` css
+:root {
+  --sans-font: -apple-system, BlinkMacSystemFont, "Segoe UI", Inter, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Noto Color Emoji";
+}
+```
+
+I should emphasize that if you want things to be simple, you could just use
+
+``` css
+:root {
+  --sans-font: -apple-system, BlinkMacSystemFont, sans-serif;
+}
+```
+
+and be done with it. This should work fine in almost all cases and on all platforms. If `system-ui`
+didn't have the issues that it does, `--sans-font` could've been reduced to just two values.
+
+That finally covers the sans serif fonts. What about the monospace fonts for the code sections?
+
+``` css
+:root {
+  --mono-font: ui-monospace, "Cascadia Mono", Consolas, "SF Mono", Inconsolata, monospace;
+}
+```
+
+or, if you want things to be simple
+
+``` css
+:root {
+  --mono-font: ui-monospace, Consolas, monospace;
+}
+```
+
+If you're wondering what these choices mean (as you should be),
+
+- `ui-monospace` is something [supported only by Apple][66] devices for the moment and it should
+  automatically select the best available monospace font on the platform, which is probably SF Mono
+- `Consolas` is the most well known and relatively sensible monospace font on Windows, we absolutely
+  do NOT want `monospace` to fallback to courier or courier new (man, what a terrible font)
+- as expected, `monospace` is the equivalent of `sans-serif`, the default fallback monospace font
+
+It's also likely that many Windows installations would have `Cascadia Code` installed so we can
+choose to give that higher priority than `Consolas`. I've inserted `SF Mono` as my font of choice on
+Linux. In addition, `Inconsolata` has been added because it looks decent (similar to Consolas) and
+has a good chance of being installed on a typical Linux installation.
+
+What about serif fonts? Unfortunately, they shouldn't be used on screen because most users use
+shitty monitors which aren't HighDPI.
+
 ## Layout
 
 This, in my opinion, is the most important part of learning how to write CSS and not getting
@@ -697,8 +833,25 @@ microblog posts, the tags that I use in the post, and the direct link to the pos
 [57]: https://web.dev/maskable-icon/
 [58]: https://monochrome.fyi
 [59]: https://dataswamp.org/~solene/
-
+[60]: https://css-tricks.com/snippets/css/system-font-stack/
+[61]: https://old.reddit.com/r/web_design/comments/4sf18z/githubs_font_changed_without_any_announcement/d5938jw/
+[62]: https://www.smashingmagazine.com/2015/11/using-system-ui-fonts-practical-guide/
+[63]: ../others/monitors_and_laptops.md
+[64]: ../others/fonts.md
+[65]: https://infinnie.github.io/blog/2017/systemui.html
+[66]: https://caniuse.com/extended-system-fonts
+[67]: https://rsms.me/inter/
 [99]: https://github.blog/2021-06-22-framework-building-open-graph-images/
 [150]: https://seirdy.one/2020/11/23/website-best-practices.html
+
+[^1]:
+If we're being fair, most of the blame lies on HighDPI displays not being in widespread usage. It's
+not readily apparent unless you've looked at a HighDPI display but everything looks like shit on 96
+PPI displays. I've talked about this in the [monitors and laptops][63] page on this wiki. No wonder
+San Francisco fonts are an absolute pleasure to look at and work with.
+
+[^2]:
+Let's hope Firefox doesn't follow suit and remove this feature because the designers at Mozilla have
+made pretty stupid and annoying decisions.
 
 --8<-- "include/abbreviations.md"
