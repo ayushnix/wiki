@@ -614,8 +614,8 @@ root@router:~# acme.sh --issue --dns dns_provider -d router.ayushnix.com -k ec-2
 
 Here's an image that shows what we learned in this article.
 
-![Getting a Certificate - Dark Mode](/images/getting_a_cert_dark.webp){ .dark-mode-img }
-![Getting a Certificate - Light Mode](/images/getting_a_cert_light.webp){ .light-mode-img }
+![Getting a Certificate - Dark Mode](/images/getting_a_cert_dark.webp#only-dark)
+![Getting a Certificate - Light Mode](/images/getting_a_cert_light.webp#only-light)
 
 --8<-- "include/abbreviations.md"
 

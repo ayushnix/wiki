@@ -98,8 +98,8 @@ Root CA`.
 
 This is what we have.
 
-![Certificate Chain - Dark Mode](/images/certificate_chain_dark.webp){ .dark-mode-img }
-![Certificate Chain - Light Mode](/images/certificate_chain_light.webp){ .light-mode-img }
+![Certificate Chain - Dark Mode](/images/certificate_chain_dark.webp#only-dark)
+![Certificate Chain - Light Mode](/images/certificate_chain_light.webp#only-light)
 
 For all the scary warnings that web browsers present when we use self-signed certificates, it's
 kinda ironic that root CA certificates can be self-signed certificates. It really makes you think
@@ -326,8 +326,8 @@ in real time.
 Here's how the first part of a TLS 1.2 handshake, `Client Hello`, looks like in
 [termshark](https://github.com/gcla/termshark):
 
-![Wireshark Client Hello TLS 1.2 - Dark Mode](/images/client_hello_dark.webp){ .dark-mode-img }
-![Wireshark Client Hello TLS 1.2 - Light Mode](/images/client_hello_light.webp){ .light-mode-img }
+![Wireshark Client Hello TLS 1.2 - Dark Mode](/images/client_hello_dark.webp#only-dark)
+![Wireshark Client Hello TLS 1.2 - Light Mode](/images/client_hello_light.webp#only-light)
 
 That being said, I think a brief summary of the handshake process would be beneficial
 for future reference.
@@ -629,8 +629,8 @@ certificate needed in a TLS handshake, it needs to know the domain for which the
 be provided to the client for verification. Since this extension is part of the unencrypted `Client
 Hello` message, it is open for exploitation.
 
-![SNI - Dark Mode](/images/sni-dark.webp){ .dark-mode-img }
-![SNI - Light Mode](/images/sni-light.webp){ .light-mode-img }
+![SNI - Dark Mode](/images/sni-dark.webp#only-dark)
+![SNI - Light Mode](/images/sni-light.webp#only-light)
 
 Typically, the domain to which a user wants to connect to appears in 3 different places — the DNS
 query (which is often unencrypted and easy to exploit), the TLS SNI extension, and the HTTP host

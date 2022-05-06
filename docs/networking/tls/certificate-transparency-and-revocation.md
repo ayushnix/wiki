@@ -287,8 +287,8 @@ certificate status request extension.
 
 Unfortunately, it looks like OCSP status request messages in TLS 1.2 aren't encrypted.
 
-![OCSP Response - Dark Mode](/images/ocsp-response-dark.webp){ .dark-mode-img }
-![OCSP Response - Light Mode](/images/ocsp-response-light.webp){ .light-mode-img }
+![OCSP Response - Dark Mode](/images/ocsp-response-dark.webp#only-dark)
+![OCSP Response - Light Mode](/images/ocsp-response-light.webp#only-light)
 
 Fortunately, OCSP responses using the status request extension are encrypted in TLS 1.3. There, we
 now have another reason to use TLS 1.3 in our servers.
