@@ -1,6 +1,6 @@
 [build]
 # base = "project/"
-publish = "public/"
+# publish = "public/"
 command = "mkdocs build"
 
 [build.environment]
