@@ -573,6 +573,7 @@ the resources that I've already mentioned, here are some other resources which m
 - [1 line layouts][45] and [explanations on web.dev][46]
 - [HTML5 Boilerplate][47] and [another one][48]
 - [Responsive Breakpoints][49]
+- [simple.css][68]
 
 # Static Site Generator
 
@@ -842,6 +843,7 @@ microblog posts, the tags that I use in the post, and the direct link to the pos
 [65]: https://infinnie.github.io/blog/2017/systemui.html
 [66]: https://caniuse.com/extended-system-fonts
 [67]: https://rsms.me/inter/
+[68]: https://github.com/kevquirk/simple.css
 [99]: https://github.blog/2021-06-22-framework-building-open-graph-images/
 [150]: https://seirdy.one/2020/11/23/website-best-practices.html
 
