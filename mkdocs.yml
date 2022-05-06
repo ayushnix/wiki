@@ -1,20 +1,23 @@
+# BASIC DETAILS ----------------------------------------------------------------
 ---
-site_name: AyushNix Wiki
-repo_name: AyushNix Wiki
+site_name: ayushnix wiki
+repo_name: ayushnix wiki
 repo_url: https://github.com/ayushnix/wiki
-site_url: https://ayushnix.com
+site_url: https://wiki.ayushnix.com
 edit_uri: ""
-site_description: The personal wiki of Ayush Agarwal
+site_description: the personal wiki of ayushnix
 site_author: Ayush Agarwal
 copyright: >-
   &copy; Ayush Agarwal · Content
   <a href="https://creativecommons.org/licenses/by-nc-nd/4.0/legalcode.txt">
-  CC-BY-NC-ND-4.0</a> · Source Code <a href="https://spdx.org/licenses/0BSD.html">
-  0BSD</a>
+  CC-BY-NC-ND-4.0</a> · <a href="https://github.com/ayushnix/wiki">Source Code</a>
+  <a href="https://spdx.org/licenses/0BSD.html">0BSD</a>
+
+# NAVIGATION -------------------------------------------------------------------
 
 nav:
   - Home: "index.md"
-  - Blog: "https://blog.ayushnix.com"
+  - Microblog: "https://microblog.ayushnix.com"
   - "Linux System Administration":
       - Shell:
           - "Shell Scripting": "sysadmin/shell/scripting.md"
@@ -47,12 +50,15 @@ nav:
       - "Fonts": "others/fonts.md"
       - "Copyright Licenses": "others/licenses.md"
 
+# THEME PROPERTIES -------------------------------------------------------------
+
 theme:
+  language: en
   name: material
   font: false
   icon:
     logo: material/book-open-outline
-    repo: fontawesome/brands/github
+    repo: fontawesome/brands/git
   favicon: images/book-open-outline.svg
   palette:
     - media: "(prefers-color-scheme: light)"
@@ -60,21 +66,24 @@ theme:
       primary: light-blue-900
       accent: deep-purple
       toggle:
-        icon: material/toggle-switch-off-outline
-        name: Switch to Dark Mode
+        icon: material/weather-sunny
+        name: switch to dark mode
     - media: "(prefers-color-scheme: dark)"
       scheme: slate
       primary: light-blue-300
       accent: orange
       toggle:
-        icon: material/toggle-switch
-        name: Switch to Light Mode
+        icon: material/weather-night
+        name: switch to light mode
   features:
     - navigation.instant
     - navigation.sections
+    - navigation.tracking
     - header.autohide
     - content.code.annotate
-    # - toc.integrate
+    - toc.integrate
+
+# PYTHON MARKDOWN EXTENSIONS ---------------------------------------------------
 
 markdown_extensions:
   - abbr
@@ -83,7 +92,7 @@ markdown_extensions:
   - def_list
   - footnotes
   - meta
-  - sane_lists
+  - tables
   - pymdownx.snippets
   - pymdownx.tabbed:
       alternate_style: true
@@ -92,6 +101,7 @@ markdown_extensions:
       anchor_linenums: true
   - pymdownx.inlinehilite
   - pymdownx.superfences
+  - pymdownx.mark
   - pymdownx.caret
   - pymdownx.tilde
   - pymdownx.smartsymbols
@@ -102,28 +112,28 @@ markdown_extensions:
       emoji_generator: !!python/name:materialx.emoji.to_svg
   - pymdownx.betterem:
       smart_enable: all
-  # - pymdownx.arithmatex:
-  #     generic: true
   - toc:
       permalink: "#"
       toc_depth: 4
       baselevel: 2
 
+# PLUGINS ---------------------------------------------------------------------
+
 plugins:
   - search
   - git-revision-date-localized:
+      type: iso_date
+      timezone: Asia/Kolkata
       enable_creation_date: true
 
+# CUSTOM CSS AND JS ------------------------------------------------------------
+
 extra_css:
-  - css/dark-light-image.css
-  - css/font-family.css
-  - css/primary-color.css
-  - css/scrollbar-layoutshift.css
-# extra_javascript:
-#   - js/custom.js
+  - css/custom.css
+
+# EXTRA SITE CONTENT -----------------------------------------------------------
 
 extra:
-  # manifest: manifest.webmanifest
   social:
     - icon: fontawesome/brands/github
       link: https://github.com/ayushnix
