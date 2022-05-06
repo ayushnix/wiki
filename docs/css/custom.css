@@ -1,4 +1,16 @@
-/* materialui.co/colors */
+/* insert a few custom fonts to prefer if they're present */
+:root {
+  --md-text-font: "Inter";
+  --md-code-font: "SF Mono", "Fira Code";
+}
+
+/* fix layout shift when moving from a page without scrollbar to a page with
+ * scrollbar and vice versa */
+html {
+  scrollbar-gutter: stable both-edges;
+}
+
+/* define some custom colors using materialui.co/colors */
 
 /* light-blue-300 */
 [data-md-color-primary="light-blue-300"] {
