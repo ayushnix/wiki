@@ -520,8 +520,7 @@ We can use `align-items: center` in `body`. This will do what we want but the ch
 
 ``` css
 body > * {
-  margin-left: auto;
-  margin-right: auto;
+  margin-inline: auto;
 }
 ```
 
