@@ -403,7 +403,9 @@ Linux. In addition, `Inconsolata` has been added because it looks decent (simila
 has a good chance of being installed on a typical Linux installation.
 
 What about serif fonts? Unfortunately, they shouldn't be used on screen because most users use
-shitty monitors which aren't HighDPI.
+shitty monitors which aren't HighDPI. However, you can use serif fonts or sans-serif fonts which
+retain some serifs on devices with a display DPR of at least 2 and preferably 3. I'm not interested
+in exploring this for the moment.
 
 ## Layout
 
