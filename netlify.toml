@@ -1,0 +1,10 @@
+[build]
+# base = "project/"
+publish = "public/"
+command = "mkdocs build"
+
+[build.environment]
+PYTHON_VERSION = "3.8"
+
+[context.deploy-preview]
+command = "mkdocs build --base-url $DEPLOY_PRIME_URL"
