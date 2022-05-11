@@ -90,6 +90,15 @@ In the case of monospace fonts, the font in question
     It looks like as if someone took a hammer, hit all the characters, and made them Gimli's
     siblings.
 
+- [Krub][9]
+
+    Krub might've been a good choice as one of the primary sans-serif fonts in use but the font
+    weight of its regular variant is too low.
+
+- [Karla][10]
+
+    A bit too short, wide, and serif-y for my taste.
+
 [1]: https://developer.apple.com/fonts/
 [2]: https://github.com/be5invis/iosevka
 [3]: https://rsms.me/inter/
@@ -98,3 +107,5 @@ In the case of monospace fonts, the font in question
 [6]: https://fonts.google.com/specimen/Roboto
 [7]: https://github.com/sharanda/manrope
 [8]: https://www.redhat.com/en/about/brand/standards/typography
+[9]: https://github.com/cadsondemak/Krub
+[10]: https://github.com/googlefonts/karla
