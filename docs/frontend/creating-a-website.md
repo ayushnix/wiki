@@ -753,6 +753,24 @@ Confused? Here are the list of icons you want
 - a "maskable" version of the "master" SVG image
 - a "monochrome" version of the "master" SVG image
 
+Don't forget to optimize your SVG image. I used SVGO to shave down the size of my SVG image from
+~5KB to ~1KB. There are several articles about using the `style` tag inside SVG images to color them
+differently in dark mode using media queries. However, I think we should avoid doing that because
+users can edit their browser UI into colors that may not necessarily be dark while they are in dark
+mode. In such cases, you don't want your SVG image to be illegible. The best choice in this case is
+to add a background to your SVG text/icon which will look decent in most colors. Or, you can choose
+an icon that looks decent on most color backgrounds.
+
+[Here's a comment by Chris Morgan][69] on Hacker News about using media queries in SVG images
+
+> Caution should also be exercised with the `prefers-color-scheme` media query on SVG icons. It does
+> not reflect whether the icon is being displayed on a light or dark background.
+> `(prefers-color-scheme: dark)` hints that your icon is probably being displayed against a dark
+> background, but it could easily still be being displayed against a light background; and with
+> `(prefers-color-scheme: light)` it will be quite common for the icon to be being displayed against
+> a dark background. You need to carefully design your icon so it works well against almost any
+> background colour.
+
 # Comments
 
 I've thought about including comments on this microblog website but, ultimately, I decided against
@@ -844,6 +862,7 @@ microblog posts, the tags that I use in the post, and the direct link to the pos
 [66]: https://caniuse.com/extended-system-fonts
 [67]: https://rsms.me/inter/
 [68]: https://github.com/kevquirk/simple.css
+[69]: https://news.ycombinator.com/item?id=25525246
 [99]: https://github.blog/2021-06-22-framework-building-open-graph-images/
 [150]: https://seirdy.one/2020/11/23/website-best-practices.html
 
