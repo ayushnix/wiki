@@ -707,6 +707,27 @@ values, which can also be called using `term.pages`, `term.name`, and `term.path
 restricted context when `term` is already defined by zola, which is when browsing the list of pages
 tagged using a specific tag.
 
+# Hyperlinks
+
+TL;DR?
+
+- don't change the color of the link on hover to prevent [layout shift of text][70]
+- don't underline your links by default
+
+The first point should be self-explanatory after reading the GitHub issue specified in the ...
+hyperlink. At the time of this writing, my own wiki has this issue. Fortunately, my microblog
+doesn't because I built it myself. In case you didn't click on that link, changing the color of a
+hyperlink on a hover can cause it to drift up or down and cause layout shifts on your monitor if the
+color of the hovered text goes from blue to red and potentially other colors as well. Layout shift
+is bad, m'kay?
+
+The second point needs some explanation. Seirdy makes a compelling point about underlines serving a
+purpose by highlighting that two hyperlinks are different. However, that comes at the [cost of
+readability][71], which I believe is more of a problem these days than being able to distinguish two
+different links. Sure, I still color my hyperlinks differently than the text color to distinguish
+them and that does make things bad, underlining them makes it worse, especially if your page has a
+lot of hyperlinks.
+
 # Favicons and Web Manifest
 
 This section maybe unexpected in this post but it turns out that, just like the rest of the modern
@@ -863,6 +884,8 @@ microblog posts, the tags that I use in the post, and the direct link to the pos
 [67]: https://rsms.me/inter/
 [68]: https://github.com/kevquirk/simple.css
 [69]: https://news.ycombinator.com/item?id=25525246
+[70]: https://github.com/fish-shell/fish-shell/issues/8462
+[71]: https://memex.marginalia.nu/log/00-linkpocalypse.gmi
 [99]: https://github.blog/2021-06-22-framework-building-open-graph-images/
 [150]: https://seirdy.one/2020/11/23/website-best-practices.html
 
