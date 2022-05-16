@@ -66,6 +66,12 @@ In the case of monospace fonts, the font in question
     This is another great font with somewhat more curves and serifs than Inter but retains the
     professional and legible aesthetic of Inter. I often switch between Inter and Aktiv Grotesk.
 
+- [SF Pro Rounded][11]
+
+    This an extremely pleasant and playful font to look at. I don't think sans-serif fonts get any
+    more beautiful than this. It's not as format as SF Pro or Inter but not really informal or
+    unprofessional either. Just a subtle addition of rounded corners in alphabets.
+
 ### No :thumbsdown_tone3:
 
 - [IBM Plex Sans] [5]
@@ -93,7 +99,7 @@ In the case of monospace fonts, the font in question
 - [Krub][9]
 
     Krub might've been a good choice as one of the primary sans-serif fonts in use but the font
-    weight of its regular variant is too low.
+    weight of its regular variant is lesser than I prefer.
 
 - [Karla][10]
 
@@ -109,3 +115,4 @@ In the case of monospace fonts, the font in question
 [8]: https://www.redhat.com/en/about/brand/standards/typography
 [9]: https://github.com/cadsondemak/Krub
 [10]: https://github.com/googlefonts/karla
+[11]: https://developer.apple.com/fonts/
