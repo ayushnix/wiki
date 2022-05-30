@@ -47,7 +47,7 @@ nav:
   - "Others":
       - "Quotes": "others/quotes.md"
       - "Monitors and Laptops": "others/monitors_and_laptops.md"
-      - "Fonts": "others/fonts.md"
+      - "Fonts and Colors": "others/fonts_and_colors.md"
       - "Copyright Licenses": "others/licenses.md"
 
 # THEME PROPERTIES -------------------------------------------------------------
