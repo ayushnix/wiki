@@ -83,13 +83,13 @@ CA sends a preliminary form of a certificate to a log service which will create 
 back to the CA. The CA adds those SCTs to the certificate and, finally, adds his signature to the
 certificate and sends it back to us.
 
-It's interesting to note that Google Chrome's [CT
+~~It's interesting to note that Google Chrome's [CT
 Policy](https://github.com/GoogleChrome/CertificateTransparency/blob/4fa79451e0bf3740204f01d6bd6f6dfe6d2754dd/ct_policy.md)
 requires all valid certificates to have a SCT from at least one Google CT log service. It wouldn't
 be unreasonable to say that this essentially mandates all publicly issued certificates in the world
-to be logged to a Google CT log. [This](https://certificate.transparency.dev/logs/) page lists all
+to be logged to a Google CT log~~.[^8] [This](https://certificate.transparency.dev/logs/) page lists all
 the usable log services in existence. A [JSON](https://www.gstatic.com/ct/log_list/v2/log_list.json)
-is also available.
+file is also available.
 
 A pre-certificate only seems to be needed when SCTs are delivered using TLS certificates. A SCT can
 also be delivered in the TLS handshake using an extension[^3] or using OCSP stapling, something
@@ -448,3 +448,5 @@ certificate timestamps are but that's not possible because a CA has to prepare a
 get around this issue of when to embed its signature in the final certificate and it can't just add
 more data to the certificate after it has already signed the certificate. OCSP responses are
 delivered using a TLS extension, they're NOT "stapled" to the certificate.
+[^8]:
+This requirement was [removed from Google Chrome version 100](https://groups.google.com/a/chromium.org/g/ct-policy/c/507lPdbbwSk/m/JpxJEtrQAwAJ).
