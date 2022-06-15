@@ -9,8 +9,8 @@ coupled with a static site generator to create a functional blog that we can tru
 This isn't strictly necessary but it isn't really feasible or desirable for me to write HTML to
 produce ... HTML. Although there are awesome tools like [pandoc][1] and [lowdown][2] which can
 convert markdown to HTML, we need a method to replicate information across web pages, something
-which templating engines do. However, if you want a preview of how simple a static site generator
-can be, check out [Simple Blogging System][3].
+which templating engines can do. However, if you want a preview of how simple a static site
+generator can be, check out [Simple Blogging System][3].
 
 Unfortunately, I haven't been able to find a definitive resource on the Internet for learning how to
 write HTML. Fortunately, I was able to find websites like [Seirdy's Home Page][4], [Oriole Systems'
@@ -19,52 +19,45 @@ HTML.
 
 If you want a recap of the basics of HTML, the [HTML Basics][7] page on MDN is a decent place to
 start but for those who do have a basic idea of HTML works, this block of code should be a pretty
-decent starting point for writing a web page.
+decent starting point.
 
 ``` html
 <!DOCTYPE html>
 <html lang="en">
-
   <head>
     <meta charset="utf-8">
     <meta name="color-scheme" content="light dark">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="The personal microblog of Ayush Agarwal">
-    <title>@ayushnix</title>
+    <title>ayushnix home page</title>
   </head>
-
   <body>
   </body>
-
 </html>
 ```
 
-The `meta` tag containing `charset="utf-8"` should be the immediate child of the `head` tag. The
-`meta` tag with the `viewport` makes our page responsive for mobile phones. The `color-scheme`
-`meta` tag is interesting because it can [apply dark and light mode][8] colors on your web page
-without using any CSS provided by your website. The colors are derived from your operating system
-and your web browser. Since this is part of the HTML itself, it also loads before any CSS file is
-downloaded and applied. The `description` `meta` tag is meant for the description of a website shown
-by search engines.
+The `<meta>` tag containing `charset="utf-8"` should be the immediate child of the `<head>` tag. The
+`<meta>` tag with the `viewport` makes our page responsive. The `color-scheme` `<meta>` tag is
+interesting because it can [apply dark and light mode][8] colors on your web page without using any
+custom CSS. The colors are derived from your operating system and your web browser. Since this is
+part of the HTML itself, it also loads before any CSS file is downloaded and applied.
 
-If you're still wondering why a static site generator might be needed, the `title` tag will need to
-generated dynamically for each different page. The `time` tag can be updated dynamically with each
-passing year. Even if the tags don't change across web pages, like the `viewport` `meta` tag,
+If you're still wondering why a static site generator might be needed, the `<title>` tag will need
+to generated dynamically for each different page. Even if the tags don't change across web pages,
 they'll still need to copied on all the pages that you write. It doesn't make sense to copy these
 tags on multiple web pages or update tags based on context manually.
 
 # Semantic HTML
 
-As you may have guessed, the `head` tag is responsible for hosting the metadata for our website,
-which typically involves using the `meta`, `link`, and the `title` tag. The `body` tag is where the
-actual web page content begins. This is where it's imperative to realize that content comes before
-presentation. If you're creating a personal website, it should work fine in console web browsers
-like [w3m][9] and [lynx][10].
+As you may have guessed, the `<head>` tag is responsible for hosting the metadata for our website,
+which typically involves using the `<meta>`, `<link>`, and the `<title>` tag. The `<body>` tag is
+where the actual web page content begins. This is where it's imperative to realize that content
+comes before presentation. If you're creating a personal website, it should work fine in console web
+browsers like [w3m][9] and [lynx][10].
 
-As I'm writing this post, I'm trying to create a personal microblog website. I was inspired to do it
-after I came across [zunzuncito][11], the personal microblog of [Wolfgang Müller][12]. However, I
-didn't want to just blindly copy and paste his code and I want to understand how to create basic
-websites using HTML and CSS.
+At the time this post is being written, I'm trying to create a personal blog website which features
+a microblog as well. I was inspired to do it after I came across [zunzuncito][11], the personal
+microblog of [Wolfgang Müller][12]. However, I didn't want to just blindly copy and paste his code.
+I want to understand how to create basic websites using HTML and CSS.
 
 Let's start by writing a text file which would represent the basic structure of a microblog website.
 Again, we're writing content without any sort of representation which excludes hyperlinks, images,
@@ -97,36 +90,53 @@ content CC-BY-SA 4.0
 source code ISC
 ```
 
-At this point, we're in the messy territory of HTML 5, its "semantic" tags, and its differences from
-HTML 4. In HTML 4, the outline, or table of contents, of a web page was usually determined by using
-the `h*` tags. To avoid messing things up, it was advised that only one `h1` tag may be present
-inside a web page and the order of appearance and nesting of the remaining `h*` tags matter.
-Basically, `h3` shouldn't come before `h2`. In addition, it was also advised against skipping
-heading levels. `h1` shouldn't be followed by a `h3`. This was a simple, albeit rigid, structure
-which makes sense.
+At this point, we're in the messy territory of HTML5, its "semantic" tags, and its differences from
+HTML4. In HTML4, the outline, or table of contents, of a web page was determined by using the `<h*>`
+tags. To avoid messing things up, here are some simple rules about how to write HTML4 pages using
+only heading tags:
 
-HTML 5 introduced the tags `section`, `aside`, `nav`, and `article` which can used to create a
-document outline instead of the `h*` tags. Well, these HTML 5 tags still need the `h*` tags as their
-descendants for their titles but now, you could mess around with the order and choice of the `h*`
-tags if you wanted to without messing up the document outline. Oh, and these tags are supposed to be
-good for a11y as well because they have implicitly defined ARIA roles. However, the reality seems to
-be a bit different and it looks like most browser user-agents and screen readers haven't implemented
-the HTML 5 outlining algorithm as mentioned on [this][13] blog post. It's your choice about how you
-want to proceed here but I'll go ahead and use these semantic HTML 5 tags without trying to violate
-the `h*` outline structure algorithm used in HTML 4. If nothing else, writing `header` beats writing
-`div class=header`. The [cutecodedown][14] website makes a compelling case against HTML 5 and
-advocates for sticking to HTML 4.
+- only one `<h1>` tag should be present in a HTML page
+- `<h*>` tags should always be used in their ascending numerical order, i.e., `<h3>` can't appear
+  before `<h2>` in an HTML page
+- `<h*>` tags shouldn't skip order, i.e., `<h3>` can't appear if `<h2>` hasn't been used on a HTML
+  page
+
+This rigid structure is simple enough to understand and work with.
+
+HTML5 introduced the `article`, `section`, `aside`, and `nav` tags which influence the structural
+outline of a HTML page. If you're confused, [this answer by Robert Siemer][72] is a good place to
+start. However, the document outline algorithm introduced by HTML5 and these semantic tags hasn't
+actually been implemented in any web browser and there's been a disconnect between what's advised
+and what's actually implemented in reality. This has been discussed on [a popular post][13] by Steve
+Faulkner on the website HTML5 Doctor.
+
+One of the promises of these semantic sectioning tags was that you could mess around with the order
+of the appearance of the `<h*>` tags and it'd be fine. An `<h3>` tag could be followed by an `<h2>`
+tag inside a page if they were inside distinct section tags. However, since this isn't actually the
+reality and this would also mess up our heading level structure, it's better to stick to the HTML4
+heading outline rules. We can still benefit from these HTML5 tags because they carry implicit ARIA
+roles which are good for accessibility. It also beats writing `<header>` instead of `<div
+class=header>`.
+
+It should be kept in mind that the `<section>` tag should always have a `<h*>` tag as its child. If
+you can't come up with heading tag, you shouldn't use the `<section>` tag. The `<article>` tag
+should ideally have a child `<h*>` tag as well. The `<aside>` and `<nav>` tags should have a `<h*>`
+child tag but it may not be feasible to come up with a heading for these tags, considering the
+content they're likely to contain.
+
+If you're interested, a [blog post on the cutecodedown][14] website makes a compelling case against
+HTML5. The [Nu HTML Checker][15] can help you visualize the outline of your HTML document in terms
+of headings and the new HTML5 section tags.
 
 ``` html
 <body>
+  <h1>Ayush Agarwal</h1>
   <header>
     <ul>
-      <li><h1>Ayush Agarwal</h1></li>
       <li><a href="#">@ayushnix</a></li>
       <li>The personal microblog of Ayush Agarwal</li>
     </ul>
   </header>
-
   <nav>
     <ul>
       <li><a href="#">about</a></li>
@@ -134,12 +144,11 @@ advocates for sticking to HTML 4.
       <li><a href="#">tags</a></li>
     </ul>
   </nav>
-
   <main>
     <article>
+      <h2>the title of the post</h2>
       <header>
         <time datetime="2022-03-07T14:54:39.929">2022-03-27</time>
-        <h2>the title of the post</h2>
         <ul>
           <li><a href="#">tag 1</a></li>
         </ul>
@@ -155,7 +164,6 @@ advocates for sticking to HTML 4.
       </footer>
     </article>
   </main>
-
   <footer>
     <ul>
       <li>copyright &copy; 2022 Ayush Agarwal</li>
@@ -165,22 +173,11 @@ advocates for sticking to HTML 4.
 </body>
 ```
 
-If you're restricting yourself to HTML 4, it's easy to determine the outline of your web page
-because only the `h*` tags can create a new section. However, when using HTML 5, in addition to the
-`h*` tags,
-
-- `article`
-- `section`
-- `aside`
-- `nav`
-
-can create new sections in a web page. The [Nu HTML Checker][15] can help you visualize the outline
-of your HTML document from the perspective of both HTML 4 and HTML 5. If you can't figure out which
-tag to use to wrap some content on your web page, you can always fall back to using `div` and
-`span`.
-
-At this point, your web page is ready to be consumed on text based browsers like w3m. In fact, the
-output in w3m and a web browser should be mostly identical, which is a good thing.
+At this point, your web page should be ready to view on a text based web browser like w3m. If the
+layout of your HTML page looks similar on w3m and a "modern" web browser, say Firefox, it's a good
+thing. If you want to dive deeper into making your HTML friendly to search engines, readability
+mode implementations in web browsers, and transform data on your website into well defined parser
+friendly structured data, check out the [Microdata and Microformats][74] section.
 
 # CSS
 
@@ -815,6 +812,16 @@ be professional in nature and you may not want comments from random internet str
 try to build a small program which will use the Mastodon API and post the complete text of my
 microblog posts, the tags that I use in the post, and the direct link to the post itself.
 
+# Microdata and Microformats
+
+I didn't want to address this in the [Semantic HTML][73] section because it would probably overwhelm
+anyone who wants to a setup a website. However, if you want to make your website friendly to
+
+- search engines
+- readability mode implementations in web browsers
+
+you should consider adding metadata defined in schema.org microdata and microformats2 to your HTML markup.
+
 [1]: https://pandoc.org/
 [2]: https://kristaps.bsd.lv/lowdown/
 [3]: https://git.sr.ht/~jbauer/sbs/
@@ -886,6 +893,9 @@ microblog posts, the tags that I use in the post, and the direct link to the pos
 [69]: https://news.ycombinator.com/item?id=25525246
 [70]: https://github.com/fish-shell/fish-shell/issues/8462
 [71]: https://memex.marginalia.nu/log/00-linkpocalypse.gmi
+[72]: https://stackoverflow.com/a/26579514
+[73]: #semantic-html
+[74]: #microdata-and-microformats
 [99]: https://github.blog/2021-06-22-framework-building-open-graph-images/
 [150]: https://seirdy.one/2020/11/23/website-best-practices.html
 
