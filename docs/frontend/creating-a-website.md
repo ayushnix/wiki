@@ -237,13 +237,14 @@ The [CSS Diner][20] game should help you get familiar with CSS selectors.
 
 ## Box Model
 
-The MDN page on the box model, which in turn links to CSS Tricks, recommends using the following CSS
-reset to change the box model
+The [MDN page on the box model][76], which links to a [post on CSS Tricks][77], recommends using the
+following CSS reset to change the box model
 
 ``` css
 html {
   box-sizing: border-box;
 }
+
 *,
 *::before,
 *::after {
@@ -255,7 +256,8 @@ Since the `html` element has a higher specificity than the universal selector `*
 have any specificity), `html` will have its `box-sizing` set to `border-box`. All the other elements
 on the page will then inherit `box-sizing` from their parents, which is ultimately `html`. This
 makes it easier to change the box model for an element and its children because the box model of
-the element will be inherited by its children. If we had used
+the element will be inherited by its children. If we had used the following code, even if we change
+the box model of a tag, its children won't inherit that box model.
 
 ``` css
 *,
@@ -264,22 +266,6 @@ the element will be inherited by its children. If we had used
   box-sizing: border-box;
 }
 ```
-
-instead, even if we change the box model of an element, its children won't inherit it.
-
-To avoid confusion about the size of the boxes and not get confused with the default margins that
-web browsers use, it would be a good idea to add
-
-``` css
-* {
-  margin: 0;
-}
-```
-
-at the very least. `padding: 0;` can also be added at the cost of losing list style.
-
-Besides the obviously important stuff about padding, borders, and margin, and what `border-box` and
-`content-box` means, we'll need to understand the *inner* and *outer* display types of boxes.
 
 ## Fonts
 
@@ -912,6 +898,8 @@ you should consider adding metadata defined in schema.org microdata and microfor
 [73]: #semantic-html
 [74]: #microdata-and-microformats
 [75]: https://polypane.app/css-specificity-calculator/
+[76]: https://developer.mozilla.org/en-US/docs/Learn/CSS/Building_blocks/The_box_model
+[77]: https://css-tricks.com/inheriting-box-sizing-probably-slightly-better-best-practice/
 [99]: https://github.blog/2021-06-22-framework-building-open-graph-images/
 [150]: https://seirdy.one/2020/11/23/website-best-practices.html
 
