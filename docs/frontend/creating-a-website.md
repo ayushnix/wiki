@@ -182,10 +182,13 @@ friendly structured data, check out the [Microdata and Microformats][74] section
 # CSS
 
 Unlike HTML, I was able to find a lot of resources to explain how CSS works and the different kinds
-of layouts one can build for websites. There's no point in me going over CSS in detail because I'm
-not a web designer or developer, nor do I intend to be. The [Learn CSS][16] module can be a good
-place to start, although it does seem to make assumptions about the reader being familiar with CSS.
-The [MDN docs about CSS][17] are more detailed and will probably serve as a better introduction.
+of layouts one can build for websites. I'd go so far as to say that there's too much information out
+there and it can be overwhelming to make the "right" decisions.
+
+There's no point in me going over CSS in detail because I'm not a web designer or developer, nor do
+I intend to be. The [Learn CSS][16] module can be a good place to start, although it does seem to
+make assumptions about its audience being familiar with CSS. The [MDN docs about CSS][17] are more
+detailed and will probably serve as a better introduction.
 
 ## Cascade, Specificity, Inheritance
 
@@ -196,6 +199,7 @@ specificity are mentioned, the one mentioned later is applied. Specificity?
 h1 {
   color: blue;
 }
+
 .first-heading {
   color: red;
 }
@@ -204,17 +208,28 @@ h1 {
 If an `h1` element with a class of `first-heading` uses the CSS code mentioned above, the color of
 the heading will be red rather than blue. The order of specificity, from the least to the most, is
 
-- element and pseudo-element selector
-- class, pseudo-class, or attribute selector
-- ID selector
-- inline style
+elements and pseudo elements
+:    `html {}` has a specificity score of `0,0,1`, `html body {}` has a score of `0,0,2`, `a::after
+     {}` has a score of `0,0,2`
 
-It's important to remembet that `*`, `+`, `>` and `~` don't have any effect over specificity. And
+classes, pseudo classes, and attribute selectors
+:    `.hyperlink::before {}` and `:target::after` have a score of `0,1,1`, `[role="list"] {}` has a
+     score of `0,1,0`
+
+id selectors
+:    `#title {}` has a score of `1,0,0`
+
+inline css
+
+It's important to remember that `*`, `+`, `>` and `~` don't have any effect over specificity. And
 no, don't use `!important` in your code, unless you're overriding CSS for another website for use
-with the [Stylus][18] web browser add-on.
+with the [Stylus][18] web browser add-on. If you want to check the specificity of your rules, the
+[polypane specificity tool][75] is pretty good. There are some pseudo classes such as `:where()`
+which have 0 specificity and `:is()` which derive specificity from their most specific selector
+item.
 
-Some CSS properties, like [`font-size`][19], might get inherited from the parent element and this can be
-verified using the formal definition sections on MDN.
+Some CSS properties, like [`font-size`][19], might get inherited from the parent element and this
+can be verified using the formal definition sections on MDN.
 
 ## CSS Selectors
 
@@ -896,6 +911,7 @@ you should consider adding metadata defined in schema.org microdata and microfor
 [72]: https://stackoverflow.com/a/26579514
 [73]: #semantic-html
 [74]: #microdata-and-microformats
+[75]: https://polypane.app/css-specificity-calculator/
 [99]: https://github.blog/2021-06-22-framework-building-open-graph-images/
 [150]: https://seirdy.one/2020/11/23/website-best-practices.html
 
