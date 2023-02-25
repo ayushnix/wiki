@@ -1,5 +1,5 @@
-# BASIC DETAILS ----------------------------------------------------------------
 ---
+# BASIC DETAILS ----------------------------------------------------------------
 site_name: ayushnix wiki
 repo_name: ayushnix wiki
 repo_url: https://github.com/ayushnix/wiki
@@ -42,8 +42,6 @@ nav:
   - "DevOps":
       - Git:
           - "Getting Started With Git": "devops/git/getting-started-with-git.md"
-  - "Frontend":
-      - "Creating A Website": "frontend/creating-a-website.md"
   - "Others":
       - "Quotes": "others/quotes.md"
       - "Monitors and Laptops": "others/monitors_and_laptops.md"
